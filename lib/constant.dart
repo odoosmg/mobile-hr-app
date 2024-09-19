@@ -17,7 +17,6 @@ final kTextStyle = GoogleFonts.manrope(
   color: kTitleColor,
 );
 
-
 String purchaseCode = '528cdb9a-5d37-4292-a2b5-b792d5eca03a';
 
 const kButtonDecoration = BoxDecoration(
@@ -75,7 +74,12 @@ List<String> employeeType = [
   'Remote',
 ];
 
-List<String> employeeName = ['Sahidul Islam', 'Ibne Riead', 'Mehedi Muhammad', 'Emily Jones'];
+List<String> employeeName = [
+  'Sahidul Islam',
+  'Ibne Riead',
+  'Mehedi Muhammad',
+  'Emily Jones'
+];
 
 List<String> genderList = ['Male', 'Female'];
 

@@ -2,10 +2,10 @@ import 'package:dio/dio.dart'
     show Dio, DioException, Options, BaseOptions, DioExceptionType;
 import 'package:flutter/foundation.dart';
 import 'package:hrm_employee/api/config_api.dart';
-import 'package:hrm_employee/helper/k_enum.dart';
-import 'package:hrm_employee/helper/logger_custom.dart';
-import 'package:hrm_employee/models/api/api_result.dart';
-import 'package:hrm_employee/models/api/api_status_model.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Helper/logger_custom.dart';
+import 'package:hrm_employee/Models/api/api_result.dart';
+import 'package:hrm_employee/Models/api/api_status_model.dart';
 
 class BaseApi extends ResponseT {
   final Map<String, dynamic> _headers = {
