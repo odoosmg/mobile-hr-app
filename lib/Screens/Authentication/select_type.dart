@@ -42,7 +42,8 @@ class _SelectTypeState extends State<SelectType> {
                 const Image(image: AssetImage("images/people.png")),
                 Text(
                   'Select Your Role',
-                  style: kTextStyle.copyWith(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: kTextStyle.copyWith(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -65,7 +66,8 @@ class _SelectTypeState extends State<SelectType> {
                       ),
                       subtitle: Text(
                         'Register your company & start attendance ',
-                        style: kTextStyle.copyWith(color: kGreyTextColor, fontSize: 12.0),
+                        style: kTextStyle.copyWith(
+                            color: kGreyTextColor, fontSize: 12.0),
                       ),
                     ),
                   ),
@@ -91,7 +93,8 @@ class _SelectTypeState extends State<SelectType> {
                       ),
                       subtitle: Text(
                         'Register and start marking your attendance',
-                        style: kTextStyle.copyWith(color: kGreyTextColor, fontSize: 12.0),
+                        style: kTextStyle.copyWith(
+                            color: kGreyTextColor, fontSize: 12.0),
                       ),
                     ),
                   ),

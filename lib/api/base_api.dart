@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart'
     show Dio, DioException, Options, BaseOptions, DioExceptionType;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/api/config_api.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Helper/logger_custom.dart';
@@ -28,14 +31,15 @@ class BaseApi extends ResponseT {
     Map<String, dynamic> data = {};
 
     /// added Auth key
-    // if (Get.find<DatabaseService>().getToken.isNotEmpty) {
-    //   _headers['Authorization'] =
-    //       'Bearer ${Get.find<DatabaseService>().getToken}';
-    //   _headers['Refresh-Token'] = Get.find<DatabaseService>().getRefreshToken;
-    // } else {
-    //   _headers.remove('Authorization');
-    //   _headers.remove('Refresh-Token');
-    // }
+    if (appServices<DatabaseService>().getToken.isNotEmpty) {
+      _headers['Authorization'] =
+          'Bearer ${appServices<DatabaseService>().getToken}';
+      _headers['Refresh-Token'] =
+          appServices<DatabaseService>().getRefreshToken;
+    } else {
+      _headers.remove('Authorization');
+      _headers.remove('Refresh-Token');
+    }
 
     try {
       try {
@@ -137,7 +141,7 @@ class BaseApi extends ResponseT {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json',
                   'Authorization':
-                      'Bearer ${"Get.find<DatabaseService>().getToken"}'
+                      'Bearer ${"appServices<DatabaseService>().getToken"}'
                 }))
             .then((response) {
           resData = response.data;
@@ -170,20 +174,21 @@ class BaseApi extends ResponseT {
   void checkExpired(int statusCode) {
     /// Expired
     /// 401 and have token
-    // if (statusCode == 401 && Get.find<DatabaseService>().getToken.isNotEmpty) {
-    //   Get.find<DatabaseService>().clearSession();
-    //   Get.offAllNamed(LoginPage.route);
-    //   CustomDialog.error(statusCode, AppTrans.t.tokenExpiredMsg);
+    if (statusCode == 401 &&
+        appServices<DatabaseService>().getToken.isNotEmpty) {
+      appServices<DatabaseService>().clearSession();
+      // Get.offAllNamed(LoginPage.route);
+      // CustomDialog.error(statusCode, AppTrans.t.tokenExpiredMsg);
 
-    //   return;
-    // }
+      return;
+    }
   }
 
   void updateHeaders() {
     /// added Auth key
-    // if (Get.find<DatabaseService>().getToken.isNotEmpty) {
+    // if (appServices<DatabaseService>().getToken.isNotEmpty) {
     //   _headers['Authorization'] =
-    //       'Bearer ${Get.find<DatabaseService>().getToken}';
+    //       'Bearer ${appServices<DatabaseService>().getToken}';
     // }
   }
 }
@@ -216,7 +221,7 @@ abstract class ResponseT {
     }
 
     // if (state == ApiStatus.loginExpired) {
-    // Get.find<DatabaseService>().clearLocalUser();
+    // appServices<DatabaseService>().clearLocalUser();
     //   Get.offAllNamed(LoginPage.route);
     //   return ApiResult();
     // }

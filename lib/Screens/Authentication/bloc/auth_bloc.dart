@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -10,7 +12,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignIn>(_authSingIn);
   }
 
-  void _authSingIn(AuthSignIn event, Emitter<AuthState> emit) {
-    authRepository.login("", "");
+  void _authSingIn(AuthSignIn event, Emitter<AuthState> emit) async {
+    return;
+    await authRepository.login("api_user", "123").then((value) {
+      if (value.isSuccess) {
+        appServices<DatabaseService>().putSession(value.data!);
+        print("aaa === ${appServices<DatabaseService>().getToken}");
+      }
+    });
   }
 }
