@@ -4,14 +4,13 @@ import 'package:hive/hive.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/Services/navigation_service.dart';
 
-final appServices = GetIt.instance;
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+class AppServices {
+  static final instance = GetIt.instance;
 
-Future setup() async {
-  debugPrint("setup is called");
+  static Future setup() async {
+    DatabaseService databaseService = DatabaseService();
+    await databaseService.registerAdapter();
 
-  DatabaseService databaseService = DatabaseService();
-  await databaseService.registerAdapter();
-
-  appServices.registerFactory<DatabaseService>(() => databaseService);
+    instance.registerFactory<DatabaseService>(() => databaseService);
+  }
 }

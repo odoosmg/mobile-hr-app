@@ -31,11 +31,11 @@ class BaseApi extends ResponseT {
     Map<String, dynamic> data = {};
 
     /// added Auth key
-    if (appServices<DatabaseService>().getToken.isNotEmpty) {
+    if (AppServices.instance<DatabaseService>().getToken.isNotEmpty) {
       _headers['Authorization'] =
-          'Bearer ${appServices<DatabaseService>().getToken}';
+          'Bearer ${AppServices.instance<DatabaseService>().getToken}';
       _headers['Refresh-Token'] =
-          appServices<DatabaseService>().getRefreshToken;
+          AppServices.instance<DatabaseService>().getRefreshToken;
     } else {
       _headers.remove('Authorization');
       _headers.remove('Refresh-Token');
@@ -141,7 +141,7 @@ class BaseApi extends ResponseT {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json',
                   'Authorization':
-                      'Bearer ${"appServices<DatabaseService>().getToken"}'
+                      'Bearer ${"AppServices.instance<DatabaseService>().getToken"}'
                 }))
             .then((response) {
           resData = response.data;
@@ -175,8 +175,8 @@ class BaseApi extends ResponseT {
     /// Expired
     /// 401 and have token
     if (statusCode == 401 &&
-        appServices<DatabaseService>().getToken.isNotEmpty) {
-      appServices<DatabaseService>().clearSession();
+        AppServices.instance<DatabaseService>().getToken.isNotEmpty) {
+      AppServices.instance<DatabaseService>().clearSession();
       // Get.offAllNamed(LoginPage.route);
       // CustomDialog.error(statusCode, AppTrans.t.tokenExpiredMsg);
 
@@ -186,9 +186,9 @@ class BaseApi extends ResponseT {
 
   void updateHeaders() {
     /// added Auth key
-    // if (appServices<DatabaseService>().getToken.isNotEmpty) {
+    // if (AppServices.instance<DatabaseService>().getToken.isNotEmpty) {
     //   _headers['Authorization'] =
-    //       'Bearer ${appServices<DatabaseService>().getToken}';
+    //       'Bearer ${AppServices.instance<DatabaseService>().getToken}';
     // }
   }
 }
@@ -221,7 +221,7 @@ abstract class ResponseT {
     }
 
     // if (state == ApiStatus.loginExpired) {
-    // appServices<DatabaseService>().clearLocalUser();
+    // AppServices.instance<DatabaseService>().clearLocalUser();
     //   Get.offAllNamed(LoginPage.route);
     //   return ApiResult();
     // }

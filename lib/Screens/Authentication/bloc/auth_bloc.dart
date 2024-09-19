@@ -13,11 +13,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _authSingIn(AuthSignIn event, Emitter<AuthState> emit) async {
-    return;
+    // return;
     await authRepository.login("api_user", "123").then((value) {
       if (value.isSuccess) {
-        appServices<DatabaseService>().putSession(value.data!);
-        print("aaa === ${appServices<DatabaseService>().getToken}");
+        AppServices.instance<DatabaseService>().putSession(value.data!);
+        print("aaa === ${AppServices.instance<DatabaseService>().getToken}");
       }
     });
   }
