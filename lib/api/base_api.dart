@@ -2,13 +2,20 @@ import 'package:dio/dio.dart'
     show Dio, DioException, Options, BaseOptions, DioExceptionType;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
+import 'package:hrm_employee/Services/navigation_service.dart';
 import 'package:hrm_employee/api/config_api.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Helper/logger_custom.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
+
+import 'package:flutter/material.dart';
+
+// ignore: depend_on_referenced_packages
+import 'package:nb_utils/nb_utils.dart' show WidgetExtension;
 
 class BaseApi extends ResponseT {
   final Map<String, dynamic> _headers = {
@@ -177,19 +184,16 @@ class BaseApi extends ResponseT {
     if (statusCode == 401 &&
         AppServices.instance<DatabaseService>().getToken.isNotEmpty) {
       AppServices.instance<DatabaseService>().clearSession();
+
+      const SignIn().launch(
+        AppServices.instance<NavigatorService>().getCurrentContext,
+        isNewTask: true,
+      );
       // Get.offAllNamed(LoginPage.route);
       // CustomDialog.error(statusCode, AppTrans.t.tokenExpiredMsg);
 
       return;
     }
-  }
-
-  void updateHeaders() {
-    /// added Auth key
-    // if (AppServices.instance<DatabaseService>().getToken.isNotEmpty) {
-    //   _headers['Authorization'] =
-    //       'Bearer ${AppServices.instance<DatabaseService>().getToken}';
-    // }
   }
 }
 

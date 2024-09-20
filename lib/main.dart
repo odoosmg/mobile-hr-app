@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/navigation_service.dart';
 
 import 'Screens/Splash Screen/splash_screen.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+          navigatorKey: AppServices.instance<NavigatorService>().navigationKey,
           theme: ThemeData(
             // Add the line below to get horizontal sliding transitions for routes.
             pageTransitionsTheme: const PageTransitionsTheme(builders: {

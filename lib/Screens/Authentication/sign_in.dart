@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_up.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -140,11 +141,11 @@ class _SignInState extends State<SignIn> {
                         buttonDecoration:
                             kButtonDecoration.copyWith(color: kMainColor),
                         onPressed: () async {
-                          context.read<AuthBloc>().add(AuthSignIn());
-                          return;
+                          // context.read<AuthBloc>().add(AuthSignIn());
+
                           bool isValid = await PurchaseModel().isActiveBuyer();
                           if (isValid) {
-                            const HomeScreen().launch(context);
+                            HomeScreen().launch(context);
                           } else {
                             showLicense(context: context);
                           }

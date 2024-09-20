@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
 import 'package:hrm_employee/Screens/Chat/chat_list.dart';
 import 'package:hrm_employee/Screens/Employee%20Directory/employee_directory_screen.dart';
@@ -19,7 +20,7 @@ import '../../constant.dart';
 import '../Attendance Management/management_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -27,6 +28,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           subtitle: Text(
             'Good Morning',
-            style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -58,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               height: context.height() / 2.5,
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(30.0)),
                 color: kMainColor,
               ),
               child: Column(
@@ -66,7 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     height: context.height() / 4,
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30.0),
+                          bottomRight: Radius.circular(30.0)),
                       color: Colors.white,
                     ),
                     child: Center(
@@ -87,7 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Text(
                             'Sahidul Islam',
-                            style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(
+                                fontWeight: FontWeight.bold),
                           ),
                           Text(
                             'Employee',
@@ -108,7 +120,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                            padding: const EdgeInsets.only(
+                                left: 15.0,
+                                right: 15.0,
+                                top: 10.0,
+                                bottom: 10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80.0),
                               border: Border.all(color: Colors.white),
@@ -125,11 +141,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Text(
                                   '22',
-                                  style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                                  style: kTextStyle.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   'days',
-                                  style: kTextStyle.copyWith(color: Colors.white),
+                                  style:
+                                      kTextStyle.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -146,7 +165,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                            padding: const EdgeInsets.only(
+                                left: 15.0,
+                                right: 15.0,
+                                top: 10.0,
+                                bottom: 10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80.0),
                               border: Border.all(color: Colors.white),
@@ -163,11 +186,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Text(
                                   '3',
-                                  style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                                  style: kTextStyle.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   'days',
-                                  style: kTextStyle.copyWith(color: Colors.white),
+                                  style:
+                                      kTextStyle.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -184,7 +210,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                            padding: const EdgeInsets.only(
+                                left: 15.0,
+                                right: 15.0,
+                                top: 10.0,
+                                bottom: 10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(80.0),
                               border: Border.all(color: Colors.white),
@@ -201,11 +231,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Text(
                                   '5',
-                                  style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                                  style: kTextStyle.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   'days',
-                                  style: kTextStyle.copyWith(color: Colors.white),
+                                  style:
+                                      kTextStyle.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -300,7 +333,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               padding: const EdgeInsets.all(20.0),
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
@@ -314,14 +349,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Material(
                           elevation: 2.0,
                           child: GestureDetector(
-                            onTap: () async{
-                              bool isValid = await PurchaseModel().isActiveBuyer();
-                              if(isValid){
+                            onTap: () async {
+                              bool isValid =
+                                  await PurchaseModel().isActiveBuyer();
+                              if (isValid) {
                                 const EmployeeManagement().launch(context);
-                              } else{
+                              } else {
                                 showLicense(context: context);
                               }
-
                             },
                             child: Container(
                               width: context.width(),
@@ -338,14 +373,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/employeeattendace.png')),
+                                  const Image(
+                                      image: AssetImage(
+                                          'images/employeeattendace.png')),
                                   Text(
                                     'Employee',
-                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kTitleColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     'Attendance',
-                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kTitleColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -378,14 +419,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/employeedirectory.png')),
+                                  const Image(
+                                      image: AssetImage(
+                                          'images/employeedirectory.png')),
                                   Text(
                                     'Employee',
-                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kTitleColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     'Directory',
-                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kTitleColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -422,14 +469,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/leave.png')),
+                                  const Image(
+                                      image: AssetImage('images/leave.png')),
                                   Text(
                                     'Leave',
-                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kTitleColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     'Application',
-                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kTitleColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -462,15 +514,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/workreport.png')),
+                                  const Image(
+                                      image:
+                                          AssetImage('images/workreport.png')),
                                   Text(
                                     'Daily Work',
                                     maxLines: 2,
-                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kTitleColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     'Report',
-                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                    style: kTextStyle.copyWith(
+                                        color: kTitleColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -501,11 +559,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           const SalaryStatementList().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/salarymanagement.png')),
+                        leading: const Image(
+                            image: AssetImage('images/salarymanagement.png')),
                         title: Text(
                           'Salary Statement',
                           maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
@@ -530,11 +590,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: ListTile(
                         onTap: () => const NoticeList().launch(context),
-                        leading: const Image(image: AssetImage('images/noticeboard.png')),
+                        leading: const Image(
+                            image: AssetImage('images/noticeboard.png')),
                         title: Text(
                           'Notice Board',
                           maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
@@ -559,11 +621,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: ListTile(
                         onTap: () => const OutworkList().launch(context),
-                        leading: const Image(image: AssetImage('images/outworksubmission.png')),
+                        leading: const Image(
+                            image: AssetImage('images/outworksubmission.png')),
                         title: Text(
                           'Outwork Submission',
                           maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
@@ -588,11 +652,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: ListTile(
                         onTap: () => const LoanList().launch(context),
-                        leading: const Image(image: AssetImage('images/loan.png')),
+                        leading:
+                            const Image(image: AssetImage('images/loan.png')),
                         title: Text(
                           'Loan',
                           maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
