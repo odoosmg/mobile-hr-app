@@ -3,6 +3,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_up.dart';
@@ -23,12 +27,35 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController usernameTEC = TextEditingController();
+  final TextEditingController passwordTEC = TextEditingController();
   bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
+      buildWhen: (previousState, currentState) {
+        ApiResult<Session> response = currentState.signin!;
+        if (response.status == ApiStatus.loading) {
+          /// show loading
+          CustomLoading.show(context);
+        } else {
+          /// hide loading
+          CustomLoading.hide(context);
+
+          if (currentState.signin!.isSuccess) {
+            /// Success
+            const HomeScreen().launch(context, isNewTask: true);
+          } else {
+            /// Failed
+            CustomDialog.error(context,
+                errCode: response.statuscode, errMsg: response.errorMessage);
+          }
+        }
+
+        /// No need to build.
+        return false;
+      },
       builder: (context, state) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
@@ -70,12 +97,12 @@ class _SignInState extends State<SignIn> {
                       SizedBox(
                         height: 60.0,
                         child: AppTextField(
-                          textFieldType: TextFieldType.PHONE,
-                          controller: TextEditingController(),
+                          textFieldType: TextFieldType.NAME,
+                          controller: usernameTEC,
                           enabled: true,
                           decoration: InputDecoration(
-                            labelText: 'Phone Number',
-                            hintText: '1767 432556',
+                            labelText: 'Usersname',
+                            hintText: 'Enter username',
                             labelStyle: kTextStyle,
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                             border: const OutlineInputBorder(),
@@ -94,6 +121,7 @@ class _SignInState extends State<SignIn> {
                         height: 20.0,
                       ),
                       AppTextField(
+                        controller: passwordTEC,
                         textFieldType: TextFieldType.PASSWORD,
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -141,8 +169,14 @@ class _SignInState extends State<SignIn> {
                         buttonDecoration:
                             kButtonDecoration.copyWith(color: kMainColor),
                         onPressed: () async {
-                          // context.read<AuthBloc>().add(AuthSignIn());
+                          context.read<AuthBloc>().add(AuthSignIn(
+                                username: usernameTEC.text,
+                                password: passwordTEC.text,
+                              ));
 
+                          return;
+
+                          ///
                           bool isValid = await PurchaseModel().isActiveBuyer();
                           if (isValid) {
                             HomeScreen().launch(context);
