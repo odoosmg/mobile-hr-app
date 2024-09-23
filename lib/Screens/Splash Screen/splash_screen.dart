@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hrm_employee/Screens/Home/home_screen.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../GlobalComponents/button_global.dart';
@@ -28,14 +31,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
     defaultBlurRadius = 10.0;
     defaultSpreadRadius = 0.5;
-    bool isValid = await PurchaseModel().isActiveBuyer();
-    if(isValid){
-      finish(context);
+    if (AppServices.instance<DatabaseService>().getToken.isNotEmpty) {
+      /// has token, goto home
+      const HomeScreen().launch(context, isNewTask: true);
+    } else {
       const OnBoard().launch(context, isNewTask: true);
-    } else{
-      showLicense(context: context);
     }
 
+    // bool isValid = await PurchaseModel().isActiveBuyer();
+    // if(isValid){
+    //   finish(context);
+    //   const OnBoard().launch(context, isNewTask: true);
+    // } else{
+    //   showLicense(context: context);
+    // }
   }
 
   @override
@@ -64,7 +73,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Text(
                   'Version 1.0.0',
-                  style: GoogleFonts.manrope(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 15.0),
+                  style: GoogleFonts.manrope(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15.0),
                 ),
               ),
             ),

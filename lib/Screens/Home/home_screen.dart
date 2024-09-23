@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
+import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
 import 'package:hrm_employee/Screens/Chat/chat_list.dart';
 import 'package:hrm_employee/Screens/Employee%20Directory/employee_directory_screen.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_management_screen.dart';
@@ -12,6 +13,8 @@ import 'package:hrm_employee/Screens/Notification/notification_screen.dart';
 import 'package:hrm_employee/Screens/Outwork%20Submission/outwork_list.dart';
 import 'package:hrm_employee/Screens/Salary%20Management/salary_statement_list.dart';
 import 'package:hrm_employee/Screens/Work%20Report/daily_work_report.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import '../../GlobalComponents/button_global.dart';
@@ -311,6 +314,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ListTile(
+              onTap: () {
+                AppServices.instance<DatabaseService>().clearSession();
+                const SignIn().launch(context, isNewTask: true);
+              },
               title: Text(
                 'Logout',
                 style: kTextStyle.copyWith(color: kTitleColor),
