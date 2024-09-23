@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
@@ -36,20 +37,31 @@ class _SignInState extends State<SignIn> {
     return BlocBuilder<AuthBloc, AuthState>(
       buildWhen: (previousState, currentState) {
         ApiResult<Session> response = currentState.signin!;
-        if (response.status == ApiStatus.loading) {
-          /// show loading
-          CustomLoading.show(context);
-        } else {
-          /// hide loading
-          CustomLoading.hide(context);
 
-          if (currentState.signin!.isSuccess) {
-            /// Success
-            const HomeScreen().launch(context, isNewTask: true);
+        /// validate, this should rebuild
+        if (currentState.blocEventType == BlocEventType.validateForm) {
+          if (currentState.isValidForm || !currentState.isValidForm) {
+            return true;
+          }
+        }
+
+        ///
+        if (currentState.blocEventType == BlocEventType.requestApi) {
+          if (response.status == ApiStatus.loading) {
+            /// show loading
+            CustomLoading.show(context);
           } else {
-            /// Failed
-            CustomDialog.error(context,
-                errCode: response.statuscode, errMsg: response.errorMessage);
+            /// hide loading
+            CustomLoading.hide(context);
+
+            if (currentState.signin!.isSuccess) {
+              /// Success
+              const HomeScreen().launch(context, isNewTask: true);
+            } else {
+              /// Failed
+              CustomDialog.error(context,
+                  errCode: response.statuscode, errMsg: response.errorMessage);
+            }
           }
         }
 
@@ -99,6 +111,9 @@ class _SignInState extends State<SignIn> {
                         child: AppTextField(
                           textFieldType: TextFieldType.NAME,
                           controller: usernameTEC,
+                          onChanged: (text) {
+                            _validate();
+                          },
                           enabled: true,
                           decoration: InputDecoration(
                             labelText: 'Usersname',
@@ -122,6 +137,9 @@ class _SignInState extends State<SignIn> {
                       ),
                       AppTextField(
                         controller: passwordTEC,
+                        onChanged: (text) {
+                          _validate();
+                        },
                         textFieldType: TextFieldType.PASSWORD,
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -164,27 +182,46 @@ class _SignInState extends State<SignIn> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      ButtonGlobal(
-                        buttontext: 'Sign In',
-                        buttonDecoration:
-                            kButtonDecoration.copyWith(color: kMainColor),
-                        onPressed: () async {
-                          context.read<AuthBloc>().add(AuthSignIn(
-                                username: usernameTEC.text,
-                                password: passwordTEC.text,
-                              ));
+                      MainBtn(
+                          title: "Sign In",
+                          isOk: state.isValidForm,
+                          onPressed: () {
+                            /// close keyboard
+                            FocusManager.instance.primaryFocus!.unfocus();
 
-                          return;
+                            ///
+                            context.read<AuthBloc>().add(
+                                  AuthSignIn(
+                                    username: usernameTEC.text,
+                                    password: passwordTEC.text,
+                                  ),
+                                );
+                          }),
+                      // ButtonGlobal(
+                      //   buttontext: 'Sign In',
+                      //   buttonDecoration:
+                      //       kButtonDecoration.copyWith(color: kMainColor),
+                      //   onPressed: true
+                      //       ? null
+                      //       : () async {
+                      //           ///
+                      //           context.read<AuthBloc>().add(AuthSignIn(
+                      //                 username: usernameTEC.text,
+                      //                 password: passwordTEC.text,
+                      //               ));
 
-                          ///
-                          bool isValid = await PurchaseModel().isActiveBuyer();
-                          if (isValid) {
-                            HomeScreen().launch(context);
-                          } else {
-                            showLicense(context: context);
-                          }
-                        },
-                      ),
+                      //           return;
+
+                      //           ///
+                      //           bool isValid =
+                      //               await PurchaseModel().isActiveBuyer();
+                      //           if (isValid) {
+                      //             HomeScreen().launch(context);
+                      //           } else {
+                      //             showLicense(context: context);
+                      //           }
+                      //         },
+                      // ),
                       const SizedBox(
                         height: 20.0,
                       ),
@@ -220,5 +257,12 @@ class _SignInState extends State<SignIn> {
         );
       },
     );
+  }
+
+  void _validate() {
+    context.read<AuthBloc>().add(AuthValidate(
+          username: usernameTEC.text,
+          password: passwordTEC.text,
+        ));
   }
 }

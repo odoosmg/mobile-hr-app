@@ -2,12 +2,19 @@ part of 'auth_bloc.dart';
 
 class AuthState {
   ApiResult<Session>? signin;
+  bool isValidForm;
+  BlocEventType blocEventType;
   AuthState({
     this.signin,
+    this.isValidForm = false,
+    this.blocEventType = BlocEventType.others,
   });
 
   AuthState copyWith(AuthState d) {
-    return AuthState(signin: d.signin);
+    return AuthState(
+        signin: d.signin,
+        isValidForm: d.isValidForm,
+        blocEventType: d.blocEventType);
   }
 }
 

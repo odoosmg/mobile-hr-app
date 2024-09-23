@@ -11,3 +11,12 @@ class AuthSignIn extends AuthEvent {
     required this.password,
   });
 }
+
+class AuthValidate extends AuthEvent {
+  final String username;
+  final String password;
+  AuthValidate({
+    required this.username,
+    required this.password,
+  });
+}

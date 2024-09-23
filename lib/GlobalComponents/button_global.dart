@@ -10,12 +10,15 @@ class ButtonGlobal extends StatelessWidget {
   var onPressed;
 
   // ignore: use_key_in_widget_constructors
-  ButtonGlobal({required this.buttontext, required this.buttonDecoration, required this.onPressed});
+  ButtonGlobal(
+      {required this.buttontext,
+      required this.buttonDecoration,
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: null,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -23,7 +26,10 @@ class ButtonGlobal extends StatelessWidget {
         child: Center(
           child: Text(
             buttontext,
-            style: kTextStyle.copyWith(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold),
+            style: kTextStyle.copyWith(
+                fontSize: 20.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -40,7 +46,11 @@ class ButtonGlobalWithoutIcon extends StatelessWidget {
   final Color buttonTextColor;
 
   // ignore: use_key_in_widget_constructors
-  ButtonGlobalWithoutIcon({required this.buttontext, required this.buttonDecoration, required this.onPressed, required this.buttonTextColor});
+  ButtonGlobalWithoutIcon(
+      {required this.buttontext,
+      required this.buttonDecoration,
+      required this.onPressed,
+      required this.buttonTextColor});
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +74,7 @@ class ButtonGlobalWithoutIcon extends StatelessWidget {
   }
 }
 
-
-void showLicense({required BuildContext context}){
+void showLicense({required BuildContext context}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -85,10 +94,18 @@ void showLicense({required BuildContext context}){
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      Text('Please Check Your Purchase Code',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
-                      SizedBox(height: 10.0,),
-                      Text('Your purchase code is not valid. Please buy our product from envato to get a new purchase code',maxLines: 6,),
-
+                      Text(
+                        'Please Check Your Purchase Code',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'Your purchase code is not valid. Please buy our product from envato to get a new purchase code',
+                        maxLines: 6,
+                      ),
                     ],
                   ),
                 ),

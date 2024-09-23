@@ -63,3 +63,6 @@ enum AppEnviroment {
 }
 
 enum BtnStatus { ok, disabled, loading }
+
+/// To prevent(condition) build everytime on WhenBuild method
+enum BlocEventType { requestApi, validateForm, others }
