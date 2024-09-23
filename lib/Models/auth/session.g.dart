@@ -22,13 +22,14 @@ class SessionAdapter extends TypeAdapter<Session> {
       ..accessToken = fields[2] as String?
       ..userId = fields[3] as int?
       ..data = fields[4] as Session?
-      ..refreshToken = fields[5] as String?;
+      ..refreshToken = fields[5] as String?
+      ..myProfile = fields[6] as UserModel?;
   }
 
   @override
   void write(BinaryWriter writer, Session obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -40,7 +41,9 @@ class SessionAdapter extends TypeAdapter<Session> {
       ..writeByte(4)
       ..write(obj.data)
       ..writeByte(5)
-      ..write(obj.refreshToken);
+      ..write(obj.refreshToken)
+      ..writeByte(6)
+      ..write(obj.myProfile);
   }
 
   @override
@@ -66,7 +69,10 @@ Session _$SessionFromJson(Map<String, dynamic> json) => Session()
   ..data = json['data'] == null
       ? null
       : Session.fromJson(json['data'] as Map<String, dynamic>)
-  ..refreshToken = json['refresh_token'] as String?;
+  ..refreshToken = json['refresh_token'] as String?
+  ..myProfile = json['my_profile'] == null
+      ? null
+      : UserModel.fromJson(json['my_profile'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$SessionToJson(Session instance) => <String, dynamic>{
       'id': instance.id,
@@ -75,4 +81,5 @@ Map<String, dynamic> _$SessionToJson(Session instance) => <String, dynamic>{
       'user_id': instance.userId,
       'data': instance.data,
       'refresh_token': instance.refreshToken,
+      'my_profile': instance.myProfile,
     };

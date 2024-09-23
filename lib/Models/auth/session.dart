@@ -1,4 +1,5 @@
 // import 'package:employee_attendance/models/auth/user_model.dart';
+import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -26,8 +27,8 @@ class Session {
   @HiveField(5)
   String? refreshToken;
 
-  // @HiveField(6)
-  // UserModel? myProfile;
+  @HiveField(6)
+  UserModel? myProfile;
 
   Session();
 

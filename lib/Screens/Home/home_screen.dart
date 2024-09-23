@@ -1,5 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
@@ -13,6 +15,7 @@ import 'package:hrm_employee/Screens/Notification/notification_screen.dart';
 import 'package:hrm_employee/Screens/Outwork%20Submission/outwork_list.dart';
 import 'package:hrm_employee/Screens/Salary%20Management/salary_statement_list.dart';
 import 'package:hrm_employee/Screens/Work%20Report/daily_work_report.dart';
+import 'package:hrm_employee/Screens/components/pages/home_drawer.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -31,8 +34,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Session? session;
+
   @override
   void initState() {
+    /// from local
+    session = AppServices.instance<DatabaseService>().getSession;
     super.initState();
   }
 
@@ -47,21 +54,30 @@ class _HomeScreenState extends State<HomeScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
         title: ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: const CircleAvatar(
+
+          /// profile photo
+          leading: CircleAvatar(
             radius: 20.0,
-            backgroundImage: AssetImage('images/person.jpg'),
+            backgroundImage:
+                MemoryImage(base64Decode(session?.myProfile?.image ?? "")),
           ),
+
+          /// name
           title: Text(
-            'Hi, Ibne Riyad',
+            'Hi, ${session?.myProfile?.name}',
             style: kTextStyle.copyWith(color: Colors.white, fontSize: 12.0),
           ),
+
+          /// Company
           subtitle: Text(
-            'Good Morning',
+            '${session?.myProfile?.company}',
             style: kTextStyle.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ),
+      drawer: const HomeDrawer(),
+      /*
       drawer: Drawer(
         child: ListView(
           children: [
@@ -330,6 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+      */
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

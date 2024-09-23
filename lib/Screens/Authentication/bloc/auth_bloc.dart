@@ -43,6 +43,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     bool isValid = false;
 
     state.blocEventType = BlocEventType.validateForm;
+
+    ///
     if (event.username.isNotEmpty && event.password.isNotEmpty) {
       isValid = true;
     }
@@ -51,10 +53,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(state));
   }
 
-  @override
-  void onChange(Change<AuthState> change) {
-    // TODO: implement onChange
-    print("onchange ====== $change");
-    super.onChange(change);
-  }
+  // @override
+  // void onChange(Change<AuthState> change) {
+  //   // TODO: implement onChange
+  //   print("onchange ====== $change");
+  //   super.onChange(change);
+  // }
 }
