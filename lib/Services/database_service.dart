@@ -19,6 +19,11 @@ class DatabaseService {
     session = await Hive.openBox(Session.boxName);
     appLocal = await Hive.openBox(AppLocal.boxName);
     user = await Hive.openBox(UserModel.boxName);
+
+    /// init default value, if null.
+    if (getAppLocal == null) {
+      putAppLocal(AppLocal()..isOnboardClose = false);
+    }
   }
 
   /// clear data login Data

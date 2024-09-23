@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hrm_employee/Models/auth/app_local.dart';
+import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
 import 'package:hrm_employee/Screens/Home/home_screen.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
@@ -35,7 +37,14 @@ class _SplashScreenState extends State<SplashScreen> {
       /// has token, goto home
       const HomeScreen().launch(context, isNewTask: true);
     } else {
-      const OnBoard().launch(context, isNewTask: true);
+      /// if already close Onboard direct to Sign-in
+      if (AppServices.instance<DatabaseService>()
+          .getAppLocal!
+          .isOnboardClose!) {
+        const SignIn().launch(context, isNewTask: true);
+      } else {
+        const OnBoard().launch(context, isNewTask: true);
+      }
     }
 
     // bool isValid = await PurchaseModel().isActiveBuyer();

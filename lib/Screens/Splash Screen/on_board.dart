@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hrm_employee/Models/auth/app_local.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -74,6 +77,9 @@ class _OnBoardState extends State<OnBoard> {
             padding: const EdgeInsets.only(top: 8.0),
             child: TextButton(
               onPressed: () {
+                _onBoardClose();
+
+                /// sign-in page
                 const SignIn().launch(context);
               },
               child: Text(
@@ -219,11 +225,29 @@ class _OnBoardState extends State<OnBoard> {
                                         curve: Curves.bounceInOut)
                                     : Navigator.push(
                                         context,
+                                        MaterialPageRoute(builder: (context) {
+                                          _onBoardClose();
+                                          return const SignIn();
+                                        }),
+                                      );
+                              });
+
+                              /// Default goto select type
+                              /*
+                              setState(() {
+                                currentIndexPage < 2
+                                    ? pageController.nextPage(
+                                        duration:
+                                            const Duration(microseconds: 3000),
+                                        curve: Curves.bounceInOut)
+                                    : Navigator.push(
+                                        context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 const SelectType()),
                                       );
                               });
+                              */
                             },
                             child: const CircleAvatar(
                               radius: 35.0,
@@ -247,5 +271,12 @@ class _OnBoardState extends State<OnBoard> {
         ],
       ),
     );
+  }
+
+  void _onBoardClose() {
+    /// Update onBoardClose.
+    AppLocal appLocal = AppServices.instance<DatabaseService>().getAppLocal!;
+    appLocal.isOnboardClose = true;
+    AppServices.instance<DatabaseService>().putAppLocal(appLocal);
   }
 }

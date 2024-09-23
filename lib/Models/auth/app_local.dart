@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -19,10 +20,11 @@ class AppLocal {
   @HiveField(3)
   String? lang;
 
-  /// use condition when to call api
-  /// to fixed Home and initialRoute initState
+  /// purpose is to show once.
   @HiveField(4, defaultValue: false)
-  bool? isCallApi;
+  @ValueKey(false)
+  @JsonValue(false)
+  bool? isOnboardClose;
 
   AppLocal();
 

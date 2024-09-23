@@ -21,7 +21,7 @@ class AppLocalAdapter extends TypeAdapter<AppLocal> {
       ..isConnectInternet = fields[1] as bool?
       ..isDarkMode = fields[2] == null ? false : fields[2] as bool
       ..lang = fields[3] as String?
-      ..isCallApi = fields[4] == null ? false : fields[4] as bool?;
+      ..isOnboardClose = fields[4] == null ? false : fields[4] as bool?;
   }
 
   @override
@@ -37,7 +37,7 @@ class AppLocalAdapter extends TypeAdapter<AppLocal> {
       ..writeByte(3)
       ..write(obj.lang)
       ..writeByte(4)
-      ..write(obj.isCallApi);
+      ..write(obj.isOnboardClose);
   }
 
   @override
@@ -60,12 +60,12 @@ AppLocal _$AppLocalFromJson(Map<String, dynamic> json) => AppLocal()
   ..isConnectInternet = json['is_connect_internet'] as bool?
   ..isDarkMode = json['is_dark_mode'] as bool
   ..lang = json['lang'] as String?
-  ..isCallApi = json['is_call_api'] as bool?;
+  ..isOnboardClose = json['is_onboard_close'] as bool?;
 
 Map<String, dynamic> _$AppLocalToJson(AppLocal instance) => <String, dynamic>{
       'id': instance.id,
       'is_connect_internet': instance.isConnectInternet,
       'is_dark_mode': instance.isDarkMode,
       'lang': instance.lang,
-      'is_call_api': instance.isCallApi,
+      'is_onboard_close': instance.isOnboardClose,
     };
