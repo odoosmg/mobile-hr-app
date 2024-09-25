@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/navigation_service.dart';
+import 'package:hrm_employee/generated/l10n/trans_localizations.dart';
+import 'package:hrm_employee/l10n/l10n.dart';
 
 import 'Screens/Splash Screen/splash_screen.dart';
 
@@ -29,6 +32,17 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           navigatorKey: AppServices.instance<NavigatorService>().navigationKey,
+
+          /// Translate
+          supportedLocales: L10n.all,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+
+          /// Theme
           theme: ThemeData(
             // Add the line below to get horizontal sliding transitions for routes.
             pageTransitionsTheme: const PageTransitionsTheme(builders: {
