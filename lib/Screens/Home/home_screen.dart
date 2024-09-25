@@ -1,8 +1,9 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
@@ -15,9 +16,14 @@ import 'package:hrm_employee/Screens/Notification/notification_screen.dart';
 import 'package:hrm_employee/Screens/Outwork%20Submission/outwork_list.dart';
 import 'package:hrm_employee/Screens/Salary%20Management/salary_statement_list.dart';
 import 'package:hrm_employee/Screens/Work%20Report/daily_work_report.dart';
+import 'package:hrm_employee/Screens/components/pages/home/in_out_card.dart';
 import 'package:hrm_employee/Screens/components/pages/home_drawer.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
+
+import 'package:hrm_employee/utlis/app_color.dart';
+import 'package:hrm_employee/utlis/measurement.dart';
+import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import '../../GlobalComponents/button_global.dart';
@@ -356,6 +362,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Container(
               padding: const EdgeInsets.all(20.0),
+              // width: double.infinity,
+              // height: Measurement.heightPercent(context, 0.87),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
@@ -364,330 +372,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Column(
                 children: [
+                  ..._inOut(),
+
                   const SizedBox(
                     height: 20.0,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Material(
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () async {
-                              bool isValid =
-                                  await PurchaseModel().isActiveBuyer();
-                              if (isValid) {
-                                const EmployeeManagement().launch(context);
-                              } else {
-                                showLicense(context: context);
-                              }
-                            },
-                            child: Container(
-                              width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Color(0xFFFD72AF),
-                                    width: 3.0,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Image(
-                                      image: AssetImage(
-                                          'images/employeeattendace.png')),
-                                  Text(
-                                    'Employee',
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Attendance',
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20.0,
-                      ),
-                      Expanded(
-                        child: Material(
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              const EmployeeDirectory().launch(context);
-                            },
-                            child: Container(
-                              width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Color(0xFF7C69EE),
-                                    width: 3.0,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Image(
-                                      image: AssetImage(
-                                          'images/employeedirectory.png')),
-                                  Text(
-                                    'Employee',
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Directory',
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+
+                  ..._gridMenu(),
+
                   const SizedBox(
                     height: 20.0,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Material(
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              const LeaveManagementScreen().launch(context);
-                            },
-                            child: Container(
-                              width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Color(0xFF4ACDF9),
-                                    width: 3.0,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Image(
-                                      image: AssetImage('images/leave.png')),
-                                  Text(
-                                    'Leave',
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Application',
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20.0,
-                      ),
-                      Expanded(
-                        child: Material(
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              const DailyWorkReport().launch(context);
-                            },
-                            child: Container(
-                              width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Color(0xFF02B984),
-                                    width: 3.0,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Image(
-                                      image:
-                                          AssetImage('images/workreport.png')),
-                                  Text(
-                                    'Daily Work',
-                                    maxLines: 2,
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Report',
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: Container(
-                      width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFFFD72AF),
-                            width: 3.0,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: ListTile(
-                        onTap: () {
-                          const SalaryStatementList().launch(context);
-                        },
-                        leading: const Image(
-                            image: AssetImage('images/salarymanagement.png')),
-                        title: Text(
-                          'Salary Statement',
-                          maxLines: 2,
-                          style: kTextStyle.copyWith(
-                              color: kTitleColor, fontWeight: FontWeight.bold),
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: Container(
-                      width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFF1CC389),
-                            width: 3.0,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: ListTile(
-                        onTap: () => const NoticeList().launch(context),
-                        leading: const Image(
-                            image: AssetImage('images/noticeboard.png')),
-                        title: Text(
-                          'Notice Board',
-                          maxLines: 2,
-                          style: kTextStyle.copyWith(
-                              color: kTitleColor, fontWeight: FontWeight.bold),
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: Container(
-                      width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFF7C69EE),
-                            width: 3.0,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: ListTile(
-                        onTap: () => const OutworkList().launch(context),
-                        leading: const Image(
-                            image: AssetImage('images/outworksubmission.png')),
-                        title: Text(
-                          'Outwork Submission',
-                          maxLines: 2,
-                          style: kTextStyle.copyWith(
-                              color: kTitleColor, fontWeight: FontWeight.bold),
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: Container(
-                      width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFF4ACDF9),
-                            width: 3.0,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: ListTile(
-                        onTap: () => const LoanList().launch(context),
-                        leading:
-                            const Image(image: AssetImage('images/loan.png')),
-                        title: Text(
-                          'Loan',
-                          maxLines: 2,
-                          style: kTextStyle.copyWith(
-                              color: kTitleColor, fontWeight: FontWeight.bold),
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ),
+                  // ..._options()
                 ],
               ),
             ),
@@ -695,5 +391,428 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> _options() {
+    return [
+      Material(
+        elevation: 2.0,
+        child: Container(
+          width: context.width(),
+          padding: const EdgeInsets.all(10.0),
+          decoration: const BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: Color(0xFFFD72AF),
+                width: 3.0,
+              ),
+            ),
+            color: Colors.white,
+          ),
+          child: ListTile(
+            onTap: () {
+              const SalaryStatementList().launch(context);
+            },
+            leading:
+                const Image(image: AssetImage('images/salarymanagement.png')),
+            title: Text(
+              'Salary Statement',
+              maxLines: 2,
+              style: kTextStyle.copyWith(
+                  color: kTitleColor, fontWeight: FontWeight.bold),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 20.0,
+      ),
+      Material(
+        elevation: 2.0,
+        child: Container(
+          width: context.width(),
+          padding: const EdgeInsets.all(10.0),
+          decoration: const BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: Color(0xFF1CC389),
+                width: 3.0,
+              ),
+            ),
+            color: Colors.white,
+          ),
+          child: ListTile(
+            onTap: () => const NoticeList().launch(context),
+            leading: const Image(image: AssetImage('images/noticeboard.png')),
+            title: Text(
+              'Notice Board',
+              maxLines: 2,
+              style: kTextStyle.copyWith(
+                  color: kTitleColor, fontWeight: FontWeight.bold),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 20.0,
+      ),
+      Material(
+        elevation: 2.0,
+        child: Container(
+          width: context.width(),
+          padding: const EdgeInsets.all(10.0),
+          decoration: const BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: Color(0xFF7C69EE),
+                width: 3.0,
+              ),
+            ),
+            color: Colors.white,
+          ),
+          child: ListTile(
+            onTap: () => const OutworkList().launch(context),
+            leading:
+                const Image(image: AssetImage('images/outworksubmission.png')),
+            title: Text(
+              'Outwork Submission',
+              maxLines: 2,
+              style: kTextStyle.copyWith(
+                  color: kTitleColor, fontWeight: FontWeight.bold),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 20.0,
+      ),
+      Material(
+        elevation: 2.0,
+        child: Container(
+          width: context.width(),
+          padding: const EdgeInsets.all(10.0),
+          decoration: const BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: Color(0xFF4ACDF9),
+                width: 3.0,
+              ),
+            ),
+            color: Colors.white,
+          ),
+          child: ListTile(
+            onTap: () => const LoanList().launch(context),
+            leading: const Image(image: AssetImage('images/loan.png')),
+            title: Text(
+              'Loan',
+              maxLines: 2,
+              style: kTextStyle.copyWith(
+                  color: kTitleColor, fontWeight: FontWeight.bold),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
+          ),
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> _gridMenu() {
+    return [
+      Row(
+        children: [
+          Expanded(
+            child: Material(
+              elevation: 2.0,
+              child: GestureDetector(
+                onTap: () async {
+                  bool isValid = await PurchaseModel().isActiveBuyer();
+                  if (isValid) {
+                    const EmployeeManagement().launch(context);
+                  } else {
+                    showLicense(context: context);
+                  }
+                },
+                child: Container(
+                  width: context.width(),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: Color(0xFFFD72AF),
+                        width: 3.0,
+                      ),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Image(
+                          image: AssetImage('images/employeeattendace.png')),
+                      Text(
+                        'Employee',
+                        style: kTextStyle.copyWith(
+                            color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Attendance',
+                        style: kTextStyle.copyWith(
+                            color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Expanded(
+            child: Material(
+              elevation: 2.0,
+              child: GestureDetector(
+                onTap: () {
+                  const EmployeeDirectory().launch(context);
+                },
+                child: Container(
+                  width: context.width(),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: Color(0xFF7C69EE),
+                        width: 3.0,
+                      ),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Image(
+                          image: AssetImage('images/employeedirectory.png')),
+                      Text(
+                        'Employee',
+                        style: kTextStyle.copyWith(
+                            color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Directory',
+                        style: kTextStyle.copyWith(
+                            color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(
+        height: 20.0,
+      ),
+      Row(
+        children: [
+          Expanded(
+            child: Material(
+              elevation: 2.0,
+              child: GestureDetector(
+                onTap: () {
+                  const LeaveManagementScreen().launch(context);
+                },
+                child: Container(
+                  width: context.width(),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: Color(0xFF4ACDF9),
+                        width: 3.0,
+                      ),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Image(image: AssetImage('images/leave.png')),
+                      Text(
+                        'Leave',
+                        style: kTextStyle.copyWith(
+                            color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Application',
+                        style: kTextStyle.copyWith(
+                            color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Expanded(
+            child: Material(
+              elevation: 2.0,
+              child: GestureDetector(
+                onTap: () {
+                  const DailyWorkReport().launch(context);
+                },
+                child: Container(
+                  width: context.width(),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: Color(0xFF02B984),
+                        width: 3.0,
+                      ),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Image(image: AssetImage('images/workreport.png')),
+                      Text(
+                        'Daily Work',
+                        maxLines: 2,
+                        style: kTextStyle.copyWith(
+                            color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Report',
+                        style: kTextStyle.copyWith(
+                            color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  List<Widget> _inOut() {
+    return [
+      Text(
+        'Wednesday, Nov 17, 2021',
+        style: kTextStyle.copyWith(color: kGreyTextColor),
+      ),
+      const SizedBox(
+        height: 10.0,
+      ),
+      Text(
+        '09:00 AM',
+        style: kTextStyle.copyWith(fontWeight: FontWeight.bold, fontSize: 25.0),
+      ),
+
+      /// ************
+
+      Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        child: InOutCard(
+          // checkinDate: "10-10-2024",
+          // checkoutDate: "10-10-2024",
+          onSubmit: (st) {},
+          status: AttendanceInOutStatus.checkIn,
+        ),
+      ),
+
+      /// ************
+
+      // Padding(
+      //   padding: const EdgeInsets.only(top: 10, bottom: 20),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       Row(
+      //         children: [
+      //           Icon(
+      //             Icons.circle,
+      //             size: 6,
+      //             color: AppColor.kGreenColor,
+      //           ),
+      //           Measurement.gap.width,
+      //           Text(
+      //             "Check-in : 00:00",
+      //             style: Theme.of(context)
+      //                 .textTheme
+      //                 .greyS13W500
+      //                 .copyWith(color: Colors.grey.shade600),
+      //           ),
+      //         ],
+      //       ),
+
+      //       Container(
+      //         margin: EdgeInsets.only(left: 10, right: 10),
+      //         width: 0.8,
+      //         height: 20,
+      //         color: Colors.grey.shade600,
+      //       ),
+
+      //       ///
+      //       Row(
+      //         children: [
+      //           Icon(
+      //             Icons.circle,
+      //             size: 6,
+      //             color: AppColor.kAlertColor,
+      //           ),
+      //           Measurement.gap.width,
+      //           Text(
+      //             "Check-out: 00:00",
+      //             style: Theme.of(context)
+      //                 .textTheme
+      //                 .greyS13W500
+      //                 .copyWith(color: Colors.grey.shade600),
+      //           ),
+      //         ],
+      //       ),
+      //     ],
+      //   ),
+      // ),
+
+      Container(
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.0),
+          color: true
+              ? kGreenColor.withOpacity(0.1)
+              : kAlertColor.withOpacity(0.1),
+        ),
+        child: GestureDetector(
+          onTap: () {
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => const NewAttendenceReport()));
+          },
+          child: CircleAvatar(
+            radius: 80.0,
+            backgroundColor: true ? kGreenColor : kAlertColor,
+            child: Text(
+              true ? 'Check In' : 'Check Out',
+              style: kTextStyle.copyWith(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ),
+    ];
   }
 }

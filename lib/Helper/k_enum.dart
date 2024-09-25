@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/utlis/app_color.dart';
 
 enum ApiStatus {
   loading,
@@ -66,3 +67,25 @@ enum BtnStatus { ok, disabled, loading }
 
 /// To prevent(condition) build everytime on WhenBuild method
 enum BlocEventType { requestApi, validateForm, others }
+
+enum AttendanceDayStatus {
+  present, // checkin
+  absent, // not come to work
+  holiday; // holiday day
+
+  Color get bgColor {
+    switch (this) {
+      case present:
+        return AppColor.kGreenColor;
+      case absent:
+        return AppColor.kDangerColor;
+
+      default:
+
+        /// holiday
+        return Colors.transparent;
+    }
+  }
+}
+
+enum AttendanceInOutStatus { checkIn, checkOut }

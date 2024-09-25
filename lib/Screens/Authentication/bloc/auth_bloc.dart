@@ -35,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (value.statuscode == ApiStatus.connectionError.statusCode) {
           value.errorMessage = AppTrans.t.connectionErrMsg;
         } else {
-          value.errorMessage = "Wrong username/password.";
+          value.errorMessage = AppTrans.t.loginFailedMsg;
         }
       }
 

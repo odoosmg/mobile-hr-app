@@ -10,7 +10,7 @@ class Measurement {
   static double widthPercent(BuildContext context, double percent) =>
       MediaQuery.of(context).size.width * percent;
 
-  static double hieghtPercent(BuildContext context, double percent) =>
+  static double heightPercent(BuildContext context, double percent) =>
       MediaQuery.of(context).size.height * percent;
 
   static double discount(double price, double percent) {
