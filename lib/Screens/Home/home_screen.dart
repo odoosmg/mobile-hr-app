@@ -2,6 +2,9 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
+import 'package:hrm_employee/Models/home/in_out_model.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final dateLabelCubit = DateLabelCubit();
 
+  late HomeBloc homeBloc;
+
   ///
   String? checkInDateLabel;
   String? checkOutDatelabel;
@@ -61,14 +66,16 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     /// from local
     session = AppServices.instance<DatabaseService>().getSession;
+    homeBloc = context.read<HomeBloc>();
 
-    /// init ti
-    Future.delayed(Duration.zero).then((_) {
-      timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-        // context.read<HomeBloc>().add(DateLabel(DateTime.now()));
-        dateLabelCubit.dateLabel();
-      });
+    ///
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      // context.read<HomeBloc>().add(DateLabel(DateTime.now()));
+      dateLabelCubit.dateLabel();
     });
+
+    homeBloc.add(HomeGetData());
+
     super.initState();
   }
 
@@ -106,42 +113,65 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: const HomeDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 20.0,
-            ),
-            Container(
+      body: BlocBuilder<HomeBloc, HomeState>(buildWhen: (previous, current) {
+        ///
+        if (current.stateType == HomeStateType.getData) {
+          return true;
+        }
+
+        return false;
+      }, builder: (context, state) {
+        return _body();
+      }),
+    );
+  }
+
+  Widget _kBuilder() {
+    return KBuilder(
+        status: homeBloc.state.getDataResult!.status!,
+        builder: (st) {
+          return st == ApiStatus.loading
+              ? Container()
+              : Column(
+                  children: [
+                    ..._inOut(),
+
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+
+                    ..._gridMenu(),
+
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    // ..._options()
+                  ],
+                );
+        });
+  }
+
+  Widget _body() {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 20.0,
+          ),
+          Container(
               padding: const EdgeInsets.all(20.0),
               // width: double.infinity,
-              // height: Measurement.heightPercent(context, 0.87),
+
+              height: Measurement.heightPercent(context, 0.87),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
-              child: Column(
-                children: [
-                  ..._inOut(),
-
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-
-                  ..._gridMenu(),
-
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  // ..._options()
-                ],
-              ),
-            ),
-          ],
-        ),
+              child: _kBuilder())
+        ],
       ),
     );
   }
@@ -502,6 +532,9 @@ class _HomeScreenState extends State<HomeScreen> {
       BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previousSte, currentState) {
           final checkinResult = currentState.checkInResult!;
+          if (currentState.stateType != HomeStateType.checkin) {
+            return false;
+          }
           if (checkinResult.status == ApiStatus.loading) {
             CustomLoading.show(context);
           } else {
@@ -532,7 +565,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: GestureDetector(
               onTap: () {
-                context.read<HomeBloc>().add(HomeCheckIn());
+                homeBloc.add(HomeCheckIn());
                 // Navigator.push(
                 //     context,
                 //     MaterialPageRoute(
@@ -571,6 +604,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     timer!.cancel();
+    homeBloc.state.getDataResult!.data = InOutModel();
+    homeBloc.state.getDataResult!.status = ApiStatus.loading;
+
+    homeBloc.state.checkInResult!.data = InOutModel();
+    homeBloc.state.checkInResult!.status = ApiStatus.loading;
     super.dispose();
   }
 }

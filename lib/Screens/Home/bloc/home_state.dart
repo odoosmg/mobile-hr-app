@@ -1,11 +1,21 @@
 part of 'home_bloc.dart';
 
 class HomeState {
+  HomeStateType? stateType;
   ApiResult<InOutModel>? checkInResult;
-  HomeState({this.checkInResult});
+  ApiResult<InOutModel>? getDataResult;
+  HomeState({
+    this.stateType,
+    this.checkInResult,
+    this.getDataResult,
+  });
 
   HomeState copyWith(HomeState d) {
-    return HomeState(checkInResult: d.checkInResult);
+    return HomeState(
+      stateType: d.stateType,
+      checkInResult: d.checkInResult,
+      getDataResult: d.getDataResult,
+    );
   }
 }
 
@@ -14,4 +24,15 @@ final class HomeInitial extends HomeState {
   ApiResult<InOutModel>? get checkInResult => ApiResult()
     ..status = ApiStatus.loading
     ..data = InOutModel();
+
+  @override
+  ApiResult<InOutModel>? get getDataResult => ApiResult()
+    ..status = ApiStatus.loading
+    ..data = InOutModel();
+}
+
+enum HomeStateType {
+  getData,
+  checkin,
+  checkout,
 }

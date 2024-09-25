@@ -20,5 +20,6 @@
     "tokenExpiredMsg" : "Token expired!",
     "retry" : "Retry",
     "loginFailedMsg" : "Username or Password is incorrect. Please try again!",
-    "connectionErrMsg":"No internet connection, please check your mobile phone service."
+    "connectionErrMsg":"No internet connection, please check your mobile phone service.",
+    "emptyContent" : "The content is empty."
 }
