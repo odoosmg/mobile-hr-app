@@ -13,6 +13,7 @@ import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/utlis/app_trans.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart' show WidgetExtension;
@@ -79,7 +80,7 @@ class BaseApi extends ResponseT {
       return data;
     } catch (ex) {
       debugPrint("Exception : $ex");
-      return {"error_message": "AppTrans.t.unexpectedErr", "status_code": 500};
+      return {"error_message": AppTrans.t.unexpectedErr, "status_code": 500};
     }
   }
 
@@ -110,7 +111,7 @@ class BaseApi extends ResponseT {
           data["error_message"] = "Method not allowed.";
           break;
         case 503:
-          data["error_message"] = "AppTrans.t.connectionErrMsg";
+          data["error_message"] = AppTrans.t.connectionErrMsg;
           break;
         default:
           if ((data["error"]["fields"] ?? []).length > 0) {
@@ -125,7 +126,7 @@ class BaseApi extends ResponseT {
     ///
     if (e.type == DioExceptionType.connectionError) {
       data["status_code"] = ApiStatus.connectionError.statusCode;
-      data["error_message"] = "AppTrans.t.connectionErrMsg";
+      data["error_message"] = AppTrans.t.connectionErrMsg;
     }
 
     return data;
@@ -174,7 +175,7 @@ class BaseApi extends ResponseT {
       return resData;
     } catch (ex) {
       debugPrint("Exception : $ex");
-      return {"error_message": "AppTrans.t.unexpectedErr", "status_code": 500};
+      return {"error_message": AppTrans.t.unexpectedErr, "status_code": 500};
     }
   }
 

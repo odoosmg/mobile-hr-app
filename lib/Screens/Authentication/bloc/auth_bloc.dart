@@ -8,6 +8,7 @@ import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
+import 'package:hrm_employee/utlis/app_trans.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -30,6 +31,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (value.isSuccess) {
         /// update db local
         AppServices.instance<DatabaseService>().putSession(value.data!);
+      } else {
+        if (value.statuscode == ApiStatus.connectionError.statusCode) {
+          value.errorMessage = AppTrans.t.connectionErrMsg;
+        } else {
+          value.errorMessage = "Wrong username/password.";
+        }
       }
 
       ///
