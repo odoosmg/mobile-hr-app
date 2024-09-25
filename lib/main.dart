@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
+import 'package:hrm_employee/Repository/home_repository.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Services/app_services.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
             create: (context) => AuthBloc(AuthRepository()),
           ),
           BlocProvider(
-            create: (context) => HomeBloc(),
+            create: (context) => HomeBloc(HomeRepository()),
           )
         ],
         child: MaterialApp(

@@ -2,9 +2,11 @@
 
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
@@ -50,6 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer? timer;
 
   final dateLabelCubit = DateLabelCubit();
+
+  ///
+  String? checkInDateLabel;
+  String? checkOutDatelabel;
 
   @override
   void initState() {
@@ -100,276 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: const HomeDrawer(),
-      /*
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            Container(
-              height: context.height() / 2.5,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30.0),
-                    bottomRight: Radius.circular(30.0)),
-                color: kMainColor,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    height: context.height() / 4,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30.0),
-                          bottomRight: Radius.circular(30.0)),
-                      color: Colors.white,
-                    ),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const CircleAvatar(
-                            radius: 60.0,
-                            backgroundColor: kMainColor,
-                            backgroundImage: AssetImage(
-                              'images/emp1.png',
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            'Sahidul Islam',
-                            style: kTextStyle.copyWith(
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Employee',
-                            style: kTextStyle.copyWith(color: kGreyTextColor),
-                          ),
-                        ],
-                      ).onTap(() {
-                        // const ProfileScreen().launch(context);
-                      }),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(
-                                left: 15.0,
-                                right: 15.0,
-                                top: 10.0,
-                                bottom: 10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80.0),
-                              border: Border.all(color: Colors.white),
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.white.withOpacity(0.6),
-                                  Colors.white.withOpacity(0.0),
-                                ],
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  '22',
-                                  style: kTextStyle.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'days',
-                                  style:
-                                      kTextStyle.copyWith(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 2.0,
-                          ),
-                          Text(
-                            'Present',
-                            style: kTextStyle.copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(
-                                left: 15.0,
-                                right: 15.0,
-                                top: 10.0,
-                                bottom: 10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80.0),
-                              border: Border.all(color: Colors.white),
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.white.withOpacity(0.6),
-                                  Colors.white.withOpacity(0.0),
-                                ],
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  '3',
-                                  style: kTextStyle.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'days',
-                                  style:
-                                      kTextStyle.copyWith(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 2.0,
-                          ),
-                          Text(
-                            'Late',
-                            style: kTextStyle.copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(
-                                left: 15.0,
-                                right: 15.0,
-                                top: 10.0,
-                                bottom: 10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(80.0),
-                              border: Border.all(color: Colors.white),
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.white.withOpacity(0.6),
-                                  Colors.white.withOpacity(0.0),
-                                ],
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  '5',
-                                  style: kTextStyle.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'days',
-                                  style:
-                                      kTextStyle.copyWith(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 2.0,
-                          ),
-                          Text(
-                            'Absent',
-                            style: kTextStyle.copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              onTap: () => const ProfileScreen().launch(context),
-              title: Text(
-                'Employee Profile',
-                style: kTextStyle.copyWith(color: kTitleColor),
-              ),
-              leading: const Icon(
-                FeatherIcons.user,
-                color: kMainColor,
-              ),
-            ),
-            ListTile(
-              onTap: () => const ChatScreen().launch(context),
-              title: Text(
-                'Live Video Calling & Charting',
-                style: kTextStyle.copyWith(color: kTitleColor),
-              ),
-              leading: const Icon(
-                FeatherIcons.video,
-                color: kMainColor,
-              ),
-            ),
-            ListTile(
-              onTap: () => const NotificationScreen().launch(context),
-              title: Text(
-                'Notification',
-                style: kTextStyle.copyWith(color: kTitleColor),
-              ),
-              leading: const Icon(
-                FeatherIcons.bell,
-                color: kMainColor,
-              ),
-            ),
-            ListTile(
-              title: Text(
-                'Terms & Conditions',
-                style: kTextStyle.copyWith(color: kTitleColor),
-              ),
-              leading: const Icon(
-                Icons.info_outline,
-                color: kMainColor,
-              ),
-            ),
-            ListTile(
-              title: Text(
-                'Privacy Policy',
-                style: kTextStyle.copyWith(color: kTitleColor),
-              ),
-              leading: const Icon(
-                FeatherIcons.alertTriangle,
-                color: kMainColor,
-              ),
-            ),
-            ListTile(
-              onTap: () {
-                AppServices.instance<DatabaseService>().clearSession();
-                const SignIn().launch(context, isNewTask: true);
-              },
-              title: Text(
-                'Logout',
-                style: kTextStyle.copyWith(color: kTitleColor),
-              ),
-              leading: const Icon(
-                FeatherIcons.logOut,
-                color: kMainColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-      */
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -756,42 +492,80 @@ class _HomeScreenState extends State<HomeScreen> {
       Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: InOutCard(
-          // checkinDate: "10-10-2024",
+          checkinDate: checkInDateLabel,
           // checkoutDate: "10-10-2024",
           onSubmit: (st) {},
           status: AttendanceInOutStatus.checkIn,
         ),
       ),
 
-      Container(
-        padding: const EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100.0),
-          color: true
-              ? kGreenColor.withOpacity(0.1)
-              : kAlertColor.withOpacity(0.1),
-        ),
-        child: GestureDetector(
-          onTap: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => const NewAttendenceReport()));
-          },
-          child: CircleAvatar(
-            radius: 70.0,
-            backgroundColor: true ? kGreenColor : kAlertColor,
-            child: Text(
-              true ? 'Check In' : 'Check Out',
-              style: kTextStyle.copyWith(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold),
+      BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previousSte, currentState) {
+          final checkinResult = currentState.checkInResult!;
+          if (checkinResult.status == ApiStatus.loading) {
+            CustomLoading.show(context);
+          } else {
+            CustomLoading.hide(context);
+
+            /// Failed
+            if (!checkinResult.isSuccess) {
+              CustomDialog.error(
+                context,
+                errCode: checkinResult.statuscode,
+                errMsg: checkinResult.errorMessage,
+              );
+            } else {
+              // checkInDateLabel = currentState.checkInResult.data.checkInDatetime
+            }
+          }
+
+          return false;
+        },
+        builder: (context, state) {
+          return Container(
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100.0),
+              color: true
+                  ? kGreenColor.withOpacity(0.1)
+                  : kAlertColor.withOpacity(0.1),
             ),
-          ),
-        ),
+            child: GestureDetector(
+              onTap: () {
+                context.read<HomeBloc>().add(HomeCheckIn());
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => const NewAttendenceReport()));
+              },
+              child: CircleAvatar(
+                radius: 70.0,
+                backgroundColor: true ? kGreenColor : kAlertColor,
+                child: Text(
+                  true ? 'Check In' : 'Check Out',
+                  style: kTextStyle.copyWith(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     ];
+  }
+
+  String _utcToLocal(String? d) {
+    if (d == null || d.isEmpty) {
+      return "";
+    }
+
+    /// utc to  local
+    DateTime date = DateFormat("yyyy-MM-ddTHH:mm:ss").parse(d, true).toLocal();
+    return date
+        .dateFormat(currentFormat: "yyyy-MM-dd HH:mm:ss", toFormat: "HH:mm")
+        .toString();
   }
 
   @override
