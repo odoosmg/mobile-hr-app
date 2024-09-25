@@ -1,14 +1,19 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
+import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
 import 'package:hrm_employee/Screens/Chat/chat_list.dart';
 import 'package:hrm_employee/Screens/Employee%20Directory/employee_directory_screen.dart';
+import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
+import 'package:hrm_employee/Screens/Home/date_label_cubit/date_label_cubit.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_management_screen.dart';
 import 'package:hrm_employee/Screens/Loan/loan_list.dart';
 import 'package:hrm_employee/Screens/Notice%20Board/notice_list.dart';
@@ -20,6 +25,7 @@ import 'package:hrm_employee/Screens/components/pages/home/in_out_card.dart';
 import 'package:hrm_employee/Screens/components/pages/home_drawer.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
+import 'package:hrm_employee/extensions/date_extension.dart';
 
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
@@ -41,11 +47,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Session? session;
+  Timer? timer;
+
+  final dateLabelCubit = DateLabelCubit();
 
   @override
   void initState() {
     /// from local
     session = AppServices.instance<DatabaseService>().getSession;
+
+    /// init ti
+    Future.delayed(Duration.zero).then((_) {
+      timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+        // context.read<HomeBloc>().add(DateLabel(DateTime.now()));
+        dateLabelCubit.dateLabel();
+      });
+    });
     super.initState();
   }
 
@@ -707,16 +724,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _inOut() {
     return [
-      Text(
-        'Wednesday, Nov 17, 2021',
-        style: kTextStyle.copyWith(color: kGreyTextColor),
-      ),
-      const SizedBox(
-        height: 10.0,
-      ),
-      Text(
-        '09:00 AM',
-        style: kTextStyle.copyWith(fontWeight: FontWeight.bold, fontSize: 25.0),
+      /// * Bloc
+      /// Date Label
+      BlocBuilder<DateLabelCubit, DateTime>(
+        bloc: dateLabelCubit,
+        builder: (context, state) {
+          return Column(
+            children: [
+              /// Date
+              Text(
+                state.dateFormat(toFormat: "EEEE, MMM dd, yyyy").toString(),
+                style: kTextStyle.copyWith(color: kGreyTextColor),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+
+              /// Time
+              Text(
+                '${state.dateFormat(toFormat: "H:mm")}',
+                style: kTextStyle.copyWith(
+                    fontWeight: FontWeight.bold, fontSize: 25.0),
+              ),
+            ],
+          );
+        },
       ),
 
       /// ************
@@ -730,60 +762,6 @@ class _HomeScreenState extends State<HomeScreen> {
           status: AttendanceInOutStatus.checkIn,
         ),
       ),
-
-      /// ************
-
-      // Padding(
-      //   padding: const EdgeInsets.only(top: 10, bottom: 20),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       Row(
-      //         children: [
-      //           Icon(
-      //             Icons.circle,
-      //             size: 6,
-      //             color: AppColor.kGreenColor,
-      //           ),
-      //           Measurement.gap.width,
-      //           Text(
-      //             "Check-in : 00:00",
-      //             style: Theme.of(context)
-      //                 .textTheme
-      //                 .greyS13W500
-      //                 .copyWith(color: Colors.grey.shade600),
-      //           ),
-      //         ],
-      //       ),
-
-      //       Container(
-      //         margin: EdgeInsets.only(left: 10, right: 10),
-      //         width: 0.8,
-      //         height: 20,
-      //         color: Colors.grey.shade600,
-      //       ),
-
-      //       ///
-      //       Row(
-      //         children: [
-      //           Icon(
-      //             Icons.circle,
-      //             size: 6,
-      //             color: AppColor.kAlertColor,
-      //           ),
-      //           Measurement.gap.width,
-      //           Text(
-      //             "Check-out: 00:00",
-      //             style: Theme.of(context)
-      //                 .textTheme
-      //                 .greyS13W500
-      //                 .copyWith(color: Colors.grey.shade600),
-      //           ),
-      //         ],
-      //       ),
-      //     ],
-      //   ),
-      // ),
 
       Container(
         padding: const EdgeInsets.all(20.0),
@@ -801,7 +779,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //         builder: (context) => const NewAttendenceReport()));
           },
           child: CircleAvatar(
-            radius: 80.0,
+            radius: 70.0,
             backgroundColor: true ? kGreenColor : kAlertColor,
             child: Text(
               true ? 'Check In' : 'Check Out',
@@ -814,5 +792,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     ];
+  }
+
+  @override
+  void dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 }
