@@ -78,6 +78,9 @@ extension TextstyleExtension on TextTheme {
   TextStyle get whiteS13W500 =>
       whiteS13W400.copyWith(fontWeight: FontWeight.w500);
 
+  TextStyle get whiteS13W700 =>
+      whiteS13W500.copyWith(fontWeight: FontWeight.w700);
+
   TextStyle get whiteS14W700 =>
       whiteColor.copyWith(fontSize: 17, fontWeight: FontWeight.w700);
 
