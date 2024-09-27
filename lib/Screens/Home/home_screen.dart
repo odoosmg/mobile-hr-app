@@ -8,6 +8,7 @@ import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart';
 import 'package:hrm_employee/Screens/components/pages/home/attendance_list_card.dart';
+import 'package:hrm_employee/Screens/components/pages/home/attendance_static_chart.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ import 'package:hrm_employee/extensions/date_extension.dart';
 
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
-import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
+// import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import '../../GlobalComponents/button_global.dart';
@@ -171,15 +172,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
+            /// Chart
+            const AttendanceStaticChart(),
+
             const SizedBox(
               height: 20.0,
             ),
+
+            20.height,
 
             ..._gridMenu(),
 
-            const SizedBox(
-              height: 20.0,
-            ),
+            10.height,
+
             // ..._options()
           ],
         ),
