@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _authSingIn(AuthSignIn event, Emitter<AuthState> emit) async {
     state.signin!.status = ApiStatus.loading;
-    state.blocEventType = BlocEventType.requestApi;
+    state.authStateType = AuthStateType.signin;
     emit(state.copyWith(state));
 
     await authRepository
@@ -50,8 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   /// Validate
   void _validateForm(AuthValidate event, Emitter<AuthState> emit) async {
     bool isValid = false;
-
-    state.blocEventType = BlocEventType.validateForm;
+    state.authStateType = AuthStateType.validate;
 
     ///
     if (event.username.isNotEmpty && event.password.isNotEmpty) {

@@ -3,14 +3,12 @@ part of 'auth_bloc.dart';
 class AuthState {
   ApiResult<Session>? signin;
   bool isValidForm;
-  BlocEventType blocEventType;
   AuthStateType? authStateType;
 
   ApiResult<UserModel>? myProfileResult;
   AuthState({
     this.signin,
     this.isValidForm = false,
-    this.blocEventType = BlocEventType.others,
     this.authStateType,
     this.myProfileResult,
   });
@@ -19,7 +17,6 @@ class AuthState {
     return AuthState(
         signin: d.signin,
         isValidForm: d.isValidForm,
-        blocEventType: d.blocEventType,
         authStateType: d.authStateType,
         myProfileResult: d.myProfileResult);
   }
@@ -39,4 +36,5 @@ enum AuthStateType {
   signin,
   signout,
   myProfile,
+  validate,
 }

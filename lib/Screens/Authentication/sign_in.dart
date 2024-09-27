@@ -34,155 +34,158 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      buildWhen: (previousState, currentState) {
-        ApiResult<Session> response = currentState.signin!;
-
-        /// validate, this should rebuild
-        if (currentState.blocEventType == BlocEventType.validateForm) {
-          if (currentState.isValidForm || !currentState.isValidForm) {
-            return true;
-          }
-        }
-
-        ///
-        if (currentState.blocEventType == BlocEventType.requestApi) {
-          if (response.status == ApiStatus.loading) {
-            /// show loading
-            CustomLoading.show(context);
-          } else {
-            /// hide loading
-            CustomLoading.hide(context);
-
-            if (currentState.signin!.isSuccess) {
-              /// Success
-              const HomeScreen().launch(context, isNewTask: true);
-            } else {
-              /// Failed
-              CustomDialog.error(context,
-                  errCode: response.statuscode, errMsg: response.errorMessage);
-            }
-          }
-        }
-
-        /// No need to build.
-        return false;
-      },
-      builder: (context, state) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: kMainColor,
-          appBar: AppBar(
-            backgroundColor: kMainColor,
-            elevation: 0.0,
-            iconTheme: const IconThemeData(color: Colors.white),
-            title: Text(
-              'Sign In',
-              style: kTextStyle.copyWith(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: kMainColor,
+      appBar: AppBar(
+        backgroundColor: kMainColor,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(
+          'Sign In',
+          style: kTextStyle.copyWith(
+              color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              'Sign In now to begin an amazing journey',
+              style: kTextStyle.copyWith(color: Colors.white),
             ),
           ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  'Sign In now to begin an amazing journey',
-                  style: kTextStyle.copyWith(color: Colors.white),
-                ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
+                color: Colors.white,
               ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30.0),
-                        topRight: Radius.circular(30.0)),
-                    color: Colors.white,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20.0,
                   ),
-                  child: Column(
+                  SizedBox(
+                    height: 60.0,
+                    child: AppTextField(
+                      textFieldType: TextFieldType.NAME,
+                      controller: usernameTEC,
+                      onChanged: (text) {
+                        _validate();
+                      },
+                      enabled: true,
+                      decoration: InputDecoration(
+                        labelText: 'Usersname',
+                        hintText: 'Enter username',
+                        labelStyle: kTextStyle,
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        border: const OutlineInputBorder(),
+                        // prefixIcon: CountryCodePicker(
+                        //   padding: EdgeInsets.zero,
+                        //   onChanged: print,
+                        //   initialSelection: 'BD',
+                        //   showFlag: false,
+                        //   showDropDownButton: true,
+                        //   alignLeft: false,
+                        // ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  AppTextField(
+                    controller: passwordTEC,
+                    onChanged: (text) {
+                      _validate();
+                    },
+                    textFieldType: TextFieldType.PASSWORD,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: kTextStyle,
+                      hintText: 'Enter password',
+                      border: const OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Row(
                     children: [
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      SizedBox(
-                        height: 60.0,
-                        child: AppTextField(
-                          textFieldType: TextFieldType.NAME,
-                          controller: usernameTEC,
-                          onChanged: (text) {
-                            _validate();
+                      Transform.scale(
+                        scale: 0.8,
+                        child: CupertinoSwitch(
+                          value: isChecked,
+                          activeColor: kMainColor,
+                          thumbColor: kGreyTextColor,
+                          onChanged: (bool value) {
+                            setState(() {
+                              isChecked = value;
+                            });
                           },
-                          enabled: true,
-                          decoration: InputDecoration(
-                            labelText: 'Usersname',
-                            hintText: 'Enter username',
-                            labelStyle: kTextStyle,
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            border: const OutlineInputBorder(),
-                            // prefixIcon: CountryCodePicker(
-                            //   padding: EdgeInsets.zero,
-                            //   onChanged: print,
-                            //   initialSelection: 'BD',
-                            //   showFlag: false,
-                            //   showDropDownButton: true,
-                            //   alignLeft: false,
-                            // ),
-                          ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20.0,
+                      Text(
+                        'Save Me',
+                        style: kTextStyle,
                       ),
-                      AppTextField(
-                        controller: passwordTEC,
-                        onChanged: (text) {
-                          _validate();
-                        },
-                        textFieldType: TextFieldType.PASSWORD,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          labelStyle: kTextStyle,
-                          hintText: 'Enter password',
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      Row(
-                        children: [
-                          Transform.scale(
-                            scale: 0.8,
-                            child: CupertinoSwitch(
-                              value: isChecked,
-                              activeColor: kMainColor,
-                              thumbColor: kGreyTextColor,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  isChecked = value;
-                                });
-                              },
-                            ),
-                          ),
-                          Text(
-                            'Save Me',
-                            style: kTextStyle,
-                          ),
-                          const Spacer(),
-                          Text(
-                            'Forgot Password?',
-                            style: kTextStyle,
-                          ).onTap(() {
-                            const ForgotPassword().launch(context);
-                          }),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      MainBtn(
+                      const Spacer(),
+                      Text(
+                        'Forgot Password?',
+                        style: kTextStyle,
+                      ).onTap(() {
+                        const ForgotPassword().launch(context);
+                      }),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+
+                  /// ** Bloc
+                  BlocBuilder<AuthBloc, AuthState>(
+                    buildWhen: (previous, current) {
+                      ApiResult<Session> response = current.signin!;
+
+                      /// validate, this should rebuild
+                      if (current.authStateType == AuthStateType.validate) {
+                        if (current.isValidForm || !current.isValidForm) {
+                          return true;
+                        }
+                      }
+
+                      /// SigIn is not rebuild
+                      if (current.authStateType == AuthStateType.signin) {
+                        if (response.status == ApiStatus.loading) {
+                          /// show loading
+                          CustomLoading.show(context);
+                        } else {
+                          /// hide loading
+                          CustomLoading.hide(context);
+
+                          if (current.signin!.isSuccess) {
+                            /// Success
+                            const HomeScreen().launch(context, isNewTask: true);
+                          } else {
+                            /// Failed
+                            CustomDialog.error(context,
+                                errCode: response.statuscode,
+                                errMsg: response.errorMessage);
+                          }
+                        }
+                      }
+
+                      /// No need to build.
+                      return false;
+                    },
+                    builder: (context, state) {
+                      return MainBtn(
                           title: "Sign In",
                           isOk: state.isValidForm,
                           onPressed: () {
@@ -196,66 +199,66 @@ class _SignInState extends State<SignIn> {
                                     password: passwordTEC.text,
                                   ),
                                 );
-                          }),
-                      // ButtonGlobal(
-                      //   buttontext: 'Sign In',
-                      //   buttonDecoration:
-                      //       kButtonDecoration.copyWith(color: kMainColor),
-                      //   onPressed: true
-                      //       ? null
-                      //       : () async {
-                      //           ///
-                      //           context.read<AuthBloc>().add(AuthSignIn(
-                      //                 username: usernameTEC.text,
-                      //                 password: passwordTEC.text,
-                      //               ));
-
-                      //           return;
-
-                      //           ///
-                      //           bool isValid =
-                      //               await PurchaseModel().isActiveBuyer();
-                      //           if (isValid) {
-                      //             HomeScreen().launch(context);
-                      //           } else {
-                      //             showLicense(context: context);
-                      //           }
-                      //         },
-                      // ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Don\'t have an account? ',
-                              style: kTextStyle.copyWith(
-                                color: kGreyTextColor,
-                              ),
-                            ),
-                            WidgetSpan(
-                              child: Text(
-                                'Sign Up',
-                                style: kTextStyle.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: kMainColor,
-                                ),
-                              ).onTap(() {
-                                const SignUp().launch(context);
-                              }),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                          });
+                    },
                   ),
-                ),
+                  // ButtonGlobal(
+                  //   buttontext: 'Sign In',
+                  //   buttonDecoration:
+                  //       kButtonDecoration.copyWith(color: kMainColor),
+                  //   onPressed: true
+                  //       ? null
+                  //       : () async {
+                  //           ///
+                  //           context.read<AuthBloc>().add(AuthSignIn(
+                  //                 username: usernameTEC.text,
+                  //                 password: passwordTEC.text,
+                  //               ));
+
+                  //           return;
+
+                  //           ///
+                  //           bool isValid =
+                  //               await PurchaseModel().isActiveBuyer();
+                  //           if (isValid) {
+                  //             HomeScreen().launch(context);
+                  //           } else {
+                  //             showLicense(context: context);
+                  //           }
+                  //         },
+                  // ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Don\'t have an account? ',
+                          style: kTextStyle.copyWith(
+                            color: kGreyTextColor,
+                          ),
+                        ),
+                        WidgetSpan(
+                          child: Text(
+                            'Sign Up',
+                            style: kTextStyle.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: kMainColor,
+                            ),
+                          ).onTap(() {
+                            const SignUp().launch(context);
+                          }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
