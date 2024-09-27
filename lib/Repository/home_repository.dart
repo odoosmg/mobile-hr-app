@@ -29,7 +29,6 @@ class HomeRepository extends BaseApi {
 
   Future<ApiResult<InOutModel>> getInOutData() async {
     Map<String, dynamic> map = await request(uri: Endpoint.leaveSummary);
-
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: InOutModel.fromJson(map["data"] ?? {}),

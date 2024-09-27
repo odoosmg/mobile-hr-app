@@ -17,7 +17,13 @@ InOutModel _$InOutModelFromJson(Map<String, dynamic> json) => InOutModel()
       : InOutModel.fromJson(json['latest_check_in'] as Map<String, dynamic>)
   ..latestCheckOut = json['latest_check_out'] == null
       ? null
-      : InOutModel.fromJson(json['latest_check_out'] as Map<String, dynamic>);
+      : InOutModel.fromJson(json['latest_check_out'] as Map<String, dynamic>)
+  ..leaveSummary = (json['leave_summary'] as List<dynamic>?)
+      ?.map((e) => LeaveModel.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..todayLeave = (json['today_leave'] as List<dynamic>?)
+      ?.map((e) => UserModel.fromJson(e as Map<String, dynamic>))
+      .toList();
 
 Map<String, dynamic> _$InOutModelToJson(InOutModel instance) =>
     <String, dynamic>{
@@ -28,4 +34,6 @@ Map<String, dynamic> _$InOutModelToJson(InOutModel instance) =>
       'check_in_datetime': instance.checkInDatetime,
       'latest_check_in': instance.latestCheckIn,
       'latest_check_out': instance.latestCheckOut,
+      'leave_summary': instance.leaveSummary,
+      'today_leave': instance.todayLeave,
     };

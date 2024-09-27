@@ -247,7 +247,6 @@ class AttendanceListCard extends StatelessWidget {
 
   List<Widget> _leaveGroup(BuildContext context) {
     List<LeaveModel> list = data.leaveSummary ?? [];
-
     return [
       for (int i = 0; i < list.length; i++)
         ..._leaveItem(
