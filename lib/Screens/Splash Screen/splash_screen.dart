@@ -2,11 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hrm_employee/GlobalComponents/others/loading_inidicator.dart';
 import 'package:hrm_employee/Models/auth/app_local.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
 import 'package:hrm_employee/Screens/Home/home_screen.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
+import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../GlobalComponents/button_global.dart';
@@ -71,11 +73,19 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height / 3,
+              height: MediaQuery.of(context).size.height / 2.5,
             ),
-            const Image(
-              image: AssetImage('images/round_logo.png'),
+
+            Text(
+              "Soma Group",
+              style: Theme.of(context).textTheme.whiteS20W700NoChange,
             ),
+            10.height,
+            const CustomCircularProgressindicator(),
+
+            // const Image(
+            //   image: AssetImage('images/round_logo.png'),
+            // ),
             const Spacer(),
             Center(
               child: Padding(
