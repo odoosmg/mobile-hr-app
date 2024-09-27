@@ -4,4 +4,9 @@ class HomeEvent {}
 
 class HomeCheckIn extends HomeEvent {}
 
-class HomeGetData extends HomeEvent {}
+class HomeGetData extends HomeEvent {
+  /// display loading when get data
+  /// *note: onRefresh no need to display loading
+  final bool isLoading;
+  HomeGetData({this.isLoading = true});
+}

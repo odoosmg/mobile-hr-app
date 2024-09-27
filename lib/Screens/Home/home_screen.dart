@@ -2,9 +2,12 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart';
 import 'package:hrm_employee/Screens/components/pages/home/attendance_list_card.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -57,11 +60,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final dateLabelCubit = DateLabelCubit();
 
+  ///
+  final EasyRefreshController easyRefreshController =
+      EasyRefreshController(controlFinishRefresh: true);
+
   late HomeBloc homeBloc;
 
   ///
   String? checkInDateLabel;
   String? checkOutDatelabel;
+
+  ///
+  AttendanceInOutStatus inOutStatus = AttendanceInOutStatus.checkIn;
+  String? checkInTime, checkOutTime;
+
+  /// to not conflicting with initState
+  bool isOnRefresh = false;
 
   @override
   void initState() {
@@ -114,9 +128,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: const HomeDrawer(),
+
+      /// ** Bloc
       body: BlocBuilder<HomeBloc, HomeState>(buildWhen: (previous, current) {
         ///
         if (current.stateType == HomeStateType.getData) {
+          ///
+          if (isOnRefresh) {
+            _onRefreshState();
+            isOnRefresh = false;
+          }
+
           return true;
         }
 
@@ -131,36 +153,42 @@ class _HomeScreenState extends State<HomeScreen> {
     return KBuilder(
         status: homeBloc.state.getDataResult!.status!,
         builder: (st) {
-          return st == ApiStatus.loading
-              ? Container()
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ..._inOut(),
-
-                      /// Attendance List
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 24),
-                        child: AttendanceListCard(
-                          data: homeBloc.state.getDataResult?.data ??
-                              InOutModel(),
-                        ),
-                      ),
-
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-
-                      ..._gridMenu(),
-
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      // ..._options()
-                    ],
-                  ),
-                );
+          return st == ApiStatus.loading ? Container() : _easyRefresh();
         });
+  }
+
+  Widget _easyRefresh() {
+    return CustomEasyRefresh(
+      controller: easyRefreshController,
+      onRefresh: _onRefresh,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            /// Check in-out
+            ..._inOut(),
+
+            /// Attendance List
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 24),
+              child: AttendanceListCard(
+                data: homeBloc.state.getDataResult?.data ?? InOutModel(),
+              ),
+            ),
+
+            const SizedBox(
+              height: 20.0,
+            ),
+
+            ..._gridMenu(),
+
+            const SizedBox(
+              height: 20.0,
+            ),
+            // ..._options()
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _body() {
@@ -539,8 +567,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: InOutCard(
-          checkinDate: checkInDateLabel,
-          // checkoutDate: "10-10-2024",
+          checkinDate: checkInTime,
+          checkoutDate: checkOutTime,
           onSubmit: (st) {},
           status: AttendanceInOutStatus.checkIn,
         ),
@@ -616,6 +644,97 @@ class _HomeScreenState extends State<HomeScreen> {
     return date
         .dateFormat(currentFormat: "yyyy-MM-dd HH:mm:ss", toFormat: "HH:mm")
         .toString();
+  }
+
+  void _onRefresh() async {
+    isOnRefresh = true;
+    homeBloc.add(HomeGetData(isLoading: false));
+    return;
+    ApiResult<InOutModel> res = homeBloc.state.getDataResult!;
+
+    if (res.isSuccess) {
+      InOutModel data = res.data ?? InOutModel();
+
+      InOutModel latestCheckIn = data.latestCheckIn ?? InOutModel();
+      InOutModel latestCheckOut = data.latestCheckOut ?? InOutModel();
+
+      /// checkId = 0, button is checkin
+      if ((data.latestCheckIn?.checkInId ?? 0) == 0) {
+        inOutStatus = AttendanceInOutStatus.checkIn;
+
+        /// if have check-in time, display
+        checkInTime = (latestCheckOut.checkInDatetime ?? "").isEmpty
+            ? null
+            : _utcToLocal(latestCheckOut.checkInDatetime!);
+        checkOutTime = (latestCheckOut.checkOutDatetime ?? "").isEmpty
+            ? null
+            : _utcToLocal(latestCheckOut.checkOutDatetime ?? "");
+      } else {
+        /// else button checkout
+        checkInTime = (latestCheckIn.checkInDatetime ?? "").isEmpty
+            ? null
+            : _utcToLocal(latestCheckIn.checkInDatetime ?? "");
+
+        checkOutTime = (latestCheckOut.checkOutDatetime ?? "").isEmpty
+            ? null
+            : _utcToLocal(latestCheckOut.checkOutDatetime ?? "");
+
+        /// update checkin id
+        // homeController.checkInResult.data!.checkInId =
+        //     data.latestCheckIn?.checkInId ?? 0;
+
+        /// update status
+        inOutStatus = AttendanceInOutStatus.checkOut;
+      }
+    } else {
+      easyRefreshController.finishRefresh(IndicatorResult.fail);
+    }
+  }
+
+  void _onRefreshState() {
+    /// response
+    ApiResult<InOutModel> res = homeBloc.state.getDataResult!;
+
+    if (res.isSuccess) {
+      InOutModel data = res.data ?? InOutModel();
+
+      InOutModel latestCheckIn = data.latestCheckIn ?? InOutModel();
+      InOutModel latestCheckOut = data.latestCheckOut ?? InOutModel();
+
+      /// checkId = 0, button is checkin
+      if ((data.latestCheckIn?.checkInId ?? 0) == 0) {
+        inOutStatus = AttendanceInOutStatus.checkIn;
+
+        /// if have check-in time, display
+        checkInTime = (latestCheckOut.checkInDatetime ?? "").isEmpty
+            ? null
+            : _utcToLocal(latestCheckOut.checkInDatetime!);
+        checkOutTime = (latestCheckOut.checkOutDatetime ?? "").isEmpty
+            ? null
+            : _utcToLocal(latestCheckOut.checkOutDatetime ?? "");
+      } else {
+        /// else button checkout
+        checkInTime = (latestCheckIn.checkInDatetime ?? "").isEmpty
+            ? null
+            : _utcToLocal(latestCheckIn.checkInDatetime ?? "");
+
+        checkOutTime = (latestCheckOut.checkOutDatetime ?? "").isEmpty
+            ? null
+            : _utcToLocal(latestCheckOut.checkOutDatetime ?? "");
+
+        /// update checkin id
+        // homeController.checkInResult.data!.checkInId =
+        //     data.latestCheckIn?.checkInId ?? 0;
+
+        /// update status
+        inOutStatus = AttendanceInOutStatus.checkOut;
+      }
+
+      easyRefreshController.finishRefresh(IndicatorResult.success);
+    } else {
+      /// failed
+      return easyRefreshController.finishRefresh(IndicatorResult.fail);
+    }
   }
 
   @override

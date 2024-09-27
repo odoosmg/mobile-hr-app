@@ -29,7 +29,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ///
   void _getData(HomeGetData event, Emitter<HomeState> emit) async {
     /// loading
-    state.getDataResult!.status = ApiStatus.loading;
+    if (event.isLoading) {
+      state.getDataResult!.status = ApiStatus.loading;
+    }
     state.stateType = HomeStateType.getData;
     emit(state.copyWith(state));
 
