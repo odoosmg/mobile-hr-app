@@ -18,10 +18,7 @@ class AuthRepository extends BaseApi {
   }
 
   Future<ApiResult<UserModel>> myPf() async {
-    Map<String, dynamic> map = await request(
-      uri: Endpoint.myPf,
-      // params: {"username": username, "password": password},
-    );
+    Map<String, dynamic> map = await request(uri: Endpoint.myPf);
 
     return apiResponse(
         status: ApiStatusModel.fromJson(map),

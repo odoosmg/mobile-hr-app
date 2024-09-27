@@ -1,8 +1,13 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:easy_refresh/easy_refresh.dart';
+import 'package:nb_utils/nb_utils.dart';
+
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
@@ -10,24 +15,16 @@ import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart'
 import 'package:hrm_employee/Screens/components/pages/home/attendance_list_card.dart';
 import 'package:hrm_employee/Screens/components/pages/home/attendance_static_chart.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
-import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
-import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
-import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
-import 'package:hrm_employee/Screens/Chat/chat_list.dart';
 import 'package:hrm_employee/Screens/Employee%20Directory/employee_directory_screen.dart';
 import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
-import 'package:hrm_employee/Screens/Home/date_label_cubit/date_label_cubit.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_management_screen.dart';
 import 'package:hrm_employee/Screens/Loan/loan_list.dart';
 import 'package:hrm_employee/Screens/Notice%20Board/notice_list.dart';
-import 'package:hrm_employee/Screens/Notification/notification_screen.dart';
 import 'package:hrm_employee/Screens/Outwork%20Submission/outwork_list.dart';
 import 'package:hrm_employee/Screens/Salary%20Management/salary_statement_list.dart';
 import 'package:hrm_employee/Screens/Work%20Report/daily_work_report.dart';
@@ -39,9 +36,7 @@ import 'package:hrm_employee/extensions/date_extension.dart';
 
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
-// import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+
 import '../../GlobalComponents/button_global.dart';
 import '../../GlobalComponents/purchase_model.dart';
 import '../../constant.dart';
@@ -744,6 +739,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     homeBloc.state.checkOutResult!.data = InOutModel();
     homeBloc.state.checkOutResult!.status = ApiStatus.loading;
+    easyRefreshController.dispose();
     super.dispose();
   }
 }

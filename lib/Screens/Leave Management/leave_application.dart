@@ -36,7 +36,8 @@ class _LeaveApplicationState extends State<LeaveApplication> {
         title: Text(
           'Loan List',
           maxLines: 2,
-          style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(
+              color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: const [
           Image(
@@ -55,7 +56,9 @@ class _LeaveApplicationState extends State<LeaveApplication> {
               width: context.width(),
               padding: const EdgeInsets.all(20.0),
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
@@ -88,7 +91,9 @@ class _LeaveApplicationState extends State<LeaveApplication> {
                             Text(
                               'Annual Leave',
                               maxLines: 2,
-                              style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(
+                                  color: kTitleColor,
+                                  fontWeight: FontWeight.bold),
                             ),
                             Text(
                               'From 16, May 2021 to 20, May 2021',
@@ -157,7 +162,9 @@ class _LeaveApplicationState extends State<LeaveApplication> {
                             Text(
                               'Exam Leave',
                               maxLines: 2,
-                              style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(
+                                  color: kTitleColor,
+                                  fontWeight: FontWeight.bold),
                             ),
                             Text(
                               'From 16, May 2021 to 20, May 2021',
