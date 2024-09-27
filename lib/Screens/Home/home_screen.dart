@@ -55,17 +55,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Session? session;
-
   ///
   final EasyRefreshController easyRefreshController =
       EasyRefreshController(controlFinishRefresh: true);
 
+  late Session? session;
   late HomeBloc homeBloc;
-
-  ///
-  String? checkInDateLabel;
-  String? checkOutDatelabel;
 
   /// Btn status
   AttendanceInOutStatus inOutStatus = AttendanceInOutStatus.checkIn;
@@ -74,6 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// to not conflicting with initState
   bool isOnRefresh = false;
+
+  int checkInId = 0;
 
   @override
   void initState() {
@@ -528,14 +525,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _inOut() {
     return [
-      ///
+      /// ** Bloc
       BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) {
-          final checkinResult = current.checkInResult!;
-
           /// check-in
           if (current.stateType == HomeStateType.checkin) {
-            return _checkInState(checkinResult);
+            return _checkInState(current.checkInResult!);
+          }
+
+          /// check-out
+          if (current.stateType == HomeStateType.checkout) {
+            return _checkOutState(current.checkOutResult!);
           }
           return false;
         },
@@ -548,6 +548,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onSubmit: (st) {
                 if (st == AttendanceInOutStatus.checkIn) {
                   homeBloc.add(HomeCheckIn());
+                } else {
+                  homeBloc.add(HomeCheckOut(checkInId: checkInId));
                 }
               },
               status: inOutStatus,
@@ -559,6 +561,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// Snackbar
+  /// true = checkin, false = checkout
   void _checkInOutSnackbar(bool isCheckIn, String date) {
     Flushbar(
       // isDismissible: false,
@@ -638,9 +641,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ? null
             : _utcToLocal(latestCheckOut.checkOutDatetime ?? "");
 
-        /// update checkin id
-        // homeController.checkInResult.data!.checkInId =
-        //     data.latestCheckIn?.checkInId ?? 0;
+        /// update checkIn id
+        checkInId = data.latestCheckIn?.checkInId ?? 0;
 
         /// update status
         inOutStatus = AttendanceInOutStatus.checkOut;
@@ -675,6 +677,41 @@ class _HomeScreenState extends State<HomeScreen> {
         /// display snackbar
         _checkInOutSnackbar(true, checkInTime!);
 
+        ///
+        checkInId = response.data?.checkInId ?? 0;
+
+        return true; // re-build
+      } else {
+        /// failed
+        CustomDialog.error(
+          context,
+          errCode: response.statuscode,
+          errMsg: response.errorMessage,
+        );
+      }
+    }
+    return false;
+  }
+
+  ///
+  bool _checkOutState(ApiResult<InOutModel> response) {
+    if (response.status == ApiStatus.loading) {
+      CustomLoading.show(context);
+    } else {
+      CustomLoading.hide(context);
+
+      /// Success
+      if (response.isSuccess) {
+        /// update label
+        checkOutTime =
+            _utcToLocal((response.data?.checkOutDatetime ?? "").trim());
+
+        ///
+        inOutStatus = AttendanceInOutStatus.checkIn;
+
+        /// display snackbar
+        _checkInOutSnackbar(false, checkOutTime!);
+
         return true; // re-build
       } else {
         /// failed
@@ -695,6 +732,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     homeBloc.state.checkInResult!.data = InOutModel();
     homeBloc.state.checkInResult!.status = ApiStatus.loading;
+
+    homeBloc.state.checkOutResult!.data = InOutModel();
+    homeBloc.state.checkOutResult!.status = ApiStatus.loading;
     super.dispose();
   }
 }

@@ -11,6 +11,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeRepository homeRepository;
   HomeBloc(this.homeRepository) : super(HomeInitial()) {
     on<HomeCheckIn>(_checkIn);
+    on<HomeCheckOut>(_checkOut);
     on<HomeGetData>(_getData);
   }
 
@@ -20,8 +21,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     state.checkInResult!.status = ApiStatus.loading;
     state.stateType = HomeStateType.checkin;
     emit(state.copyWith(state));
+
+    ///
     await homeRepository.checkin().then((value) {
       state.checkInResult = value;
+      emit(state.copyWith(state));
+    });
+  }
+
+  ///
+  void _checkOut(HomeCheckOut event, Emitter<HomeState> emit) async {
+    /// loading
+    state.checkOutResult!.status = ApiStatus.loading;
+    state.stateType = HomeStateType.checkout;
+    emit(state.copyWith(state));
+
+    ///
+    await homeRepository.checkout(event.checkInId).then((value) {
+      state.checkOutResult = value;
       emit(state.copyWith(state));
     });
   }
