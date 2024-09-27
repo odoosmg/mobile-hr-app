@@ -1,13 +1,16 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
+import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../constant.dart';
 import 'edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -15,6 +18,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late AuthBloc authBloc;
+
+  @override
+  void initState() {
+    authBloc = context.read<AuthBloc>();
+
+    authBloc.add(AuthMyProfile());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,8 +81,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 20.0,
+                    height: 10.0,
                   ),
+                  _item("Name", "Jonch"),
+                  _item("Email", "aa@mail.com"),
+                  _item("Manager", "IT"),
+                  _item("Department", "IT"),
+                  _item("Company", "ACB"),
+
+                  /*
                   AppTextField(
                     readOnly: true,
                     textFieldType: TextFieldType.NAME,
@@ -147,10 +167,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       border: OutlineInputBorder(),
                     ),
                   ),
+                  */
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _item(String labelText, String hintText) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: AppTextField(
+        textFieldType: TextFieldType.PHONE,
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: labelText,
+          hintText: hintText,
+          labelStyle: kTextStyle,
+          border: const OutlineInputBorder(),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
         ),
       ),
     );

@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this.authRepository) : super(AuthInitial()) {
     on<AuthSignIn>(_authSingIn);
     on<AuthValidate>(_validateForm);
+    on<AuthMyProfile>(_myProfile);
   }
 
   void _authSingIn(AuthSignIn event, Emitter<AuthState> emit) async {
@@ -60,6 +61,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(state));
   }
 
+  void _myProfile(AuthMyProfile event, Emitter<AuthState> emit) async {
+    await authRepository.myPf().then((value) {});
+  }
   // @override
   // void onChange(Change<AuthState> change) {
   //   // TODO: implement onChange
