@@ -123,10 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocBuilder<HomeBloc, HomeState>(buildWhen: (previous, current) {
         ///
         if (current.stateType == HomeStateType.getData) {
-          ///
+          /// prevent onRefresh and initState
+          /// * fixed build oldState then newState
           if (isOnRefresh) {
-            _onRefreshState();
             isOnRefresh = false;
+
+            /// _onRefrsh. status.loaoding should not rebuild,
+            /// need this condition cuz of state fire 2 times
+            return false;
           } else {
             _onRefreshState();
           }
