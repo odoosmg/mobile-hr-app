@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         title: 'Maan HRM',
         home: BlocListener<ConnectivityCubit, ConnectivityState>(
           listener: (context, state) {
-            print("listener ==============");
+            // print("listener ==============");
           },
           child: Scaffold(body: const SplashScreen()),
         ),

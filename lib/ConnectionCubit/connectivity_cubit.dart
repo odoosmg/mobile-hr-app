@@ -23,7 +23,7 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
 
       state.isConnected = isConnected;
 
-      print("cubit ==================");
+      // print("cubit ==================");
 
       if (state.isConnected != null) {
         if (state.isConnected!) {
