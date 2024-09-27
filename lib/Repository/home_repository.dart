@@ -8,7 +8,7 @@ class HomeRepository extends BaseApi {
   ///
   Future<ApiResult<InOutModel>> checkin() async {
     Map<String, dynamic> map = await request(
-      uri: Endpoint.login,
+      uri: Endpoint.checkIn,
     );
 
     return apiResponse(

@@ -1,14 +1,14 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
-import 'dart:async';
 import 'dart:convert';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:easy_refresh/easy_refresh.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart';
 import 'package:hrm_employee/Screens/components/pages/home/attendance_list_card.dart';
+import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,8 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String? checkInDateLabel;
   String? checkOutDatelabel;
 
-  ///
+  /// Btn status
   AttendanceInOutStatus inOutStatus = AttendanceInOutStatus.checkIn;
+
   String? checkInTime, checkOutTime;
 
   /// to not conflicting with initState
@@ -80,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     session = AppServices.instance<DatabaseService>().getSession;
     homeBloc = context.read<HomeBloc>();
 
-    /// get  data
+    /// get data
     homeBloc.add(HomeGetData());
 
     super.initState();
@@ -129,6 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
           if (isOnRefresh) {
             _onRefreshState();
             isOnRefresh = false;
+          } else {
+            _onRefreshState();
           }
 
           return true;
@@ -526,73 +529,66 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> _inOut() {
     return [
       ///
-      Padding(
-        padding: const EdgeInsets.only(top: 14, bottom: 10),
-        child: InOutCard(
-          checkinDate: checkInTime,
-          checkoutDate: checkOutTime,
-          onSubmit: (st) {},
-          status: AttendanceInOutStatus.checkIn,
-        ),
-      ),
       BlocBuilder<HomeBloc, HomeState>(
-        buildWhen: (previousSte, currentState) {
-          final checkinResult = currentState.checkInResult!;
-          if (currentState.stateType != HomeStateType.checkin) {
-            return false;
-          }
-          if (checkinResult.status == ApiStatus.loading) {
-            CustomLoading.show(context);
-          } else {
-            CustomLoading.hide(context);
+        buildWhen: (previous, current) {
+          final checkinResult = current.checkInResult!;
 
-            /// Failed
-            if (!checkinResult.isSuccess) {
-              CustomDialog.error(
-                context,
-                errCode: checkinResult.statuscode,
-                errMsg: checkinResult.errorMessage,
-              );
-            } else {
-              // checkInDateLabel = currentState.checkInResult.data.checkInDatetime
-            }
+          /// check-in
+          if (current.stateType == HomeStateType.checkin) {
+            return _checkInState(checkinResult);
           }
-
           return false;
         },
         builder: (context, state) {
-          return Container(
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100.0),
-              color: true
-                  ? kGreenColor.withOpacity(0.1)
-                  : kAlertColor.withOpacity(0.1),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                homeBloc.add(HomeCheckIn());
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => const NewAttendenceReport()));
+          return Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: InOutCard(
+              checkinDate: checkInTime,
+              checkoutDate: checkOutTime,
+              onSubmit: (st) {
+                if (st == AttendanceInOutStatus.checkIn) {
+                  homeBloc.add(HomeCheckIn());
+                }
               },
-              child: CircleAvatar(
-                radius: 70.0,
-                backgroundColor: true ? kGreenColor : kAlertColor,
-                child: Text(
-                  true ? 'Check In' : 'Check Out',
-                  style: kTextStyle.copyWith(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
+              status: inOutStatus,
             ),
           );
         },
       ),
     ];
+  }
+
+  /// Snackbar
+  void _checkInOutSnackbar(bool isCheckIn, String date) {
+    Flushbar(
+      // isDismissible: false,
+      backgroundColor: AppColor.kWhiteColor,
+      boxShadows: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: const Offset(0, 3),
+        ),
+      ],
+      animationDuration: const Duration(milliseconds: 500),
+      forwardAnimationCurve: Curves.easeIn,
+      reverseAnimationCurve: Curves.easeOut,
+      duration: const Duration(seconds: 2),
+      flushbarPosition: FlushbarPosition.TOP,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      titleText: Icon(
+        isCheckIn ? Icons.login : Icons.logout,
+        color: Colors.black,
+        size: 24,
+      ),
+      messageText: Text(
+        isCheckIn ? "Check in, $date" : "Check out, $date",
+        style: Theme.of(context).textTheme.blackS13W700,
+        textAlign: TextAlign.center,
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+    ).show(context);
   }
 
   ///****************************************************
@@ -660,6 +656,36 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onRefresh() async {
     isOnRefresh = true;
     homeBloc.add(HomeGetData(isLoading: false));
+  }
+
+  ///
+  bool _checkInState(ApiResult<InOutModel> response) {
+    if (response.status == ApiStatus.loading) {
+      CustomLoading.show(context);
+    } else {
+      CustomLoading.hide(context);
+
+      /// Success
+      if (response.isSuccess) {
+        /// update label
+        checkInTime =
+            _utcToLocal((response.data?.checkInDatetime ?? "").trim());
+        inOutStatus = AttendanceInOutStatus.checkOut;
+
+        /// display snackbar
+        _checkInOutSnackbar(true, checkInTime!);
+
+        return true; // re-build
+      } else {
+        /// failed
+        CustomDialog.error(
+          context,
+          errCode: response.statuscode,
+          errMsg: response.errorMessage,
+        );
+      }
+    }
+    return false;
   }
 
   @override

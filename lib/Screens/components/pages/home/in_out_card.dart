@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:flutter/material.dart';
@@ -78,52 +79,40 @@ class _InOutCardState extends State<InOutCard> {
           },
         ),
         _checkInOutStatus(context),
+
+        /// Btn
+        _btnChekInOut(),
       ],
     );
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _checkInOutStatus(context),
+  }
 
-        /// BTN in-out
-        Expanded(
-          child: Container(
-            height: 70,
-            padding: const EdgeInsets.only(left: 4),
-            width: 70,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  foregroundColor: Colors.white,
-                  backgroundColor:
-                      widget.status == AttendanceInOutStatus.checkOut
-                          ? AttendanceDayStatus.absent.bgColor
-                          : Colors.green,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4))),
-              onPressed: () {
-                widget.onSubmit.call(widget.status);
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(widget.status == AttendanceInOutStatus.checkOut
-                      ? Icons.logout
-                      : Icons.login),
-                  3.kHeight,
-                  Text(
-                    widget.status == AttendanceInOutStatus.checkOut
-                        ? "OUT"
-                        : "IN",
-                    style: Theme.of(context).textTheme.whiteS13W500,
-                  )
-                ],
-              ),
-            ),
+  Widget _btnChekInOut() {
+    /// is CheckIn
+    bool isIn = widget.status == AttendanceInOutStatus.checkIn;
+    return Container(
+      margin: const EdgeInsets.only(top: Measurement.screenPadding),
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100.0),
+        color:
+            isIn ? kGreenColor.withOpacity(0.1) : kAlertColor.withOpacity(0.1),
+      ),
+      child: GestureDetector(
+        onTap: () {
+          widget.onSubmit.call(widget.status);
+        },
+        child: CircleAvatar(
+          radius: 70.0,
+          backgroundColor: isIn ? kGreenColor : kAlertColor,
+          child: Text(
+            isIn ? 'Check In' : 'Check Out',
+            style: kTextStyle.copyWith(
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
           ),
-        )
-      ],
+        ),
+      ),
     );
   }
 
