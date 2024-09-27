@@ -86,3 +86,22 @@ enum AttendanceDayStatus {
 }
 
 enum AttendanceInOutStatus { checkIn, checkOut }
+
+enum LeaveStatus {
+  approve,
+  reject,
+  pending;
+
+  Color get getColor {
+    switch (this) {
+      case approve:
+        return AppColor.kGreenColor;
+      case reject:
+        return AppColor.kDangerColor;
+      default:
+
+        /// pending
+        return AppColor.kAlertColor;
+    }
+  }
+}

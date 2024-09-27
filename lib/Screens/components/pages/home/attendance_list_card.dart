@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Screens/components/pages/home/leave_card.dart';
+import 'package:hrm_employee/utlis/app_color.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Models/home/leave_model.dart';
 import 'package:hrm_employee/Screens/components/others/custom_card.dart';
 import 'package:hrm_employee/Screens/components/others/xborder.dart';
+import 'package:hrm_employee/constant.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
@@ -39,7 +43,7 @@ class AttendanceListCard extends StatelessWidget {
         ),
       ),
       CustomCard(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(16),
         child: _employeeLeaveTodayTable(context),
       ),
     ];
@@ -69,44 +73,47 @@ class AttendanceListCard extends StatelessWidget {
   Widget _employeeLeaveTodayTable(BuildContext context) {
     List<UserModel> list = data.todayLeave ?? [];
 
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// Header
-              _employeeRowItem(
-                context: context,
-                text1: "Employee",
-                text2: "Department",
-                text3: "Status",
-                textStyle: Theme.of(context).textTheme.blackS12W700,
-              ),
-
-              /// Body
-              for (int i = 0; i < list.length; i++)
-                ..._employeeItem(
-                  context: context,
-                  text1: data.todayLeave?[i].employeeName ?? "",
-                  text2: data.todayLeave?[i].departmentName ?? "",
-                  text3: data.todayLeave?[i].status ?? "",
-                ),
-
-              /// Empty
-              if (list.isEmpty)
-                ..._employeeItem(
-                  context: context,
-                  text1: "",
-                  text2: "Empty",
-                  text3: "",
-                ),
-            ],
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          LeaveCard(),
+          20.kHeight,
+          LeaveCard(),
+          20.kHeight,
+          LeaveCard(),
+          /*
+          /// Header
+          _employeeRowItem(
+            context: context,
+            text1: "Employee",
+            text2: "Department",
+            text3: "Status",
+            textStyle: Theme.of(context).textTheme.blackS12W700,
           ),
-        ),
-      ],
+    
+          /// Body
+          for (int i = 0; i < list.length; i++)
+            ..._employeeItem(
+              context: context,
+              text1: data.todayLeave?[i].employeeName ?? "",
+              text2: data.todayLeave?[i].departmentName ?? "",
+              text3: data.todayLeave?[i].status ?? "",
+            ),
+    
+          /// Empty
+          if (list.isEmpty)
+            ..._employeeItem(
+              context: context,
+              text1: "",
+              text2: "Empty",
+              text3: "",
+            ),
+            */
+        ],
+      ),
     );
   }
 
