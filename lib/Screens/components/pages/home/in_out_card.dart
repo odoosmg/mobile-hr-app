@@ -51,7 +51,7 @@ class InOutCard extends StatelessWidget {
                   Icon(status == AttendanceInOutStatus.checkOut
                       ? Icons.logout
                       : Icons.login),
-                  3.height,
+                  3.kHeight,
                   Text(
                     status == AttendanceInOutStatus.checkOut ? "OUT" : "IN",
                     style: Theme.of(context).textTheme.whiteS13W500,
@@ -169,7 +169,7 @@ class InOutCard extends StatelessWidget {
             )
           ],
         ),
-        2.height,
+        2.kHeight,
         Text(
           time,
           style: Theme.of(context).textTheme.blackS13W700,

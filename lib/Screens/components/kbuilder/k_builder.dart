@@ -136,11 +136,11 @@ class KBuilder extends StatelessWidget {
           size: 30,
           color: AppColor.kGreyTextColor,
         ),
-        10.height,
+        10.kHeight,
         Text(text,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.greyS15W400),
-        10.height,
+        10.kHeight,
         if (onRetry != null)
           MainBtn(
             title: AppTrans.t.retry,

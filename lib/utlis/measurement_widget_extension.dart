@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 extension MeasurementWidgetExtension on num {
-  SizedBox get height => SizedBox(
+  SizedBox get kHeight => SizedBox(
         // ignore: unnecessary_this
         height: this.toDouble(),
       );
@@ -16,25 +16,25 @@ extension MeasurementWidgetExtension on num {
   //********************************/
 
   /// Padding right
-  Padding get pdRight => Padding(
+  Padding get kPdRight => Padding(
         // ignore: unnecessary_this
         padding: EdgeInsets.only(right: this.toDouble()),
       );
 
-  Padding get pdLeft => Padding(
+  Padding get kPdLeft => Padding(
         // ignore: unnecessary_this
         padding: EdgeInsets.only(left: this.toDouble()),
       );
 
-  Padding get pdTop => Padding(
+  Padding get kPdTop => Padding(
         // ignore: unnecessary_this
         padding: EdgeInsets.only(top: this.toDouble()),
       );
-  Padding get pdBottom => Padding(
+  Padding get kPdBottom => Padding(
         // ignore: unnecessary_this
         padding: EdgeInsets.only(bottom: this.toDouble()),
       );
-  Padding get pdAll => Padding(
+  Padding get kPdAll => Padding(
         // ignore: unnecessary_this
         padding: EdgeInsets.all(this.toDouble()),
       );

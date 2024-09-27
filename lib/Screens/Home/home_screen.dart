@@ -505,6 +505,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _inOut() {
     return [
+      20.kHeight,
+
       /// * Bloc
       /// Date Label
       BlocBuilder<DateLabelCubit, DateTime>(
