@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
+import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
@@ -62,7 +63,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _myProfile(AuthMyProfile event, Emitter<AuthState> emit) async {
-    await authRepository.myPf().then((value) {});
+    state.myProfileResult!.status = ApiStatus.loading;
+    state.authStateType = AuthStateType.myProfile;
+    emit(state.copyWith(state));
+
+    ///
+    await authRepository.myPf().then((value) {
+      state.myProfileResult = value;
+      emit(state.copyWith(state));
+    });
   }
   // @override
   // void onChange(Change<AuthState> change) {

@@ -1,8 +1,15 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/utlis/app_color.dart';
+import 'package:hrm_employee/utlis/app_trans.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -60,36 +67,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 20.0,
             ),
             Container(
-              width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0)),
-                color: Colors.white,
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  const CircleAvatar(
-                    radius: 60.0,
-                    backgroundColor: kMainColor,
-                    backgroundImage: AssetImage(
-                      'images/emp1.png',
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  _item("Name", "Jonch"),
-                  _item("Email", "aa@mail.com"),
-                  _item("Manager", "IT"),
-                  _item("Department", "IT"),
-                  _item("Company", "ACB"),
+                width: context.width(),
+                height: Measurement.heightPercent(context, 0.85),
+                padding: const EdgeInsets.all(20.0),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0)),
+                  color: Colors.white,
+                ),
 
-                  /*
+                /// ** Bloc
+                child: BlocBuilder<AuthBloc, AuthState>(
+                  buildWhen: (previous, current) =>
+                      current.authStateType == AuthStateType.myProfile,
+                  builder: (context, state) {
+                    return KBuilder(
+                      status: state.myProfileResult!.status!,
+                      builder: (st) {
+                        return st == ApiStatus.loading
+                            ? Container()
+                            : _display(
+                                state.myProfileResult?.data ?? UserModel());
+                      },
+                    );
+                  },
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _display(UserModel data) {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20.0,
+        ),
+
+        /// image
+        CircleAvatar(
+          radius: 60.0,
+          backgroundColor: AppColor.kMainColor.withOpacity(0.5),
+          backgroundImage: MemoryImage(base64Decode(data.image ?? "")),
+        ),
+        const SizedBox(
+          height: 10.0,
+        ),
+
+        /// Name
+        _field(AppTrans.t.name, data.name ?? ""),
+
+        /// Email
+        _field(AppTrans.t.email, data.email ?? ""),
+
+        /// Manager
+        _field(AppTrans.t.manager, data.manager ?? ""),
+
+        /// Department
+        _field(AppTrans.t.department, data.department ?? ""),
+
+        /// Company
+        _field(AppTrans.t.company, data.company ?? ""),
+
+        /*
                   AppTextField(
                     readOnly: true,
                     textFieldType: TextFieldType.NAME,
@@ -168,16 +210,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   */
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 
-  Widget _item(String labelText, String hintText) {
+  Widget _field(String labelText, String hintText) {
     return Padding(
       padding: const EdgeInsets.only(top: 24),
       child: AppTextField(
@@ -185,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         readOnly: true,
         decoration: InputDecoration(
           labelText: labelText,
-          hintText: hintText,
+          hintText: hintText.isEmpty ? "N/A" : hintText,
           labelStyle: kTextStyle,
           border: const OutlineInputBorder(),
           floatingLabelBehavior: FloatingLabelBehavior.always,

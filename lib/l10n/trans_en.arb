@@ -21,5 +21,8 @@
     "retry" : "Retry",
     "loginFailedMsg" : "Username or Password is incorrect. Please try again!",
     "connectionErrMsg":"No internet connection, please check your mobile phone service.",
-    "emptyContent" : "The content is empty."
+    "emptyContent" : "The content is empty.",
+    "manager" : "Manager",
+    "department" : "Department",
+    "company": "Company"
 }

@@ -1,6 +1,7 @@
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
+import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/api/base_api.dart';
 import 'package:hrm_employee/api/endpoint.dart';
 
@@ -16,7 +17,7 @@ class AuthRepository extends BaseApi {
         data: Session.fromJson(map["data"] ?? {}));
   }
 
-  Future<ApiResult<Session>> myPf() async {
+  Future<ApiResult<UserModel>> myPf() async {
     Map<String, dynamic> map = await request(
       uri: Endpoint.myPf,
       // params: {"username": username, "password": password},
@@ -24,6 +25,6 @@ class AuthRepository extends BaseApi {
 
     return apiResponse(
         status: ApiStatusModel.fromJson(map),
-        data: Session.fromJson(map["data"] ?? {}));
+        data: UserModel.fromJson(map["data"] ?? {}));
   }
 }
