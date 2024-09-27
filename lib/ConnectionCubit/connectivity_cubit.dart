@@ -25,13 +25,13 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
 
       // print("cubit ==================");
 
-      if (state.isConnected != null) {
-        if (state.isConnected!) {
-          ConnectivitySnackbar.online();
-        } else {
-          ConnectivitySnackbar.offline();
-        }
-      }
+      // if (state.isConnected != null) {
+      //   if (state.isConnected!) {
+      //     ConnectivitySnackbar.online();
+      //   } else {
+      //     ConnectivitySnackbar.offline();
+      //   }
+      // }
 
       // emit(state.copyWith(state));
     });

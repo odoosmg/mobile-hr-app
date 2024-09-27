@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Screens/components/pages/home/attendance_list_card.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -132,21 +133,32 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (st) {
           return st == ApiStatus.loading
               ? Container()
-              : Column(
-                  children: [
-                    ..._inOut(),
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ..._inOut(),
 
-                    const SizedBox(
-                      height: 20.0,
-                    ),
+                      /// Attendance List
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 24),
+                        child: AttendanceListCard(
+                          data: homeBloc.state.getDataResult?.data ??
+                              InOutModel(),
+                        ),
+                      ),
 
-                    ..._gridMenu(),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
 
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    // ..._options()
-                  ],
+                      ..._gridMenu(),
+
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      // ..._options()
+                    ],
+                  ),
                 );
         });
   }
@@ -160,7 +172,10 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 20.0,
           ),
           Container(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.only(
+                left: Measurement.screenPadding,
+                right: Measurement.screenPadding,
+              ),
               // width: double.infinity,
 
               height: Measurement.heightPercent(context, 0.87),
