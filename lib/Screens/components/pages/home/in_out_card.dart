@@ -1,11 +1,17 @@
+import 'dart:async';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Screens/Home/date_label_cubit/date_label_cubit.dart';
+import 'package:hrm_employee/constant.dart';
+import 'package:hrm_employee/extensions/date_extension.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 
-class InOutCard extends StatelessWidget {
+class InOutCard extends StatefulWidget {
   final String? checkinDate; // if null, bg is grey, not checked
   final String? checkoutDate;
   final AttendanceInOutStatus status;
@@ -19,8 +25,61 @@ class InOutCard extends StatelessWidget {
   });
 
   @override
+  State<InOutCard> createState() => _InOutCardState();
+}
+
+class _InOutCardState extends State<InOutCard> {
+  Timer? timer;
+  final dateLabelCubit = DateLabelCubit();
+
+  @override
+  void initState() {
+    ///
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      // context.read<HomeBloc>().add(DateLabel(DateTime.now()));
+      dateLabelCubit.dateLabel();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return _checkInOutStatus(context);
+    return Column(
+      children: [
+        /// * Bloc
+        /// Date Label
+        BlocBuilder<DateLabelCubit, DateTime>(
+          bloc: dateLabelCubit,
+          buildWhen: (previous, current) {
+            /// build when minutes equal
+            return previous.dateFormat(currentFormat: "mm") ==
+                current.dateFormat(currentFormat: "mm");
+          },
+          builder: (context, state) {
+            return Column(
+              children: [
+                /// Date
+                Text(
+                  state.dateFormat(toFormat: "EEEE, MMM dd, yyyy").toString(),
+                  style: kTextStyle.copyWith(color: kGreyTextColor),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+
+                /// Time
+                Text(
+                  '${state.dateFormat(toFormat: "H:mm")}',
+                  style: kTextStyle.copyWith(
+                      fontWeight: FontWeight.bold, fontSize: 25.0),
+                ),
+              ],
+            );
+          },
+        ),
+        _checkInOutStatus(context),
+      ],
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -36,24 +95,27 @@ class InOutCard extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.zero,
                   foregroundColor: Colors.white,
-                  backgroundColor: status == AttendanceInOutStatus.checkOut
-                      ? AttendanceDayStatus.absent.bgColor
-                      : Colors.green,
+                  backgroundColor:
+                      widget.status == AttendanceInOutStatus.checkOut
+                          ? AttendanceDayStatus.absent.bgColor
+                          : Colors.green,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4))),
               onPressed: () {
-                onSubmit.call(status);
+                widget.onSubmit.call(widget.status);
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(status == AttendanceInOutStatus.checkOut
+                  Icon(widget.status == AttendanceInOutStatus.checkOut
                       ? Icons.logout
                       : Icons.login),
                   3.kHeight,
                   Text(
-                    status == AttendanceInOutStatus.checkOut ? "OUT" : "IN",
+                    widget.status == AttendanceInOutStatus.checkOut
+                        ? "OUT"
+                        : "IN",
                     style: Theme.of(context).textTheme.whiteS13W500,
                   )
                 ],
@@ -86,7 +148,9 @@ class InOutCard extends StatelessWidget {
             /// checkin status
             _checkInOutTimeCard(
               /// have date white else gray
-              color: checkinDate != null ? Colors.white : Colors.grey.shade100,
+              color: widget.checkinDate != null
+                  ? Colors.white
+                  : Colors.grey.shade100,
               width: 130,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(Measurement.btnRadius),
@@ -95,8 +159,8 @@ class InOutCard extends StatelessWidget {
               child: _inOutTime(
                 context: context,
                 title: "IN TIME",
-                time: checkinDate ?? "00:00",
-                isCheckIn: checkinDate != null,
+                time: widget.checkinDate ?? "00:00",
+                isCheckIn: widget.checkinDate != null,
               ),
             ),
 
@@ -110,7 +174,9 @@ class InOutCard extends StatelessWidget {
             /// checkout status
             _checkInOutTimeCard(
               width: 120,
-              color: checkoutDate != null ? Colors.white : Colors.grey.shade100,
+              color: widget.checkoutDate != null
+                  ? Colors.white
+                  : Colors.grey.shade100,
               borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(Measurement.btnRadius),
                 bottomRight: Radius.circular(Measurement.btnRadius),
@@ -118,8 +184,8 @@ class InOutCard extends StatelessWidget {
               child: _inOutTime(
                 context: context,
                 title: "OUT TIME",
-                time: checkoutDate ?? "00:00",
-                isCheckIn: checkoutDate != null,
+                time: widget.checkoutDate ?? "00:00",
+                isCheckIn: widget.checkoutDate != null,
               ),
             )
           ],
@@ -176,5 +242,11 @@ class InOutCard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 }

@@ -56,9 +56,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Session? session;
-  Timer? timer;
-
-  final dateLabelCubit = DateLabelCubit();
 
   ///
   final EasyRefreshController easyRefreshController =
@@ -83,12 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
     session = AppServices.instance<DatabaseService>().getSession;
     homeBloc = context.read<HomeBloc>();
 
-    ///
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      // context.read<HomeBloc>().add(DateLabel(DateTime.now()));
-      dateLabelCubit.dateLabel();
-    });
-
+    /// get  data
     homeBloc.add(HomeGetData());
 
     super.initState();
@@ -533,39 +525,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _inOut() {
     return [
-      20.kHeight,
-
-      /// * Bloc
-      /// Date Label
-      BlocBuilder<DateLabelCubit, DateTime>(
-        bloc: dateLabelCubit,
-        builder: (context, state) {
-          return Column(
-            children: [
-              /// Date
-              Text(
-                state.dateFormat(toFormat: "EEEE, MMM dd, yyyy").toString(),
-                style: kTextStyle.copyWith(color: kGreyTextColor),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-
-              /// Time
-              Text(
-                '${state.dateFormat(toFormat: "H:mm")}',
-                style: kTextStyle.copyWith(
-                    fontWeight: FontWeight.bold, fontSize: 25.0),
-              ),
-            ],
-          );
-        },
-      ),
-
-      /// ************
-
+      ///
       Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        padding: const EdgeInsets.only(top: 14, bottom: 10),
         child: InOutCard(
           checkinDate: checkInTime,
           checkoutDate: checkOutTime,
@@ -573,7 +535,6 @@ class _HomeScreenState extends State<HomeScreen> {
           status: AttendanceInOutStatus.checkIn,
         ),
       ),
-
       BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previousSte, currentState) {
           final checkinResult = currentState.checkInResult!;
@@ -634,6 +595,10 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
   }
 
+  ///****************************************************
+  ///
+  ///****************************************************/
+
   String _utcToLocal(String? d) {
     if (d == null || d.isEmpty) {
       return "";
@@ -644,51 +609,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return date
         .dateFormat(currentFormat: "yyyy-MM-dd HH:mm:ss", toFormat: "HH:mm")
         .toString();
-  }
-
-  void _onRefresh() async {
-    isOnRefresh = true;
-    homeBloc.add(HomeGetData(isLoading: false));
-    return;
-    ApiResult<InOutModel> res = homeBloc.state.getDataResult!;
-
-    if (res.isSuccess) {
-      InOutModel data = res.data ?? InOutModel();
-
-      InOutModel latestCheckIn = data.latestCheckIn ?? InOutModel();
-      InOutModel latestCheckOut = data.latestCheckOut ?? InOutModel();
-
-      /// checkId = 0, button is checkin
-      if ((data.latestCheckIn?.checkInId ?? 0) == 0) {
-        inOutStatus = AttendanceInOutStatus.checkIn;
-
-        /// if have check-in time, display
-        checkInTime = (latestCheckOut.checkInDatetime ?? "").isEmpty
-            ? null
-            : _utcToLocal(latestCheckOut.checkInDatetime!);
-        checkOutTime = (latestCheckOut.checkOutDatetime ?? "").isEmpty
-            ? null
-            : _utcToLocal(latestCheckOut.checkOutDatetime ?? "");
-      } else {
-        /// else button checkout
-        checkInTime = (latestCheckIn.checkInDatetime ?? "").isEmpty
-            ? null
-            : _utcToLocal(latestCheckIn.checkInDatetime ?? "");
-
-        checkOutTime = (latestCheckOut.checkOutDatetime ?? "").isEmpty
-            ? null
-            : _utcToLocal(latestCheckOut.checkOutDatetime ?? "");
-
-        /// update checkin id
-        // homeController.checkInResult.data!.checkInId =
-        //     data.latestCheckIn?.checkInId ?? 0;
-
-        /// update status
-        inOutStatus = AttendanceInOutStatus.checkOut;
-      }
-    } else {
-      easyRefreshController.finishRefresh(IndicatorResult.fail);
-    }
   }
 
   void _onRefreshState() {
@@ -737,9 +657,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _onRefresh() async {
+    isOnRefresh = true;
+    homeBloc.add(HomeGetData(isLoading: false));
+  }
+
   @override
   void dispose() {
-    timer!.cancel();
     homeBloc.state.getDataResult!.data = InOutModel();
     homeBloc.state.getDataResult!.status = ApiStatus.loading;
 
