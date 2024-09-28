@@ -1,3 +1,4 @@
+import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -49,4 +50,19 @@ class UserModel {
       _$UserModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
+
+  LeaveStatus? getLeaveStatus() {
+    if (status == null) {
+      return null;
+    }
+
+    switch (status) {
+      case 'To Approve':
+        return LeaveStatus.pending;
+      case 'Refused':
+        return LeaveStatus.refused;
+      default:
+        return LeaveStatus.approved;
+    }
+  }
 }

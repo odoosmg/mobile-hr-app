@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Models/auth/user_model.dart';
+// ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/constant.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 
+/// Status : To Approve, Refused, Approved
+
 class LeaveCard extends StatelessWidget {
-  const LeaveCard({super.key});
+  final UserModel data;
+  const LeaveCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +41,14 @@ class LeaveCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Annual Leave',
+                      data.employeeName ?? "",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: kTextStyle.copyWith(
                           color: kTitleColor, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Manager',
+                      data.departmentName ?? "",
                       style: kTextStyle.copyWith(
                         color: kGreyTextColor,
                       ),
@@ -53,20 +58,23 @@ class LeaveCard extends StatelessWidget {
               ),
               Row(
                 children: [
+                  /// status
                   Text(
-                    'Approved',
+                    data.status!,
                     style: kTextStyle.copyWith(
-                      color: kGreenColor,
+                      color: data.getLeaveStatus()!.getColor,
                     ),
                   ),
                   const SizedBox(
                     width: 4.0,
                   ),
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 10.0,
-                    backgroundColor: kGreenColor,
+                    backgroundColor: data.getLeaveStatus()!.getColor,
+
+                    /// icon
                     child: Icon(
-                      Icons.check,
+                      data.getLeaveStatus()!.iconData,
                       color: Colors.white,
                       size: 12,
                     ),

@@ -76,14 +76,25 @@ class AttendanceListCard extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LeaveCard(),
-          20.kHeight,
-          LeaveCard(),
-          20.kHeight,
-          LeaveCard(),
+          /// Empty
+          if (list.isEmpty)
+            Text(
+              "Empty",
+              style: Theme.of(context).textTheme.greyS14W400,
+            ),
+
+          ///
+          for (int i = 0; i < list.length; i++)
+            Padding(
+              padding: EdgeInsets.only(top: i == 0 ? 0 : 20),
+              child: LeaveCard(
+                data: list[i],
+              ),
+            ),
+
           /*
           /// Header
           _employeeRowItem(
