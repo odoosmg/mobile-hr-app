@@ -142,11 +142,15 @@ class KBuilder extends StatelessWidget {
             style: Theme.of(context).textTheme.greyS15W400),
         10.kHeight,
         if (onRetry != null)
-          MainBtn(
-            title: AppTrans.t.retry,
-            onPressed: () {
-              onRetry!.call();
-            },
+          SizedBox(
+            width: 150,
+            child: MainBtn(
+              title: AppTrans.t.retry,
+              titleStyle: Theme.of(context).textTheme.whiteS14W700,
+              onPressed: () {
+                onRetry!.call();
+              },
+            ),
           )
       ],
     ));

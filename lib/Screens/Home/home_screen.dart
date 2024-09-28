@@ -144,6 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _kBuilder() {
     return KBuilder(
         status: homeBloc.state.getDataResult!.status!,
+        onRetry: () {
+          homeBloc.add(HomeGetData());
+        },
         builder: (st) {
           return st == ApiStatus.loading ? Container() : _easyRefresh();
         });

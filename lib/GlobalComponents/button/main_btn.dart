@@ -5,6 +5,7 @@ import 'package:hrm_employee/utlis/measurement.dart';
 
 class MainBtn extends StatelessWidget {
   final String title;
+  final TextStyle? titleStyle;
   final bool isOk;
   final Function()? onPressed;
 
@@ -14,6 +15,7 @@ class MainBtn extends StatelessWidget {
     required this.title,
     this.onPressed,
     this.isOk = true,
+    this.titleStyle,
   });
 
   @override
@@ -33,7 +35,8 @@ class MainBtn extends StatelessWidget {
         ),
         child: Center(
           child: Text(title,
-              style: Theme.of(context).textTheme.whiteS20W700NoChange),
+              style: titleStyle ??
+                  Theme.of(context).textTheme.whiteS20W700NoChange),
         ),
       ),
     );
