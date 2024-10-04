@@ -10,6 +10,7 @@ import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/Screens/components/snackbar/connectivity_snackar.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/global_scaffold_messenger_service.dart';
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ConnectivityCubit(),
+        ),
+        BlocProvider(
+          create: (context) => LeaveBloc(),
         )
       ],
       child: MaterialApp(

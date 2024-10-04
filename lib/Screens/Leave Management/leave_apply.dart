@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/Screens/components/select/SelectForm/ui/select_form.dart';
 import 'package:provider/provider.dart';
 import 'package:hrm_employee/Screens/components/select/SelectForm/cubit/select_form_cubit.dart';
@@ -53,6 +54,14 @@ class _LeaveApplyState extends State<LeaveApply> {
   ];
 
   bool isFullDay = true;
+
+  late LeaveBloc leaveBloc;
+
+  @override
+  void initState() {
+    leaveBloc = context.read<LeaveBloc>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,19 +152,20 @@ class _LeaveApplyState extends State<LeaveApply> {
       const SizedBox(
         height: 20.0,
       ),
-      _toDate(),
-      const SizedBox(
-        height: 20.0,
-      ),
+      BlocBuilder<LeaveBloc, LeaveState>(
+        buildWhen: (previous, current) {
+          if (current.stateType == LeaveStateType.fullAndHalfDay) {
+            return true;
+          }
 
-      /// Selecy Am Pm
-      SelectForm(
-          data: amPmList,
-          labelText: "AM / PM",
-          initId: 0,
-          onSelect: (d) {
-            print("dd == ${d.id}");
-          }),
+          return false;
+        },
+        builder: (context, state) {
+          /// half day display am/pm
+          /// else display to date
+          return state.isHalfDay! ? _selectAmPm() : _toDate();
+        },
+      ),
       const SizedBox(
         height: 20.0,
       ),
@@ -255,56 +265,77 @@ class _LeaveApplyState extends State<LeaveApply> {
   ///
   List<Widget> _fullAndHalf() {
     return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
+      /// ** BlocBuilder
+      BlocBuilder<LeaveBloc, LeaveState>(
+        buildWhen: (previous, current) {
+          if (current.stateType == LeaveStateType.fullAndHalfDay) {
+            return true;
+          }
+
+          return false;
+        },
+        builder: (context, state) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Checkbox(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+              /// Full day
+              Row(
+                children: [
+                  Checkbox(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      activeColor: kMainColor,
+                      value: !state.isHalfDay!,
+                      onChanged: (val) {
+                        leaveBloc.add(LeaveDaySwitch(false));
+                      }),
+                  const SizedBox(
+                    width: 4.0,
                   ),
-                  activeColor: kMainColor,
-                  value: isFullDay,
-                  onChanged: (val) {
-                    setState(() {
-                      isFullDay = val!;
-                    });
-                  }),
-              const SizedBox(
-                width: 4.0,
+                  Text(
+                    'Full Day',
+                    style: kTextStyle,
+                  ),
+                ],
               ),
-              Text(
-                'Full Day',
-                style: kTextStyle,
+
+              /// Half day
+              Row(
+                children: [
+                  Checkbox(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      activeColor: kMainColor,
+                      value: state.isHalfDay,
+                      onChanged: (val) {
+                        leaveBloc.add(LeaveDaySwitch(true));
+                        // isFullDay = val;
+                      }),
+                  const SizedBox(
+                    width: 4.0,
+                  ),
+                  Text(
+                    'Half Day',
+                    style: kTextStyle,
+                  ),
+                ],
               ),
             ],
-          ),
-          Row(
-            children: [
-              Checkbox(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  activeColor: kMainColor,
-                  value: !isFullDay,
-                  onChanged: (val) {
-                    setState(() {
-                      isFullDay = !isFullDay;
-                    });
-                  }),
-              const SizedBox(
-                width: 4.0,
-              ),
-              Text(
-                'Half Day',
-                style: kTextStyle,
-              ),
-            ],
-          ),
-        ],
+          );
+        },
       ),
     ];
+  }
+
+  Widget _selectAmPm() {
+    return SelectForm(
+      data: amPmList,
+      labelText: "AM / PM",
+      initId: 0,
+      onSelect: (d) {},
+    );
   }
 
   ///*********************************************************
