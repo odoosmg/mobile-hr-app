@@ -6,3 +6,5 @@ final class LeaveDaySwitch extends LeaveEvent {
   bool isFullday;
   LeaveDaySwitch(this.isFullday);
 }
+
+final class LeaveTypeListForm extends LeaveEvent {}

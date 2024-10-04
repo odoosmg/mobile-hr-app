@@ -1,5 +1,5 @@
 import 'package:hrm_employee/Models/auth/user_model.dart';
-import 'package:hrm_employee/Models/home/leave_model.dart';
+import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'in_out_model.g.dart';
 

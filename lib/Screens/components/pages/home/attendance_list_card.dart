@@ -4,7 +4,7 @@ import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
-import 'package:hrm_employee/Models/home/leave_model.dart';
+import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Screens/components/others/custom_card.dart';
 import 'package:hrm_employee/Screens/components/others/xborder.dart';
 import 'package:hrm_employee/constant.dart';

@@ -2,8 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/select/SelectForm/ui/select_form.dart';
+import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:provider/provider.dart';
 import 'package:hrm_employee/Screens/components/select/SelectForm/cubit/select_form_cubit.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
@@ -60,6 +64,7 @@ class _LeaveApplyState extends State<LeaveApply> {
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
+    leaveBloc.add(LeaveTypeListForm());
     super.initState();
   }
 
@@ -100,44 +105,67 @@ class _LeaveApplyState extends State<LeaveApply> {
           Container(
             width: context.width(),
             padding: const EdgeInsets.all(20.0),
+            height: Measurement.heightPercent(context, 0.78),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.0),
                   topRight: Radius.circular(30.0)),
               color: Colors.white,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                /// Leave type
-                _leaveType(),
-
-                ..._selectDate(),
-
-                /// description
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 20),
-                  child: _description(),
-                ),
-
-                /// btn
-                _btnSubmit(),
-              ],
-            ),
+            child: _blocBuilder(),
           ),
         ],
       ),
     );
   }
 
+  BlocBuilder _blocBuilder() {
+    return BlocBuilder<LeaveBloc, LeaveState>(
+      buildWhen: (previous, current) {
+        if (current.stateType == LeaveStateType.leaveTypeList) {
+          return true;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        return KBuilder(
+            status: state.listTypeResult!.status!,
+            builder: (st) {
+              return st == ApiStatus.loading ? Container() : _display();
+            });
+      },
+    );
+  }
+
+  Widget _display() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(
+          height: 20.0,
+        ),
+
+        /// Leave type
+        _leaveType(),
+
+        ..._selectDate(),
+
+        /// description
+        Padding(
+          padding: const EdgeInsets.only(top: 20, bottom: 20),
+          child: _description(),
+        ),
+
+        /// btn
+        _btnSubmit(),
+      ],
+    );
+  }
+
   Widget _leaveType() {
     return SelectForm(
-      data: leaveTypeList,
-      initId: 0,
+      data: leaveBloc.state.listTypeResult?.data?.leaveTypeList ?? [],
+      initId: 4,
       labelText: "Leave Type",
       onSelect: (d) {},
     );
@@ -345,6 +373,11 @@ class _LeaveApplyState extends State<LeaveApply> {
   @override
   void dispose() {
     dateController.dispose();
+    leaveBloc.state.isHalfDay = false;
+
+    ///
+    leaveBloc.state.listTypeResult!.status = ApiStatus.loading;
+    leaveBloc.state.listTypeResult!.data = LeaveModel();
     super.dispose();
   }
 }

@@ -31,9 +31,10 @@ class _SelectFormState extends State<SelectForm> {
   @override
   void initState() {
     /// init id
-    if (widget.initId != null) {
-      selectedItem =
-          widget.data.where((element) => element.id == widget.initId).single;
+    if (widget.initId != null && widget.data.isNotEmpty) {
+      selectedItem = widget.data
+          .where((element) => element.id == widget.initId)
+          .singleOrNull;
       cubit.select(selectedItem);
     }
     super.initState();

@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hrm_employee/ConnectionCubit/connectivity_cubit.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
+import 'package:hrm_employee/Repository/leave_repository.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ConnectivityCubit(),
         ),
         BlocProvider(
-          create: (context) => LeaveBloc(),
+          create: (context) => LeaveBloc(LeaveRepository()),
         )
       ],
       child: MaterialApp(
