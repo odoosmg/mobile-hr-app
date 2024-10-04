@@ -1,6 +1,5 @@
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
-import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Models/leave/leave_params.dart';
 import 'package:hrm_employee/api/base_api.dart';
@@ -23,7 +22,7 @@ class LeaveRepository extends BaseApi {
   ///
   Future<ApiResult> requestLeave(LeaveModel params) async {
     Map<String, dynamic> map = await request(
-      uri: Endpoint.leaveRequest,
+      uri: Endpoint.login,
       params: LeaveParams.requestLeave(params),
     );
 

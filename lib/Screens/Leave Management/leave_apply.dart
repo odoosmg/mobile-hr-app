@@ -47,19 +47,19 @@ class _LeaveApplyState extends State<LeaveApply> {
   TextEditingController dateFromTEC = TextEditingController();
   TextEditingController dateToTEC = TextEditingController();
   TextEditingController descTEC = TextEditingController();
-  int leaveTypeId = 0;
-  String datePeroid = "";
+  int leaveTypeId = 4; // init id
+  String datePeroid = "am"; // default am
   String formatLabelDate = "yyyy-MM-dd";
 
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
-    leaveBloc.add(LeaveTypeListForm());
 
     /// init default date and calculate day count
     dateFromTEC.text = DateTime.now().dateFormat(toFormat: formatLabelDate)!;
     dateToTEC.text = dateFromTEC.text;
 
+    leaveBloc.add(LeaveTypeListForm());
     super.initState();
   }
 
@@ -158,11 +158,16 @@ class _LeaveApplyState extends State<LeaveApply> {
   }
 
   Widget _leaveType() {
+    if (leaveBloc.state.listTypeResult!.data!.leaveTypeList!.isEmpty) {
+      leaveTypeId = 0;
+    }
     return SelectForm(
       data: leaveBloc.state.listTypeResult?.data?.leaveTypeList ?? [],
-      initId: 4,
+      initId: leaveTypeId,
       labelText: "Leave Type",
-      onSelect: (d) {},
+      onSelect: (d) {
+        leaveTypeId = d.id ?? 0;
+      },
     );
   }
 
@@ -208,6 +213,7 @@ class _LeaveApplyState extends State<LeaveApply> {
             lastDate: DateTime(2100));
         if (date != null) {
           dateFromTEC.text = date.dateFormat(toFormat: formatLabelDate) ?? "";
+
           _validate();
         }
       },
@@ -278,10 +284,25 @@ class _LeaveApplyState extends State<LeaveApply> {
         return false;
       },
       builder: (context, state) {
-        print("state.dayCount == ${state.dayCount}");
         return MainBtn(
           title: "Apply",
-          isOk: state.dayCount! > 0,
+          isOk: state.dayCount! > 0 && leaveTypeId > 0,
+          onPressed: () {
+            LeaveModel params = LeaveModel();
+            params.leaveTypeId = leaveTypeId;
+            params.dateTo = dateToTEC.text;
+            params.dateFrom = dateFromTEC.text;
+            params.isHalfDay = leaveBloc.state.isHalfDay;
+            params.datePeriod = datePeroid;
+            params.description = descTEC.text;
+
+            /// half day, set dateFrom and dateTo to the same day
+            if (params.isHalfDay!) {
+              params.dateTo = params.dateFrom;
+            }
+
+            leaveBloc.add(LeaveSubmit(params: params));
+          },
         );
       },
     );
@@ -361,7 +382,9 @@ class _LeaveApplyState extends State<LeaveApply> {
       data: amPmList,
       labelText: "AM / PM",
       initId: 0,
-      onSelect: (d) {},
+      onSelect: (d) {
+        datePeroid = d.keyword!;
+      },
     );
   }
 

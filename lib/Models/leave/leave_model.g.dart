@@ -12,7 +12,7 @@ LeaveModel _$LeaveModelFromJson(Map<String, dynamic> json) => LeaveModel()
   ..allocate = json['allocate'] as String?
   ..approved = json['approved'] as String?
   ..remaining = json['remaining'] as String?
-  ..dateForm = json['date_form'] as String?
+  ..dateFrom = json['date_from'] as String?
   ..dateTo = json['date_to'] as String?
   ..description = json['description'] as String?
   ..isHalfDay = json['is_half_day'] as bool?
@@ -29,7 +29,7 @@ Map<String, dynamic> _$LeaveModelToJson(LeaveModel instance) =>
       'allocate': instance.allocate,
       'approved': instance.approved,
       'remaining': instance.remaining,
-      'date_form': instance.dateForm,
+      'date_from': instance.dateFrom,
       'date_to': instance.dateTo,
       'description': instance.description,
       'is_half_day': instance.isHalfDay,

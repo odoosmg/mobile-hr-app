@@ -12,7 +12,7 @@ class LeaveModel {
   String? approved;
   String? remaining;
 
-  String? dateForm, dateTo;
+  String? dateFrom, dateTo;
   String? description;
   bool? isHalfDay;
   String? datePeriod;

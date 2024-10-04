@@ -18,3 +18,8 @@ final class LeaveDayCount extends LeaveEvent {
     required this.to,
   });
 }
+
+final class LeaveSubmit extends LeaveEvent {
+  final LeaveModel params;
+  LeaveSubmit({required this.params});
+}

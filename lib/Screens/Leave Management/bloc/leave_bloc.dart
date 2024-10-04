@@ -15,6 +15,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     on<LeaveDaySwitch>(_daySwitch);
     on<LeaveTypeListForm>(_leaveTypeListForm);
     on<LeaveDayCount>(_dayCount);
+    on<LeaveSubmit>(_submit);
   }
 
   ///
@@ -35,9 +36,8 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     ///
     await leaveRepository.leavTypeList().then((value) {
       state.listTypeResult = value;
+      emit(state.copyWith(state));
     });
-
-    emit(state.copyWith(state));
   }
 
   ///
@@ -69,5 +69,10 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     }
     state.dayCount = dayCount;
     emit(state.copyWith(state));
+  }
+
+  ///
+  void _submit(LeaveSubmit event, Emitter<LeaveState> emit) async {
+    await leaveRepository.requestLeave(event.params);
   }
 }
