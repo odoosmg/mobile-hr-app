@@ -1,6 +1,10 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Screens/components/select/SelectForm/ui/select_form.dart';
+import 'package:provider/provider.dart';
+import 'package:hrm_employee/Screens/components/select/SelectForm/cubit/select_form_cubit.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -25,6 +29,17 @@ class _LeaveApplyState extends State<LeaveApply> {
     'Sick Leave'
   ];
   String installment = 'Annual Leave';
+
+  List<SelectFormModel> leaveTypeList = [
+    SelectFormModel()
+      ..id = 0
+      ..name = "Annual Leave"
+      ..keyword = "Casual Leave",
+    SelectFormModel()
+      ..id = 1
+      ..name = "Afternoon"
+      ..keyword = "pm",
+  ];
 
   List<SelectFormModel> amPmList = [
     SelectFormModel()
@@ -61,47 +76,52 @@ class _LeaveApplyState extends State<LeaveApply> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 20.0,
+      body: _body(),
+    );
+  }
+
+  Widget _body() {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 20.0,
+          ),
+          Container(
+            width: context.width(),
+            padding: const EdgeInsets.all(20.0),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0)),
+              color: Colors.white,
             ),
-            Container(
-              width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0)),
-                color: Colors.white,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 20.0,
-                  ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 20.0,
+                ),
 
-                  /// Leave type
-                  _leaveType(),
+                /// Leave type
+                // _leaveType(),
+                SelectForm(data: leaveTypeList, onSelect: (d) {}),
 
-                  ..._selectDate(),
+                ..._selectDate(),
 
-                  /// description
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    child: _description(),
-                  ),
+                /// description
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 20),
+                  child: _description(),
+                ),
 
-                  /// btn
-                  _btnSubmit(),
-                ],
-              ),
+                /// btn
+                _btnSubmit(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -138,7 +158,14 @@ class _LeaveApplyState extends State<LeaveApply> {
       const SizedBox(
         height: 20.0,
       ),
-      _selectAmPm(),
+
+      /// Selecy Am Pm
+      SelectForm(
+          data: amPmList,
+          initId: 0,
+          onSelect: (d) {
+            print("dd == ${d.id}");
+          }),
       const SizedBox(
         height: 20.0,
       ),
@@ -236,25 +263,6 @@ class _LeaveApplyState extends State<LeaveApply> {
   }
 
   ///
-  DropdownButton<SelectFormModel> _dropdownItem(
-    List<SelectFormModel> list,
-    SelectFormModel selectedItem,
-  ) {
-    List<DropdownMenuItem<SelectFormModel>> dropDownItems = list
-        .map((e) => DropdownMenuItem(
-              value: e,
-              child: Text(e.name!),
-            ))
-        .toList();
-
-    return DropdownButton(
-      items: dropDownItems,
-      value: selectedItem,
-      onChanged: (value) {},
-    );
-  }
-
-  ///
   List<Widget> _fullAndHalf() {
     return [
       Row(
@@ -307,31 +315,6 @@ class _LeaveApplyState extends State<LeaveApply> {
         ],
       ),
     ];
-  }
-
-  ///
-  Widget _selectAmPm() {
-    return SizedBox(
-      height: 60.0,
-      child: FormField(
-        builder: (FormFieldState<SelectFormModel> field) {
-          return InputDecorator(
-            decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: 'AM / PM',
-                labelStyle: kTextStyle,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0))),
-            child: DropdownButtonHideUnderline(
-              child: _dropdownItem(
-                amPmList,
-                amPmList[0],
-              ),
-            ),
-          );
-        },
-      ),
-    );
   }
 
   ///*********************************************************
