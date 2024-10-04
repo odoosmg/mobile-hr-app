@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
@@ -36,10 +38,11 @@ class LeaveCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: Measurement.widthPercent(context, 0.53),
+                width: Measurement.widthPercent(context, 0.51),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    /// Employee name
                     Text(
                       data.employeeName ?? "",
                       maxLines: 1,
@@ -47,6 +50,8 @@ class LeaveCard extends StatelessWidget {
                       style: kTextStyle.copyWith(
                           color: kTitleColor, fontWeight: FontWeight.bold),
                     ),
+
+                    /// Department
                     Text(
                       data.departmentName ?? "",
                       style: kTextStyle.copyWith(
