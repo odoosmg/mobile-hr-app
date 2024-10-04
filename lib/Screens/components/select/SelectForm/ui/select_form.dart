@@ -8,11 +8,13 @@ import 'package:hrm_employee/Models/form/select_form_model.dart';
 
 class SelectForm extends StatefulWidget {
   final List<SelectFormModel> data;
+  final String labelText;
   final int? initId;
   final Function(SelectFormModel) onSelect;
   const SelectForm({
     super.key,
     required this.data,
+    required this.labelText,
     required this.onSelect,
     this.initId,
   });
@@ -50,11 +52,13 @@ class _SelectFormState extends State<SelectForm> {
         builder: (FormFieldState<SelectFormModel> field) {
           return InputDecorator(
             decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: 'AM / PM',
-                labelStyle: kTextStyle,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0))),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              labelText: widget.labelText,
+              labelStyle: kTextStyle,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            ),
 
             /// ** Bloc
             child: BlocBuilder<SelectFormCubit, SelectFormModel?>(

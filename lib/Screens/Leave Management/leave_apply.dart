@@ -105,8 +105,7 @@ class _LeaveApplyState extends State<LeaveApply> {
                 ),
 
                 /// Leave type
-                // _leaveType(),
-                SelectForm(data: leaveTypeList, onSelect: (d) {}),
+                _leaveType(),
 
                 ..._selectDate(),
 
@@ -127,21 +126,11 @@ class _LeaveApplyState extends State<LeaveApply> {
   }
 
   Widget _leaveType() {
-    return SizedBox(
-      height: 60.0,
-      child: FormField(
-        builder: (FormFieldState<dynamic> field) {
-          return InputDecorator(
-            decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: 'Select Leave Type',
-                labelStyle: kTextStyle,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0))),
-            child: DropdownButtonHideUnderline(child: getInstallment()),
-          );
-        },
-      ),
+    return SelectForm(
+      data: leaveTypeList,
+      initId: 0,
+      labelText: "Leave Type",
+      onSelect: (d) {},
     );
   }
 
@@ -162,6 +151,7 @@ class _LeaveApplyState extends State<LeaveApply> {
       /// Selecy Am Pm
       SelectForm(
           data: amPmList,
+          labelText: "AM / PM",
           initId: 0,
           onSelect: (d) {
             print("dd == ${d.id}");
