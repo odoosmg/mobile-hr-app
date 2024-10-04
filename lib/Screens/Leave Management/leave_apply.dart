@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
+import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/select/SelectForm/ui/select_form.dart';
+import 'package:hrm_employee/extensions/date_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:provider/provider.dart';
 import 'package:hrm_employee/Screens/components/select/SelectForm/cubit/select_form_cubit.dart';
@@ -25,27 +28,6 @@ class LeaveApply extends StatefulWidget {
 }
 
 class _LeaveApplyState extends State<LeaveApply> {
-  final dateController = TextEditingController();
-  List<String> numberOfInstallment = [
-    'Annual Leave',
-    'Casual Leave',
-    'Compensatory Leave',
-    'Exam Leave',
-    'Sick Leave'
-  ];
-  String installment = 'Annual Leave';
-
-  List<SelectFormModel> leaveTypeList = [
-    SelectFormModel()
-      ..id = 0
-      ..name = "Annual Leave"
-      ..keyword = "Casual Leave",
-    SelectFormModel()
-      ..id = 1
-      ..name = "Afternoon"
-      ..keyword = "pm",
-  ];
-
   List<SelectFormModel> amPmList = [
     SelectFormModel()
       ..id = 0
@@ -61,10 +43,23 @@ class _LeaveApplyState extends State<LeaveApply> {
 
   late LeaveBloc leaveBloc;
 
+  ///
+  TextEditingController dateFromTEC = TextEditingController();
+  TextEditingController dateToTEC = TextEditingController();
+  TextEditingController descTEC = TextEditingController();
+  int leaveTypeId = 0;
+  String datePeroid = "";
+  String formatLabelDate = "yyyy-MM-dd";
+
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
     leaveBloc.add(LeaveTypeListForm());
+
+    /// init default date and calculate day count
+    dateFromTEC.text = DateTime.now().dateFormat(toFormat: formatLabelDate)!;
+    dateToTEC.text = dateFromTEC.text;
+
     super.initState();
   }
 
@@ -182,7 +177,7 @@ class _LeaveApplyState extends State<LeaveApply> {
       ),
       BlocBuilder<LeaveBloc, LeaveState>(
         buildWhen: (previous, current) {
-          if (current.stateType == LeaveStateType.fullAndHalfDay) {
+          if (current.stateType == LeaveStateType.fullOrHalfDay) {
             return true;
           }
 
@@ -211,18 +206,22 @@ class _LeaveApplyState extends State<LeaveApply> {
             initialDate: DateTime.now(),
             firstDate: DateTime(1900),
             lastDate: DateTime(2100));
-        dateController.text = date.toString().substring(0, 10);
+        if (date != null) {
+          dateFromTEC.text = date.dateFormat(toFormat: formatLabelDate) ?? "";
+          _validate();
+        }
       },
-      controller: dateController,
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: Icon(
-            Icons.date_range_rounded,
-            color: kGreyTextColor,
-          ),
-          labelText: 'From Date',
-          hintText: '11/09/2021'),
+      controller: dateFromTEC,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: const Icon(
+          Icons.date_range_rounded,
+          color: kGreyTextColor,
+        ),
+        labelText: 'From Date',
+        hintText: dateFromTEC.text,
+      ),
     );
   }
 
@@ -236,18 +235,22 @@ class _LeaveApplyState extends State<LeaveApply> {
             initialDate: DateTime.now(),
             firstDate: DateTime(1900),
             lastDate: DateTime(2100));
-        dateController.text = date.toString().substring(0, 10);
+
+        if (date != null) {
+          dateToTEC.text = date.dateFormat(toFormat: formatLabelDate) ?? "";
+          _validate();
+        }
       },
-      controller: dateController,
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(),
+      controller: dateToTEC,
+      decoration: InputDecoration(
+          border: const OutlineInputBorder(),
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          suffixIcon: Icon(
+          suffixIcon: const Icon(
             Icons.date_range_rounded,
             color: kGreyTextColor,
           ),
           labelText: 'To Date',
-          hintText: '11/09/2021'),
+          hintText: dateToTEC.text),
     );
   }
 
@@ -263,29 +266,23 @@ class _LeaveApplyState extends State<LeaveApply> {
   }
 
   Widget _btnSubmit() {
-    return ButtonGlobal(
-      buttontext: 'Apply',
-      buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
-      onPressed: null,
-    );
-  }
-
-  DropdownButton<String> getInstallment() {
-    List<DropdownMenuItem<String>> dropDownItems = [];
-    for (String installment in numberOfInstallment) {
-      var item = DropdownMenuItem(
-        value: installment,
-        child: Text(installment),
-      );
-      dropDownItems.add(item);
-    }
-    return DropdownButton(
-      items: dropDownItems,
-      value: installment,
-      onChanged: (value) {
-        setState(() {
-          installment = value!;
-        });
+    return BlocBuilder<LeaveBloc, LeaveState>(
+      buildWhen: (previous, current) {
+        /// type dayCount or fullOrHalfDay. we need validate when switching day
+        /// build when value not them same as prevoushy
+        if (current.stateType == LeaveStateType.dayCount ||
+            current.stateType == LeaveStateType.fullOrHalfDay &&
+                current.dayCount != previous.dayCount) {
+          return true;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        print("state.dayCount == ${state.dayCount}");
+        return MainBtn(
+          title: "Apply",
+          isOk: state.dayCount! > 0,
+        );
       },
     );
   }
@@ -296,7 +293,7 @@ class _LeaveApplyState extends State<LeaveApply> {
       /// ** BlocBuilder
       BlocBuilder<LeaveBloc, LeaveState>(
         buildWhen: (previous, current) {
-          if (current.stateType == LeaveStateType.fullAndHalfDay) {
+          if (current.stateType == LeaveStateType.fullOrHalfDay) {
             return true;
           }
 
@@ -317,6 +314,7 @@ class _LeaveApplyState extends State<LeaveApply> {
                       value: !state.isHalfDay!,
                       onChanged: (val) {
                         leaveBloc.add(LeaveDaySwitch(false));
+                        _validate();
                       }),
                   const SizedBox(
                     width: 4.0,
@@ -339,6 +337,7 @@ class _LeaveApplyState extends State<LeaveApply> {
                       value: state.isHalfDay,
                       onChanged: (val) {
                         leaveBloc.add(LeaveDaySwitch(true));
+                        _validate();
                         // isFullDay = val;
                       }),
                   const SizedBox(
@@ -370,14 +369,26 @@ class _LeaveApplyState extends State<LeaveApply> {
   ///
   ///*********************************************************
 
+  void _validate() {
+    leaveBloc.add(
+      LeaveDayCount(
+        from: dateFromTEC.text,
+        to: dateToTEC.text,
+      ),
+    );
+  }
+
   @override
   void dispose() {
-    dateController.dispose();
     leaveBloc.state.isHalfDay = false;
 
+    dateFromTEC.dispose();
+    dateToTEC.dispose();
+    descTEC.dispose();
+
     ///
-    leaveBloc.state.listTypeResult!.status = ApiStatus.loading;
-    leaveBloc.state.listTypeResult!.data = LeaveModel();
+    // leaveBloc.state.listTypeResult!.status = ApiStatus.loading;
+    // leaveBloc.state.listTypeResult!.data = LeaveModel();
     super.dispose();
   }
 }

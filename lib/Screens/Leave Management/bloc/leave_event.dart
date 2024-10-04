@@ -8,3 +8,13 @@ final class LeaveDaySwitch extends LeaveEvent {
 }
 
 final class LeaveTypeListForm extends LeaveEvent {}
+
+final class LeaveDayCount extends LeaveEvent {
+  final String from;
+  final String to;
+
+  LeaveDayCount({
+    required this.from,
+    required this.to,
+  });
+}

@@ -14,22 +14,60 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   LeaveBloc(this.leaveRepository) : super(LeaveInitial()) {
     on<LeaveDaySwitch>(_daySwitch);
     on<LeaveTypeListForm>(_leaveTypeListForm);
+    on<LeaveDayCount>(_dayCount);
   }
 
+  ///
   void _daySwitch(LeaveDaySwitch event, Emitter<LeaveState> emit) async {
-    state.stateType = LeaveStateType.fullAndHalfDay;
+    state.stateType = LeaveStateType.fullOrHalfDay;
     state.isHalfDay = event.isFullday;
+
     emit(state.copyWith(state));
   }
 
+  ///
   void _leaveTypeListForm(
       LeaveTypeListForm event, Emitter<LeaveState> emit) async {
     state.stateType = LeaveStateType.leaveTypeList;
     state.listTypeResult!.status = ApiStatus.loading;
+    emit(state.copyWith(state));
+
+    ///
     await leaveRepository.leavTypeList().then((value) {
       state.listTypeResult = value;
     });
 
+    emit(state.copyWith(state));
+  }
+
+  ///
+  void _dayCount(LeaveDayCount event, Emitter<LeaveState> emit) async {
+    state.stateType = LeaveStateType.dayCount;
+    double dayCount = 0.0;
+
+    /// half day
+    if (state.isHalfDay!) {
+      dayCount = 0.5;
+    } else {
+      /// full day
+      DateTime from = DateTime.parse(event.from);
+      DateTime to = DateTime.parse(event.to);
+
+      /// differnent
+      int day = to.difference(from).inDays;
+
+      if (day > 0) {
+        dayCount = day.toDouble();
+      } else {
+        /// the same day, set as 1 day
+        if (to.isAtSameMomentAs(from)) {
+          dayCount = 1;
+        } else {
+          dayCount = 0.0;
+        }
+      }
+    }
+    state.dayCount = dayCount;
     emit(state.copyWith(state));
   }
 }
