@@ -1,8 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
-import 'package:hrm_employee/Models/api/api_status_model.dart';
-import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Repository/leave_repository.dart';
 
@@ -73,6 +71,14 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
   ///
   void _submit(LeaveSubmit event, Emitter<LeaveState> emit) async {
-    await leaveRepository.requestLeave(event.params);
+    state.stateType = LeaveStateType.submit;
+    state.submitLeaveResult!.status = ApiStatus.loading;
+    emit(state.copyWith(state));
+
+    ///
+    await leaveRepository.requestLeave(event.params).then((value) {
+      state.submitLeaveResult = value;
+      emit(state.copyWith(state));
+    });
   }
 }

@@ -48,12 +48,14 @@ class _SelectFormState extends State<SelectForm> {
   ///
   Widget _select() {
     return SizedBox(
-      height: 60.0,
+      height: 66.0,
       child: FormField(
         builder: (FormFieldState<SelectFormModel> field) {
           return InputDecorator(
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.always,
+              isCollapsed: true,
+              contentPadding: const EdgeInsets.all(16),
               labelText: widget.labelText,
               labelStyle: kTextStyle,
               border: OutlineInputBorder(

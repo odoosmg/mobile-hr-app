@@ -2,21 +2,24 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
-import 'package:hrm_employee/Helper/k_enum.dart';
-import 'package:hrm_employee/Models/leave/leave_model.dart';
-import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
-import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
-import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
-import 'package:hrm_employee/Screens/components/select/SelectForm/ui/select_form.dart';
-import 'package:hrm_employee/extensions/date_extension.dart';
-import 'package:hrm_employee/utlis/measurement.dart';
-import 'package:provider/provider.dart';
-import 'package:hrm_employee/Screens/components/select/SelectForm/cubit/select_form_cubit.dart';
-import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../GlobalComponents/button_global.dart';
+import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/api/api_result.dart';
+import 'package:hrm_employee/Models/leave/leave_model.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Screens/components/others/custom_card.dart';
+import 'package:hrm_employee/Screens/components/select/SelectForm/ui/select_form.dart';
+import 'package:hrm_employee/extensions/date_extension.dart';
+import 'package:hrm_employee/extensions/textstyle_extension.dart';
+import 'package:hrm_employee/utlis/measurement.dart';
+import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
+import 'package:hrm_employee/Models/form/select_form_model.dart';
+
 import '../../constant.dart';
 
 class LeaveApply extends StatefulWidget {
@@ -60,6 +63,9 @@ class _LeaveApplyState extends State<LeaveApply> {
     dateToTEC.text = dateFromTEC.text;
 
     leaveBloc.add(LeaveTypeListForm());
+
+    /// default 1, the same day
+    leaveBloc.state.dayCount = 1;
     super.initState();
   }
 
@@ -147,7 +153,7 @@ class _LeaveApplyState extends State<LeaveApply> {
 
         /// description
         Padding(
-          padding: const EdgeInsets.only(top: 20, bottom: 20),
+          padding: const EdgeInsets.only(top: 30, bottom: 20),
           child: _description(),
         ),
 
@@ -197,7 +203,34 @@ class _LeaveApplyState extends State<LeaveApply> {
       const SizedBox(
         height: 20.0,
       ),
+
+      ///
       ..._fullAndHalf(),
+      10.kHeight,
+
+      /// Total days
+      CustomCard(
+        boxShadow: const [],
+        background: Colors.grey.shade200,
+
+        /// BlocBuilder
+        child: BlocBuilder<LeaveBloc, LeaveState>(
+          buildWhen: (previous, current) {
+            ///
+            if (current.stateType == LeaveStateType.dayCount) {
+              return true;
+            }
+            return false;
+          },
+          builder: (context, state) {
+            return Text(
+              "Total : ${num.parse(state.dayCount.toString())} day(s)",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.blackS13W400,
+            );
+          },
+        ),
+      ),
     ];
   }
 
@@ -262,11 +295,13 @@ class _LeaveApplyState extends State<LeaveApply> {
 
   Widget _description() {
     return AppTextField(
+      controller: descTEC,
       textFieldType: TextFieldType.MULTILINE,
       maxLines: 2,
       decoration: kInputDecoration.copyWith(
         labelText: 'Description',
         hintText: 'Enter description',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
     );
   }
@@ -281,28 +316,33 @@ class _LeaveApplyState extends State<LeaveApply> {
                 current.dayCount != previous.dayCount) {
           return true;
         }
+
+        /// Submit leave
+        if (current.stateType == LeaveStateType.submit) {
+          final ApiResult result = current.submitLeaveResult!;
+          if (result.status == ApiStatus.loading) {
+            /// loading
+            CustomLoading.show(context);
+          } else {
+            CustomLoading.hide(context);
+            if (result.isSuccess) {
+              /// success
+              // Navigator.of(context).pop();
+              CustomDialog.success(context, "Request submitted!");
+            } else {
+              /// error
+              CustomDialog.error(context,
+                  errCode: result.statuscode, errMsg: result.errorMessage);
+            }
+          }
+        }
         return false;
       },
       builder: (context, state) {
         return MainBtn(
           title: "Apply",
           isOk: state.dayCount! > 0 && leaveTypeId > 0,
-          onPressed: () {
-            LeaveModel params = LeaveModel();
-            params.leaveTypeId = leaveTypeId;
-            params.dateTo = dateToTEC.text;
-            params.dateFrom = dateFromTEC.text;
-            params.isHalfDay = leaveBloc.state.isHalfDay;
-            params.datePeriod = datePeroid;
-            params.description = descTEC.text;
-
-            /// half day, set dateFrom and dateTo to the same day
-            if (params.isHalfDay!) {
-              params.dateTo = params.dateFrom;
-            }
-
-            leaveBloc.add(LeaveSubmit(params: params));
-          },
+          onPressed: _submit,
         );
       },
     );
@@ -399,6 +439,24 @@ class _LeaveApplyState extends State<LeaveApply> {
         to: dateToTEC.text,
       ),
     );
+  }
+
+  void _submit() {
+    LeaveModel params = LeaveModel();
+    params.leaveTypeId = leaveTypeId;
+    params.dateTo = dateToTEC.text;
+    params.dateFrom = dateFromTEC.text;
+    params.isHalfDay = leaveBloc.state.isHalfDay;
+    params.datePeriod = "";
+    params.description = descTEC.text;
+
+    /// half day, set dateFrom and dateTo to the same day
+    if (params.isHalfDay!) {
+      params.dateTo = params.dateFrom;
+      params.datePeriod = datePeroid;
+    }
+
+    leaveBloc.add(LeaveSubmit(params: params));
   }
 
   @override

@@ -3,6 +3,7 @@ part of 'leave_bloc.dart';
 class LeaveState {
   LeaveStateType? stateType;
   ApiResult<LeaveModel>? listTypeResult;
+  ApiResult? submitLeaveResult;
 
   double? dayCount; // how many day request leave
   bool? isHalfDay;
@@ -12,6 +13,7 @@ class LeaveState {
     this.dayCount,
     this.isHalfDay,
     this.listTypeResult,
+    this.submitLeaveResult,
   });
 
   LeaveState copyWith(LeaveState d) {
@@ -20,6 +22,7 @@ class LeaveState {
       dayCount: d.dayCount,
       isHalfDay: d.isHalfDay,
       listTypeResult: d.listTypeResult,
+      submitLeaveResult: d.submitLeaveResult,
     );
   }
 }
@@ -35,10 +38,15 @@ final class LeaveInitial extends LeaveState {
   ApiResult<LeaveModel>? get listTypeResult => ApiResult()
     ..status = ApiStatus.loading
     ..data = LeaveModel();
+
+  @override
+  ApiResult<LeaveModel>? get submitLeaveResult =>
+      ApiResult()..status = ApiStatus.loading;
 }
 
 enum LeaveStateType {
   fullOrHalfDay,
   leaveTypeList,
   dayCount,
+  submit,
 }
