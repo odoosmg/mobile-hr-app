@@ -25,10 +25,10 @@ class LeaveCard extends StatelessWidget {
         child: Container(
           width: context.width(),
           padding: const EdgeInsets.all(10.0),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
-                color: AppColor.kGreenColor,
+                color: data.getLeaveStatus()!.getColor,
                 width: 3.0,
               ),
             ),
