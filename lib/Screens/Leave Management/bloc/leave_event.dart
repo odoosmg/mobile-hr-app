@@ -3,8 +3,8 @@ part of 'leave_bloc.dart';
 class LeaveEvent {}
 
 final class LeaveDaySwitch extends LeaveEvent {
-  bool isFullday;
-  LeaveDaySwitch(this.isFullday);
+  bool isHalfDay;
+  LeaveDaySwitch(this.isHalfDay);
 }
 
 final class LeaveTypeListForm extends LeaveEvent {}
@@ -22,4 +22,9 @@ final class LeaveDayCount extends LeaveEvent {
 final class LeaveSubmit extends LeaveEvent {
   final LeaveModel params;
   LeaveSubmit({required this.params});
+}
+
+final class LeaveShowFullHalf extends LeaveEvent {
+  final bool isShow;
+  LeaveShowFullHalf(this.isShow);
 }

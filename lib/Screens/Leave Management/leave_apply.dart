@@ -173,6 +173,14 @@ class _LeaveApplyState extends State<LeaveApply> {
       labelText: "Leave Type",
       onSelect: (d) {
         leaveTypeId = d.id ?? 0;
+
+        /// Sick Time Off
+        if (leaveTypeId == 2) {
+          leaveBloc.add(LeaveShowFullHalf(false));
+          leaveBloc.add(LeaveDaySwitch(false));
+        } else {
+          leaveBloc.add(LeaveShowFullHalf(true));
+        }
       },
     );
   }
@@ -209,28 +217,7 @@ class _LeaveApplyState extends State<LeaveApply> {
       10.kHeight,
 
       /// Total days
-      CustomCard(
-        boxShadow: const [],
-        background: Colors.grey.shade200,
-
-        /// BlocBuilder
-        child: BlocBuilder<LeaveBloc, LeaveState>(
-          buildWhen: (previous, current) {
-            ///
-            if (current.stateType == LeaveStateType.dayCount) {
-              return true;
-            }
-            return false;
-          },
-          builder: (context, state) {
-            return Text(
-              "Total : ${num.parse(state.dayCount.toString())} day(s)",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.blackS13W400,
-            );
-          },
-        ),
-      ),
+      _totalDay(),
     ];
   }
 
@@ -354,64 +341,68 @@ class _LeaveApplyState extends State<LeaveApply> {
       /// ** BlocBuilder
       BlocBuilder<LeaveBloc, LeaveState>(
         buildWhen: (previous, current) {
-          if (current.stateType == LeaveStateType.fullOrHalfDay) {
+          if (current.stateType == LeaveStateType.fullOrHalfDay ||
+              current.stateType == LeaveStateType.isShowFullHalf) {
             return true;
           }
 
           return false;
         },
         builder: (context, state) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /// Full day
-              Row(
-                children: [
-                  Checkbox(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      activeColor: kMainColor,
-                      value: !state.isHalfDay!,
-                      onChanged: (val) {
-                        leaveBloc.add(LeaveDaySwitch(false));
-                        _validate();
-                      }),
-                  const SizedBox(
-                    width: 4.0,
-                  ),
-                  Text(
-                    'Full Day',
-                    style: kTextStyle,
-                  ),
-                ],
-              ),
+          /// id 2 is Sick time off. no half day
+          return !state.isShowSelectFullHalf!
+              ? Container()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    /// Full day
+                    Row(
+                      children: [
+                        Checkbox(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            activeColor: kMainColor,
+                            value: !state.isHalfDay!,
+                            onChanged: (val) {
+                              leaveBloc.add(LeaveDaySwitch(false));
+                              _validate();
+                            }),
+                        const SizedBox(
+                          width: 4.0,
+                        ),
+                        Text(
+                          'Full Day',
+                          style: kTextStyle,
+                        ),
+                      ],
+                    ),
 
-              /// Half day
-              Row(
-                children: [
-                  Checkbox(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      activeColor: kMainColor,
-                      value: state.isHalfDay,
-                      onChanged: (val) {
-                        leaveBloc.add(LeaveDaySwitch(true));
-                        _validate();
-                        // isFullDay = val;
-                      }),
-                  const SizedBox(
-                    width: 4.0,
-                  ),
-                  Text(
-                    'Half Day',
-                    style: kTextStyle,
-                  ),
-                ],
-              ),
-            ],
-          );
+                    /// Half day
+                    Row(
+                      children: [
+                        Checkbox(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            activeColor: kMainColor,
+                            value: state.isHalfDay,
+                            onChanged: (val) {
+                              leaveBloc.add(LeaveDaySwitch(true));
+                              _validate();
+                              // isFullDay = val;
+                            }),
+                        const SizedBox(
+                          width: 4.0,
+                        ),
+                        Text(
+                          'Half Day',
+                          style: kTextStyle,
+                        ),
+                      ],
+                    ),
+                  ],
+                );
         },
       ),
     ];
@@ -425,6 +416,31 @@ class _LeaveApplyState extends State<LeaveApply> {
       onSelect: (d) {
         datePeroid = d.keyword!;
       },
+    );
+  }
+
+  Widget _totalDay() {
+    return CustomCard(
+      boxShadow: const [],
+      background: Colors.grey.shade200,
+
+      /// BlocBuilder
+      child: BlocBuilder<LeaveBloc, LeaveState>(
+        buildWhen: (previous, current) {
+          ///
+          if (current.stateType == LeaveStateType.dayCount) {
+            return true;
+          }
+          return false;
+        },
+        builder: (context, state) {
+          return Text(
+            "Duration : ${num.parse(state.dayCount.toString())} day(s)",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.blackS13W400,
+          );
+        },
+      ),
     );
   }
 
@@ -451,7 +467,7 @@ class _LeaveApplyState extends State<LeaveApply> {
     params.description = descTEC.text;
 
     /// half day, set dateFrom and dateTo to the same day
-    if (params.isHalfDay!) {
+    if (params.isHalfDay! && leaveTypeId != 2) {
       params.dateTo = params.dateFrom;
       params.datePeriod = datePeroid;
     }
@@ -462,6 +478,7 @@ class _LeaveApplyState extends State<LeaveApply> {
   @override
   void dispose() {
     leaveBloc.state.isHalfDay = false;
+    leaveBloc.state.isShowSelectFullHalf = true;
 
     dateFromTEC.dispose();
     dateToTEC.dispose();

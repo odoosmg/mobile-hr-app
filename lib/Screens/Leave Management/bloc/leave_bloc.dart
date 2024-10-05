@@ -14,12 +14,13 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     on<LeaveTypeListForm>(_leaveTypeListForm);
     on<LeaveDayCount>(_dayCount);
     on<LeaveSubmit>(_submit);
+    on<LeaveShowFullHalf>(_showFullHalf);
   }
 
   ///
   void _daySwitch(LeaveDaySwitch event, Emitter<LeaveState> emit) async {
     state.stateType = LeaveStateType.fullOrHalfDay;
-    state.isHalfDay = event.isFullday;
+    state.isHalfDay = event.isHalfDay;
 
     emit(state.copyWith(state));
   }
@@ -80,5 +81,13 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       state.submitLeaveResult = value;
       emit(state.copyWith(state));
     });
+  }
+
+  ///
+  void _showFullHalf(LeaveShowFullHalf event, Emitter<LeaveState> emit) async {
+    state.stateType = LeaveStateType.isShowFullHalf;
+    state.isShowSelectFullHalf = event.isShow;
+
+    emit(state.copyWith(state));
   }
 }

@@ -8,12 +8,15 @@ class LeaveState {
   double? dayCount; // how many day request leave
   bool? isHalfDay;
 
+  bool? isShowSelectFullHalf; // full or half day
+
   LeaveState({
     this.stateType,
     this.dayCount,
     this.isHalfDay,
     this.listTypeResult,
     this.submitLeaveResult,
+    this.isShowSelectFullHalf,
   });
 
   LeaveState copyWith(LeaveState d) {
@@ -23,6 +26,7 @@ class LeaveState {
       isHalfDay: d.isHalfDay,
       listTypeResult: d.listTypeResult,
       submitLeaveResult: d.submitLeaveResult,
+      isShowSelectFullHalf: d.isShowSelectFullHalf,
     );
   }
 }
@@ -33,6 +37,9 @@ final class LeaveInitial extends LeaveState {
 
   @override
   double? get dayCount => 1; // init value is today. so the count is 1
+
+  @override
+  bool? get isShowSelectFullHalf => true;
 
   @override
   ApiResult<LeaveModel>? get listTypeResult => ApiResult()
@@ -47,6 +54,7 @@ final class LeaveInitial extends LeaveState {
 enum LeaveStateType {
   fullOrHalfDay,
   leaveTypeList,
+  isShowFullHalf,
   dayCount,
   submit,
 }
