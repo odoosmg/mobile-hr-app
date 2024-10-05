@@ -34,7 +34,7 @@ class _LeaveApplicationState extends State<LeaveApplication> {
         titleSpacing: 0.0,
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
-          'Loan List',
+          'Leave List',
           maxLines: 2,
           style: kTextStyle.copyWith(
               color: Colors.white, fontWeight: FontWeight.bold),
