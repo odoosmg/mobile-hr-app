@@ -22,7 +22,7 @@ class LeaveRepository extends BaseApi {
   ///
   Future<ApiResult> requestLeave(LeaveModel params) async {
     Map<String, dynamic> map = await request(
-      uri: Endpoint.login,
+      uri: Endpoint.leaveRequest,
       params: LeaveParams.requestLeave(params),
     );
 
