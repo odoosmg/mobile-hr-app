@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:hrm_employee/Screens/components/others/body_card.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: kMainColor,
       appBar: AppBar(
         backgroundColor: kMainColor,
+        toolbarHeight: 75,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.white),
         title: ListTile(
@@ -116,28 +118,30 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const HomeDrawer(),
 
       /// ** Bloc
-      body: BlocBuilder<HomeBloc, HomeState>(buildWhen: (previous, current) {
-        ///
-        if (current.stateType == HomeStateType.getData) {
-          /// prevent onRefresh and initState
-          /// * fixed build oldState then newState
-          if (isOnRefresh) {
-            isOnRefresh = false;
+      body: BodyCard(
+        child: BlocBuilder<HomeBloc, HomeState>(buildWhen: (previous, current) {
+          ///
+          if (current.stateType == HomeStateType.getData) {
+            /// prevent onRefresh and initState
+            /// * fixed build oldState then newState
+            if (isOnRefresh) {
+              isOnRefresh = false;
 
-            /// _onRefrsh. status.loaoding should not rebuild,
-            /// need this condition cuz of state fire 2 times
-            return false;
-          } else {
-            _onRefreshState();
+              /// _onRefrsh. status.loaoding should not rebuild,
+              /// need this condition cuz of state fire 2 times
+              return false;
+            } else {
+              _onRefreshState();
+            }
+
+            return true;
           }
 
-          return true;
-        }
-
-        return false;
-      }, builder: (context, state) {
-        return _body();
-      }),
+          return false;
+        }, builder: (context, state) {
+          return _kBuilder();
+        }),
+      ),
     );
   }
 
@@ -192,30 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _body() {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20.0,
-          ),
-          Container(
-              padding: const EdgeInsets.only(
-                top: 3,
-                left: Measurement.screenPadding,
-                right: Measurement.screenPadding,
-              ),
-              // width: double.infinity,
-
-              height: Measurement.heightPercent(context, 0.87),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0)),
-                color: Colors.white,
-              ),
-              child: _kBuilder())
-        ],
-      ),
+      child: _kBuilder(),
     );
   }
 

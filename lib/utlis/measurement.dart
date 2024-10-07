@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Measurement {
-  static const double screenPadding = 16;
+  static const double screenPadding = 20;
   static const double textFieldborderRadius = 4;
   static const double cardRadius = 6;
   static const double gap = 6;

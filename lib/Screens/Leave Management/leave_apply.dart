@@ -91,7 +91,16 @@ class _LeaveApplyState extends State<LeaveApply> {
           ),
         ],
       ),
-      body: _body(),
+      // body: _body(),
+      body: ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        child: Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          width: double.infinity,
+          color: Colors.white,
+          child: _blocBuilder(),
+        ),
+      ),
     );
   }
 
