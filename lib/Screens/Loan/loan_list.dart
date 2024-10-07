@@ -37,7 +37,8 @@ class _LoanListState extends State<LoanList> {
         title: Text(
           'Loan List',
           maxLines: 2,
-          style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(
+              color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: const [
           Image(
@@ -56,7 +57,9 @@ class _LoanListState extends State<LoanList> {
               width: context.width(),
               padding: const EdgeInsets.all(20.0),
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
@@ -68,13 +71,13 @@ class _LoanListState extends State<LoanList> {
                   Material(
                     elevation: 2.0,
                     child: GestureDetector(
-                      onTap: () async{
+                      onTap: () async {
                         // const DailyWorkReport().launch(context);
-                        bool isValid = await PurchaseModel().isActiveBuyer();
-                        if(isValid){
-                        } else{
-                          showLicense(context: context);
-                        }
+                        // bool isValid = await PurchaseModel().isActiveBuyer();
+                        // if(isValid){
+                        // } else{
+                        //   showLicense(context: context);
+                        // }
                       },
                       child: Container(
                         width: context.width(),
@@ -96,7 +99,9 @@ class _LoanListState extends State<LoanList> {
                                 Text(
                                   'Personal Loan',
                                   maxLines: 2,
-                                  style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                  style: kTextStyle.copyWith(
+                                      color: kTitleColor,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const Spacer(),
                                 Container(
@@ -179,7 +184,9 @@ class _LoanListState extends State<LoanList> {
                             Text(
                               'Mobile Loan',
                               maxLines: 2,
-                              style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(
+                                  color: kTitleColor,
+                                  fontWeight: FontWeight.bold),
                             ),
                             Row(
                               children: [

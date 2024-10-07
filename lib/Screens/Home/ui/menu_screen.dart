@@ -34,6 +34,7 @@ class MenuScreen extends StatelessWidget {
 
   List<Widget> _gridMenu(BuildContext context) {
     return [
+      20.height,
       Row(
         children: [
           Expanded(
@@ -41,12 +42,12 @@ class MenuScreen extends StatelessWidget {
               elevation: 2.0,
               child: GestureDetector(
                 onTap: () async {
-                  bool isValid = await PurchaseModel().isActiveBuyer();
-                  if (isValid) {
-                    const EmployeeManagement().launch(context);
-                  } else {
-                    showLicense(context: context);
-                  }
+                  // bool isValid = await PurchaseModel().isActiveBuyer();
+                  // if (isValid) {
+                  //   const EmployeeManagement().launch(context);
+                  // } else {
+                  //   showLicense(context: context);
+                  // }
                 },
                 child: Container(
                   width: context.width(),
