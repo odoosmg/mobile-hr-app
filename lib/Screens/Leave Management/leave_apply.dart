@@ -106,7 +106,7 @@ class _LeaveApplyState extends State<LeaveApply> {
           Container(
             width: context.width(),
             padding: const EdgeInsets.all(20.0),
-            height: Measurement.heightPercent(context, 0.78),
+            height: Measurement.heightPercent(context, 1),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.0),
@@ -286,8 +286,8 @@ class _LeaveApplyState extends State<LeaveApply> {
       textFieldType: TextFieldType.MULTILINE,
       maxLines: 2,
       decoration: kInputDecoration.copyWith(
-        labelText: 'Description',
-        hintText: 'Enter description',
+        labelText: 'Reason',
+        hintText: 'Enter reason',
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
     );

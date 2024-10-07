@@ -200,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Container(
               padding: const EdgeInsets.only(
+                top: 3,
                 left: Measurement.screenPadding,
                 right: Measurement.screenPadding,
               ),
