@@ -40,7 +40,8 @@ class AttendanceListCard extends StatelessWidget {
         ),
       ),
       CustomCard(
-        padding: const EdgeInsets.all(16),
+        padding:
+            const EdgeInsets.only(left: 10, right: 10, bottom: 14, top: 10),
         child: _employeeLeaveTodayTable(context),
       ),
     ];

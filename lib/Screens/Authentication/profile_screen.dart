@@ -7,11 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
+import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/body_card.dart';
+import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/app_trans.dart';
-import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../constant.dart';
@@ -38,6 +39,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return CustomScaffold(
+      appBar: CustomAppBar.titleActions(
+        title: "Profile",
+        actions: [
+          const Image(
+            image: AssetImage('images/editprofile.png'),
+          ).onTap(() {
+            const EditProfile().launch(context);
+          }),
+        ],
+      ),
+      body: BlocBuilder<AuthBloc, AuthState>(
+        buildWhen: (previous, current) =>
+            current.authStateType == AuthStateType.myProfile,
+        builder: (context, state) {
+          return KBuilder(
+            status: state.myProfileResult!.status!,
+            builder: (st) {
+              return st == ApiStatus.loading
+                  ? Container()
+                  : _display(state.myProfileResult?.data ?? UserModel());
+            },
+          );
+        },
+      ),
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kMainColor,

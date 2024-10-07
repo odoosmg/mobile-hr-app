@@ -2,7 +2,6 @@ import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
 import 'package:hrm_employee/GlobalComponents/others/loading_inidicator.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/app_trans.dart';

@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:hrm_employee/Screens/Home/ui/menu_screen.dart';
 import 'package:hrm_employee/Screens/components/others/body_card.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -114,6 +115,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              const MenuScreen().launch(context);
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                // color: Colors.red,
+                child: Icon(
+                  Icons.widgets,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+            ),
+          )
+        ],
       ),
       drawer: const HomeDrawer(),
 
@@ -177,15 +198,11 @@ class _HomeScreenState extends State<HomeScreen> {
             /// Chart
             const AttendanceStaticChart(),
 
-            const SizedBox(
-              height: 20.0,
-            ),
-
-            20.height,
-
-            ..._gridMenu(),
-
             10.height,
+
+            // ..._gridMenu(),
+
+            // 10.height,
 
             // ..._options()
           ],

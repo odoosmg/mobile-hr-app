@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
+import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
@@ -71,11 +73,24 @@ class _LeaveApplyState extends State<LeaveApply> {
 
   @override
   Widget build(BuildContext context) {
+    return CustomScaffold(
+      appBar: CustomAppBar.titleActions(
+        title: "Leave Apply",
+        actions: const [
+          Image(
+            image: AssetImage('images/employeesearch.png'),
+          ),
+        ],
+      ),
+      body: _blocBuilder(),
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kMainColor,
       appBar: AppBar(
         backgroundColor: kMainColor,
+        // toolbarHeight: 80,
         elevation: 0.0,
         titleSpacing: 0.0,
         iconTheme: const IconThemeData(color: Colors.white),

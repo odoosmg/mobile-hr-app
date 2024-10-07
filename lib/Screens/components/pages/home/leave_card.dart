@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/constant.dart';
-import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 
 /// Status : To Approve, Refused, Approved
