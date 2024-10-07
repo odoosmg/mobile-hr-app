@@ -27,7 +27,7 @@ class HomeDrawer extends StatelessWidget {
       child: ListView(
         children: [
           Container(
-            height: context.height() / 2.5,
+            height: context.height() / 3.6,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(30.0),
@@ -74,9 +74,10 @@ class HomeDrawer extends StatelessWidget {
                     }),
                   ),
                 ),
-                const SizedBox(
-                  height: 20.0,
-                ),
+                // const SizedBox(
+                //   height: 20.0,
+                // ),
+                /*&
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -205,6 +206,7 @@ class HomeDrawer extends StatelessWidget {
                     ),
                   ],
                 ),
+                */
               ],
             ),
           ),

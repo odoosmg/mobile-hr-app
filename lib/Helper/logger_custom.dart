@@ -21,6 +21,6 @@ class LoggerCustom {
     } else {
       Logger.red.log('RESPONSE : $response');
     }
-    Logger.white.log('_________ [ END REQUEST ] _________');
+    // Logger.white.log('_________ [ END REQUEST ] _________');
   }
 }

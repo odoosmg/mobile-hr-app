@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
+import 'dart:developer' as developer;
 
 enum ApiStatus {
   loading,
@@ -51,7 +52,8 @@ enum Logger {
   final String code;
   const Logger(this.code);
 
-  void log(String text) => debugPrint('\x1B[${code}m$text\x1B[0m');
+  // void log(String text) => debugPrint('\x1B[${code}m$text\x1B[0m');
+  void log(String text) => developer.log('#### $text');
 }
 
 enum AppEnviroment {
