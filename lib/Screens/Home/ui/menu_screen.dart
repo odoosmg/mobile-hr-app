@@ -3,6 +3,7 @@
 import 'package:hrm_employee/GlobalComponents/button_global.dart';
 import 'package:hrm_employee/GlobalComponents/purchase_model.dart';
 import 'package:hrm_employee/Screens/Attendance%20Management/management_screen.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/leave_application.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
@@ -135,7 +136,7 @@ class MenuScreen extends StatelessWidget {
               elevation: 2.0,
               child: GestureDetector(
                 onTap: () {
-                  const LeaveManagementScreen().launch(context);
+                  const LeaveApplication().launch(context);
                 },
                 child: Container(
                   width: context.width(),
