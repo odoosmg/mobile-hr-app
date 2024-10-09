@@ -58,7 +58,14 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       int day = to.difference(from).inDays;
 
       if (day > 0) {
-        dayCount = day.toDouble();
+        /// +1, cuz on Fullday dateFrom count as 1.
+        /// so if pick current day and next day it will count as 2.
+        dayCount = day.toDouble() + 1;
+
+        /// the same day is 1
+        if (to.isAtSameMomentAs(from)) {
+          dayCount = 1;
+        }
       } else {
         /// the same day, set as 1 day
         if (to.isAtSameMomentAs(from)) {
