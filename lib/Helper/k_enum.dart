@@ -53,7 +53,7 @@ enum Logger {
   const Logger(this.code);
 
   // void log(String text) => debugPrint('\x1B[${code}m$text\x1B[0m');
-  void log(String text) => developer.log('#### $text');
+  void log(String text) => developer.log('# $text');
 }
 
 enum AppEnviroment {
