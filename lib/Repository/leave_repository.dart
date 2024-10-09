@@ -31,4 +31,18 @@ class LeaveRepository extends BaseApi {
       // data: LeaveModel.fromJson(map),
     );
   }
+
+  ///
+  Future<ApiResult<LeaveModel>> myList() async {
+    Map<String, dynamic> map = await request(uri: Endpoint.leaveMyList);
+
+    /// update key
+    // map['leave_type_list'] = map["data"] ?? [];
+    // map.remove('data');
+
+    return apiResponse(
+      status: ApiStatusModel.fromJson(map),
+      data: LeaveModel.fromJson(map),
+    );
+  }
 }

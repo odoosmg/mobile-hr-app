@@ -1,4 +1,3 @@
-import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -19,6 +18,8 @@ class LeaveModel {
   int? leaveTypeId;
 
   List<SelectFormModel>? leaveTypeList;
+  List<LeaveModel>? leaveAllocatedSummary;
+  List<List>? list;
 
   LeaveModel();
 

@@ -1,6 +1,8 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_apply.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/Screens/components/others/body_card.dart';
@@ -23,6 +25,15 @@ class LeaveApplication extends StatefulWidget {
 }
 
 class _LeaveApplicationState extends State<LeaveApplication> {
+  late LeaveBloc leaveBloc;
+
+  @override
+  void initState() {
+    leaveBloc = context.read<LeaveBloc>();
+    leaveBloc.add(LeaveMyList(true));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(

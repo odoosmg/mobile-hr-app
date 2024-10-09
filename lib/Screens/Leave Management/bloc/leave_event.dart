@@ -29,4 +29,7 @@ final class LeaveShowFullHalf extends LeaveEvent {
   LeaveShowFullHalf(this.isShow);
 }
 
-final class LeaveMyList extends LeaveEvent {}
+final class LeaveMyList extends LeaveEvent {
+  final bool isRefresh;
+  LeaveMyList(this.isRefresh);
+}

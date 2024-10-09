@@ -4,7 +4,7 @@ class LeaveState {
   LeaveStateType? stateType;
   ApiResult<LeaveModel>? listTypeResult;
   ApiResult? submitLeaveResult;
-  ApiResult<EmployeeModel>? myLeaveListResult;
+  ApiResult<LeaveModel>? myLeaveListResult;
 
   double? dayCount; // how many day request leave
   bool? isHalfDay;
@@ -54,7 +54,7 @@ final class LeaveInitial extends LeaveState {
       ApiResult()..status = ApiStatus.loading;
 
   @override
-  ApiResult<EmployeeModel>? get myLeaveListResult =>
+  ApiResult<LeaveModel>? get myLeaveListResult =>
       ApiResult()..status = ApiStatus.loading;
 }
 

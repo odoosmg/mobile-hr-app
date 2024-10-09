@@ -85,7 +85,18 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     });
   }
 
-  void _myLeaveList(LeaveMyList event, Emitter<LeaveState> emit) async {}
+  ///
+  void _myLeaveList(LeaveMyList event, Emitter<LeaveState> emit) async {
+    state.stateType = LeaveStateType.myLeaveList;
+    state.myLeaveListResult!.status = ApiStatus.loading;
+    emit(state.copyWith(state));
+
+    ///
+    await leaveRepository.myList().then((value) {
+      state.myLeaveListResult = value;
+      emit(state.copyWith(state));
+    });
+  }
 
   // ///
   // void _showFullHalf(LeaveShowFullHalf event, Emitter<LeaveState> emit) async {

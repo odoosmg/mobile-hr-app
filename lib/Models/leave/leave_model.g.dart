@@ -20,7 +20,12 @@ LeaveModel _$LeaveModelFromJson(Map<String, dynamic> json) => LeaveModel()
   ..leaveTypeId = (json['leave_type_id'] as num?)?.toInt()
   ..leaveTypeList = (json['leave_type_list'] as List<dynamic>?)
       ?.map((e) => SelectFormModel.fromJson(e as Map<String, dynamic>))
-      .toList();
+      .toList()
+  ..leaveAllocatedSummary = (json['leave_allocated_summary'] as List<dynamic>?)
+      ?.map((e) => LeaveModel.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..list =
+      (json['list'] as List<dynamic>?)?.map((e) => e as List<dynamic>).toList();
 
 Map<String, dynamic> _$LeaveModelToJson(LeaveModel instance) =>
     <String, dynamic>{
@@ -36,4 +41,6 @@ Map<String, dynamic> _$LeaveModelToJson(LeaveModel instance) =>
       'date_period': instance.datePeriod,
       'leave_type_id': instance.leaveTypeId,
       'leave_type_list': instance.leaveTypeList,
+      'leave_allocated_summary': instance.leaveAllocatedSummary,
+      'list': instance.list,
     };
