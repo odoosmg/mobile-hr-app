@@ -56,7 +56,7 @@ class MyLeaveCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '${data.numberOfDays} day(s)',
+                    '${data.numberOfDays} day(s)${_period()}',
                     style: kTextStyle.copyWith(
                       color: kGreyTextColor,
                     ),
@@ -91,6 +91,14 @@ class MyLeaveCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _period() {
+    if ((data.requestDateFromPeriod ?? "").isEmpty) {
+      return "";
+    }
+
+    return ", ${data.requestDateFromPeriod}";
   }
 
   String _dateFormat(String? date) {
