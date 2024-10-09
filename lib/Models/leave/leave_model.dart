@@ -1,3 +1,4 @@
+import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -16,10 +17,13 @@ class LeaveModel {
   bool? isHalfDay;
   String? datePeriod;
   int? leaveTypeId;
+  String? leaveTypeName;
+  double? numberOfDays;
+  String? state;
 
   List<SelectFormModel>? leaveTypeList;
   List<LeaveModel>? leaveAllocatedSummary;
-  List<List>? list;
+  List<LeaveModel>? list;
 
   LeaveModel();
 
@@ -27,4 +31,19 @@ class LeaveModel {
       _$LeaveModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$LeaveModelToJson(this);
+
+  LeaveStatus? get getLeaveStatus {
+    if (state == null) {
+      return null;
+    }
+
+    switch (state) {
+      case 'To Approve':
+        return LeaveStatus.pending;
+      case 'Refused':
+        return LeaveStatus.refused;
+      default:
+        return LeaveStatus.approved;
+    }
+  }
 }

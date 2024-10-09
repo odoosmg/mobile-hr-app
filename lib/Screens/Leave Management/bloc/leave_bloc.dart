@@ -88,7 +88,9 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   ///
   void _myLeaveList(LeaveMyList event, Emitter<LeaveState> emit) async {
     state.stateType = LeaveStateType.myLeaveList;
-    state.myLeaveListResult!.status = ApiStatus.loading;
+    if (event.isLoading) {
+      state.myLeaveListResult!.status = ApiStatus.loading;
+    }
     emit(state.copyWith(state));
 
     ///
@@ -97,6 +99,12 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       emit(state.copyWith(state));
     });
   }
+
+  // @override
+  // void onChange(Change<LeaveState> change) {
+  //   // TODO: implement onChange
+  //   super.onChange(change);
+  // }
 
   // ///
   // void _showFullHalf(LeaveShowFullHalf event, Emitter<LeaveState> emit) async {

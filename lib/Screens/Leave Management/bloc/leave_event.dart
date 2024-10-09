@@ -30,6 +30,6 @@ final class LeaveShowFullHalf extends LeaveEvent {
 }
 
 final class LeaveMyList extends LeaveEvent {
-  final bool isRefresh;
-  LeaveMyList(this.isRefresh);
+  final bool isLoading;
+  LeaveMyList({required this.isLoading});
 }

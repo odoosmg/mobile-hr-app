@@ -112,7 +112,7 @@ enum LeaveStatus {
       case approved:
         return Icons.check;
       case refused:
-        return Icons.error;
+        return Icons.close;
       default:
 
         /// pending

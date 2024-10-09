@@ -53,8 +53,8 @@ class _InOutCardState extends State<InOutCard> {
           bloc: dateLabelCubit,
           buildWhen: (previous, current) {
             /// build when minutes equal
-            return previous.dateFormat(currentFormat: "mm") ==
-                current.dateFormat(currentFormat: "mm");
+            return previous.dateFormat(toFormat: "mm") ==
+                current.dateFormat(toFormat: "mm");
           },
           builder: (context, state) {
             return Column(

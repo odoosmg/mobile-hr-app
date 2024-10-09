@@ -18,14 +18,18 @@ LeaveModel _$LeaveModelFromJson(Map<String, dynamic> json) => LeaveModel()
   ..isHalfDay = json['is_half_day'] as bool?
   ..datePeriod = json['date_period'] as String?
   ..leaveTypeId = (json['leave_type_id'] as num?)?.toInt()
+  ..leaveTypeName = json['leave_type_name'] as String?
+  ..numberOfDays = (json['number_of_days'] as num?)?.toDouble()
+  ..state = json['state'] as String?
   ..leaveTypeList = (json['leave_type_list'] as List<dynamic>?)
       ?.map((e) => SelectFormModel.fromJson(e as Map<String, dynamic>))
       .toList()
   ..leaveAllocatedSummary = (json['leave_allocated_summary'] as List<dynamic>?)
       ?.map((e) => LeaveModel.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..list =
-      (json['list'] as List<dynamic>?)?.map((e) => e as List<dynamic>).toList();
+  ..list = (json['list'] as List<dynamic>?)
+      ?.map((e) => LeaveModel.fromJson(e as Map<String, dynamic>))
+      .toList();
 
 Map<String, dynamic> _$LeaveModelToJson(LeaveModel instance) =>
     <String, dynamic>{
@@ -40,6 +44,9 @@ Map<String, dynamic> _$LeaveModelToJson(LeaveModel instance) =>
       'is_half_day': instance.isHalfDay,
       'date_period': instance.datePeriod,
       'leave_type_id': instance.leaveTypeId,
+      'leave_type_name': instance.leaveTypeName,
+      'number_of_days': instance.numberOfDays,
+      'state': instance.state,
       'leave_type_list': instance.leaveTypeList,
       'leave_allocated_summary': instance.leaveAllocatedSummary,
       'list': instance.list,

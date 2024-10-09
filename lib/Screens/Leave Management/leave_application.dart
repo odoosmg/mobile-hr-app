@@ -1,14 +1,20 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_apply.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/body_card.dart';
 import 'package:hrm_employee/Screens/components/others/custom_card.dart';
+import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart';
 import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 import 'package:hrm_employee/Screens/components/others/xborder.dart';
+import 'package:hrm_employee/Screens/components/pages/leave/my_leave_card.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
@@ -27,10 +33,15 @@ class LeaveApplication extends StatefulWidget {
 class _LeaveApplicationState extends State<LeaveApplication> {
   late LeaveBloc leaveBloc;
 
+  final EasyRefreshController easyRefreshController =
+      EasyRefreshController(controlFinishRefresh: true);
+
+  bool isOnRefresh = false;
+
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
-    leaveBloc.add(LeaveMyList(true));
+    leaveBloc.add(LeaveMyList(isLoading: true));
     super.initState();
   }
 
@@ -38,18 +49,7 @@ class _LeaveApplicationState extends State<LeaveApplication> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: CustomAppBar.titleActions(title: "Leave List", actions: []),
-      body: Column(
-        children: [
-          10.height,
-          _count(),
-          10.height,
-          Xborder(),
-          Measurement.screenPadding.kHeight,
-          _leaveCard(),
-          20.height,
-          _leaveCard(),
-        ],
-      ),
+      body: _blocBuilder(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => const LeaveApply().launch(context),
         backgroundColor: kMainColor,
@@ -258,89 +258,83 @@ class _LeaveApplicationState extends State<LeaveApplication> {
     );
   }
 
-  Widget _leaveCard() {
-    return Material(
-      elevation: 2.0,
-      child: GestureDetector(
-        onTap: () {
-          // const DailyWorkReport().launch(context);
-        },
-        child: Container(
-          width: context.width(),
-          padding: const EdgeInsets.all(10.0),
-          decoration: const BoxDecoration(
-            border: Border(
-              left: BorderSide(
-                color: Color(0xFF7D6AEF),
-                width: 3.0,
-              ),
-            ),
-            color: Colors.white,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Annual Leave',
-                maxLines: 2,
-                style: kTextStyle.copyWith(
-                    color: kTitleColor, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'From 16, May 2021 to 20, May 2021',
-                style: kTextStyle.copyWith(
-                  color: kGreyTextColor,
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    '(Apply Date) 15, May 2021',
-                    style: kTextStyle.copyWith(
-                      color: kGreyTextColor,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    'Approved',
-                    style: kTextStyle.copyWith(
-                      color: kGreenColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 4.0,
-                  ),
-                  const CircleAvatar(
-                    radius: 10.0,
-                    backgroundColor: kGreenColor,
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+  Widget _kbuilder() {
+    return KBuilder(
+        status: leaveBloc.state.myLeaveListResult!.status!,
+        builder: (st) {
+          return st == ApiStatus.loading ? Container() : _easyRefresh();
+        });
+  }
+
+  Widget _easyRefresh() {
+    return CustomEasyRefresh(
+      controller: easyRefreshController,
+      onRefresh: () {
+        isOnRefresh = true;
+        leaveBloc.add(LeaveMyList(isLoading: false));
+      },
+      child: _display(),
+    );
+  }
+
+  BlocBuilder _blocBuilder() {
+    return BlocBuilder<LeaveBloc, LeaveState>(
+      buildWhen: (previous, current) {
+        if (current.stateType == LeaveStateType.myLeaveList) {
+          /// on Refresh
+          if (isOnRefresh) {
+            isOnRefresh = false;
+            return false;
+          } else {
+            /// after onRefresh
+            if (current.myLeaveListResult!.isSuccess) {
+              easyRefreshController.finishRefresh(IndicatorResult.success);
+            } else {
+              easyRefreshController.finishRefresh(IndicatorResult.fail);
+            }
+          }
+
+          return true;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        return _kbuilder();
+      },
+    );
+  }
+
+  Widget _display() {
+    List<LeaveModel> d = leaveBloc.state.myLeaveListResult!.data!.list!;
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: Measurement.heightPercent(context, 0.88),
+        child: Column(
+          children: [
+            16.height,
+            _count(),
+            16.height,
+            const Xborder(),
+            for (int i = 0; i < d.length; i++)
+              Padding(
+                padding: const EdgeInsets.only(top: Measurement.screenPadding),
+                child: MyLeaveCard(data: d[i]),
+              )
+          ],
         ),
       ),
     );
   }
 
   Widget _count() {
+    List<LeaveModel> d =
+        leaveBloc.state.myLeaveListResult?.data?.leaveAllocatedSummary ?? [];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("Allocated : 10", style: Theme.of(context).textTheme.blackS12W400),
-        Text(
-          "Approved : 2",
-          style: Theme.of(context).textTheme.blackS12W400,
-        ),
-        Text(
-          "Remaining : 2",
-          style: Theme.of(context).textTheme.blackS12W400,
-        ),
+        for (int i = 0; i < d.length; i++)
+          Text("${d[i].name} : ${d[i].allocate}",
+              style: Theme.of(context).textTheme.blackS12W400),
       ],
     );
   }
