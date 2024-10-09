@@ -28,3 +28,5 @@ final class LeaveShowFullHalf extends LeaveEvent {
   final bool isShow;
   LeaveShowFullHalf(this.isShow);
 }
+
+final class LeaveMyList extends LeaveEvent {}

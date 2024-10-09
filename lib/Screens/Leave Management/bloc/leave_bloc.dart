@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
+import 'package:hrm_employee/Models/employee/employee_model.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Repository/leave_repository.dart';
 
@@ -14,6 +15,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     on<LeaveTypeListForm>(_leaveTypeListForm);
     on<LeaveDayCount>(_dayCount);
     on<LeaveSubmit>(_submit);
+    on<LeaveMyList>(_myLeaveList);
     // on<LeaveShowFullHalf>(_showFullHalf);
   }
 
@@ -82,6 +84,8 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       emit(state.copyWith(state));
     });
   }
+
+  void _myLeaveList(LeaveMyList event, Emitter<LeaveState> emit) async {}
 
   // ///
   // void _showFullHalf(LeaveShowFullHalf event, Emitter<LeaveState> emit) async {
