@@ -259,6 +259,9 @@ class _LeaveApplicationState extends State<LeaveApplication> {
   Widget _kbuilder() {
     return KBuilder(
         status: leaveBloc.state.myLeaveListResult!.status!,
+        onRetry: () {
+          leaveBloc.add(LeaveMyList(isLoading: true));
+        },
         builder: (st) {
           return st == ApiStatus.loading ? Container() : _easyRefresh();
         });
@@ -313,6 +316,16 @@ class _LeaveApplicationState extends State<LeaveApplication> {
             _count(),
             16.height,
             const Xborder(),
+
+            /// Empty
+            if (d.isEmpty)
+              Text(
+                "You don't have any request leave yet.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.greyS13W400,
+              ),
+
+            ///
             for (int i = 0; i < d.length; i++)
               Padding(
                 padding: const EdgeInsets.only(top: Measurement.screenPadding),
