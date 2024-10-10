@@ -204,6 +204,12 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
 
   Widget _blocBuilder() {
     return BlocBuilder<EmployeeBloc, EmployeeState>(
+      buildWhen: (previous, current) {
+        if (current.stateType == EmployeeStateType.list) {
+          return true;
+        }
+        return false;
+      },
       builder: (context, state) {
         return KBuilder(
             status: state.listResult!.status!,

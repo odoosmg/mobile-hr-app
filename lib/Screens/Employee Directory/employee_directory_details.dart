@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Screens/Employee%20Directory/bloc/employee_bloc.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../constant.dart';
@@ -31,6 +34,36 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
 
   @override
   Widget build(BuildContext context) {
+    return CustomScaffold(
+      appBar: AppBar(
+        backgroundColor: kMainColor,
+        elevation: 0.0,
+        titleSpacing: 0.0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: Image.asset('images/emp1.png'),
+          title: Text(
+            argData.name ?? "",
+            style: kTextStyle.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          subtitle: argData.department!.isEmpty
+              ? null
+              : Text(
+                  argData.department!,
+                  style:
+                      kTextStyle.copyWith(color: Colors.white.withOpacity(0.5)),
+                ),
+          trailing: const Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: _blocBuilder(),
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kMainColor,
@@ -57,11 +90,11 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
           ),
         ),
       ),
-      body: _display(),
+      body: _blocBuilder(),
     );
   }
 
-  Widget _display() {
+  Widget _display(UserModel data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -71,7 +104,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
         Expanded(
           child: Container(
             width: context.width(),
-            padding: const EdgeInsets.all(20.0),
+            // padding: const EdgeInsets.all(20.0),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.0),
@@ -82,7 +115,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 20.0,
+                  height: 10.0,
                 ),
                 Material(
                   elevation: 2.0,
@@ -107,90 +140,47 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                         const SizedBox(
                           height: 30.0,
                         ),
-                        // AppTextField(
-                        //   textFieldType: TextFieldType.EMAIL,
-                        //   readOnly: true,
-                        //   controller: TextEditingController(
-                        //       text: 'maantheme@maantheme.com'),
-                        //   decoration: const InputDecoration(
-                        //     floatingLabelBehavior: FloatingLabelBehavior.always,
-                        //     labelText: 'Email Address',
-                        //     hintText: 'maantheme@maantheme.com',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
+
+                        /// Email
                         _appTextField(
                           title: 'Email Address',
-                          value: 'maantheme@maantheme.com',
+                          value: data.email ?? "",
+                          showCursor: true,
                         ),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        // AppTextField(
-                        //   textFieldType: TextFieldType.PHONE,
-                        //   readOnly: true,
-                        //   controller:
-                        //       TextEditingController(text: '017563985345'),
-                        //   decoration: const InputDecoration(
-                        //     labelText: 'Contact No.',
-                        //     hintText: '017674355654',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        _appTextField(
-                          title: 'Contact No.',
-                          value: '017563985345',
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        // AppTextField(
-                        //   textFieldType: TextFieldType.NAME,
-                        //   readOnly: true,
-                        //   controller: TextEditingController(text: 'Designer'),
-                        //   decoration: const InputDecoration(
-                        //     labelText: 'Designation',
-                        //     hintText: 'Designer',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        _appTextField(
-                          title: 'Designation',
-                          value: 'Designer',
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        // AppTextField(
-                        //   textFieldType: TextFieldType.NAME,
-                        //   readOnly: true,
-                        //   controller:
-                        //       TextEditingController(text: 'Bangladeshi'),
-                        //   decoration: const InputDecoration(
-                        //     labelText: 'Nationality',
-                        //     hintText: 'Bangladeshi',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        _appTextField(
-                          title: 'Nationality',
-                          value: 'Bangladeshi',
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        // AppTextField(
-                        //   textFieldType: TextFieldType.NAME,
-                        //   readOnly: true,
-                        //   controller: TextEditingController(text: 'Male'),
-                        //   decoration: const InputDecoration(
-                        //     labelText: 'Gender',
-                        //     hintText: 'Male',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
 
-                        _appTextField(title: 'Gender', value: 'Male'),
+                        /// Phone
+                        _appTextField(
+                          title: 'Phone',
+                          value: data.phone ?? "",
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+
+                        /// Position
+                        _appTextField(
+                          title: 'Position',
+                          value: data.position ?? "",
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+
+                        /// Department
+                        _appTextField(
+                          title: 'Department',
+                          value: data.department ?? "",
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+
+                        /// Company
+                        _appTextField(
+                            title: 'Company', value: data.company ?? ""),
                         const SizedBox(
                           height: 20.0,
                         ),
@@ -206,17 +196,39 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
     );
   }
 
+  Widget _blocBuilder() {
+    return BlocBuilder<EmployeeBloc, EmployeeState>(
+      buildWhen: (previous, current) {
+        if (current.stateType == EmployeeStateType.detail) {
+          return true;
+        }
+        return false;
+      },
+      builder: (context, state) {
+        return KBuilder(
+            status: state.detailResult!.status!,
+            builder: (st) {
+              return st == ApiStatus.loading
+                  ? Container()
+                  : _display(state.detailResult!.data!);
+            });
+      },
+    );
+  }
+
   AppTextField _appTextField({
     required String title,
     required String value,
+    bool showCursor = false, // enable scroll text when long text
   }) {
     return AppTextField(
       textFieldType: TextFieldType.NAME,
       readOnly: true,
-      controller: TextEditingController(text: value),
+      showCursor: showCursor,
+      controller: TextEditingController(text: value.isEmpty ? "N/A" : value),
       decoration: InputDecoration(
         labelText: title,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
   }
