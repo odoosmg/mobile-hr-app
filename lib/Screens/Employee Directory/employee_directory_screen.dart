@@ -92,7 +92,7 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeDetails().launch(context);
+                        // const EmployeeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp1.png'),
                       title: Text(
@@ -240,7 +240,9 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
       ),
       child: ListTile(
         onTap: () {
-          const EmployeeDetails().launch(context);
+          EmployeeDetails(
+            employee: data,
+          ).launch(context);
         },
 
         /// image

@@ -1,6 +1,5 @@
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
-import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Models/employee/employee_model.dart';
 import 'package:hrm_employee/api/base_api.dart';
@@ -18,8 +17,11 @@ class EmployeeRepository extends BaseApi {
         data: EmployeeModel.fromJson(map));
   }
 
-  Future<ApiResult<UserModel>> detail() async {
-    Map<String, dynamic> map = await request(uri: Endpoint.employeeDetail);
+  Future<ApiResult<UserModel>> detail(int id) async {
+    Map<String, dynamic> map = await request(
+      uri: Endpoint.employeeDetail,
+      params: {"employee_id": id},
+    );
 
     return apiResponse(
         status: ApiStatusModel.fromJson(map),
