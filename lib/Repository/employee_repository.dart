@@ -10,9 +10,12 @@ class EmployeeRepository extends BaseApi {
   Future<ApiResult<EmployeeModel>> list() async {
     Map<String, dynamic> map = await request(uri: Endpoint.employeeList);
 
+    map["list"] = map["data"] ?? [];
+    map.remove("data");
+
     return apiResponse(
         status: ApiStatusModel.fromJson(map),
-        data: EmployeeModel.fromJson(map["data"] ?? {}));
+        data: EmployeeModel.fromJson(map));
   }
 
   Future<ApiResult<UserModel>> detail() async {

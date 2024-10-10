@@ -349,4 +349,10 @@ class _LeaveApplicationState extends State<LeaveApplication> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    easyRefreshController.dispose();
+    super.dispose();
+  }
 }

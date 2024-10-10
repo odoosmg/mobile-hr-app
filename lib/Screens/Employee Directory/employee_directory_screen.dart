@@ -1,13 +1,24 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/auth/user_model.dart';
+import 'package:hrm_employee/Screens/Employee%20Directory/bloc/employee_bloc.dart';
+import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
+import 'package:hrm_employee/utlis/app_color.dart';
+import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../constant.dart';
 import 'employee_directory_details.dart';
 
 class EmployeeDirectory extends StatefulWidget {
-  const EmployeeDirectory({Key? key}) : super(key: key);
+  const EmployeeDirectory({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -15,8 +26,22 @@ class EmployeeDirectory extends StatefulWidget {
 }
 
 class _EmployeeDirectoryState extends State<EmployeeDirectory> {
+  late EmployeeBloc employeeBloc;
+  Random random = Random();
+
+  @override
+  void initState() {
+    employeeBloc = context.read<EmployeeBloc>();
+    employeeBloc.add(EmployeeList());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return CustomScaffold(
+      appBar: CustomAppBar.titleActions(title: "Employee Directory"),
+      body: _blocBuilder(),
+    );
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kMainColor,
@@ -173,6 +198,85 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _blocBuilder() {
+    return BlocBuilder<EmployeeBloc, EmployeeState>(
+      builder: (context, state) {
+        return KBuilder(
+            status: state.listResult!.status!,
+            builder: (st) {
+              return st == ApiStatus.loading
+                  ? Container()
+                  : _display(state.listResult!.data!.list!);
+            });
+      },
+    );
+  }
+
+  Widget _display(List<UserModel> data) {
+    return ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (ctx, index) {
+          return Padding(
+            padding: EdgeInsets.only(
+                top: Measurement.screenPadding,
+
+                /// bottom space last item
+                bottom:
+                    index != data.length - 1 ? 0 : Measurement.screenPadding),
+            child: _employeeCard(data[index]),
+          );
+        });
+  }
+
+  Widget _employeeCard(UserModel data) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(color: kGreyTextColor.withOpacity(0.5)),
+      ),
+      child: ListTile(
+        onTap: () {
+          const EmployeeDetails().launch(context);
+        },
+
+        /// image
+        leading: CircleAvatar(
+          radius: 22,
+          backgroundColor: Color.fromARGB(
+            255,
+            random.nextInt(256),
+            random.nextInt(256),
+            random.nextInt(256),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(1.5),
+            child: CircleAvatar(
+              radius: 22,
+              backgroundColor: AppColor.kWhiteColor,
+              backgroundImage: MemoryImage(base64Decode(data.image ?? "")),
+            ),
+          ),
+        ),
+
+        /// name
+        title: Text(
+          data.name ?? "",
+          style: kTextStyle,
+        ),
+
+        /// department
+        subtitle: Text(
+          data.department ?? "",
+          style: kTextStyle.copyWith(color: kGreyTextColor),
+        ),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          color: kGreyTextColor,
+        ),
       ),
     );
   }

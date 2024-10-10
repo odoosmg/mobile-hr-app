@@ -37,9 +37,9 @@ class LeaveRepository extends BaseApi {
     Map<String, dynamic> map = await request(uri: Endpoint.leaveMyList);
 
     /// update key to 1 level
-    map['list'] = map["data"]["leave_requested"] ?? [];
+    map['list'] = map["data"]?["leave_requested"] ?? [];
     map['leave_allocated_summary'] =
-        map["data"]["leave_allocated_summary"] ?? [];
+        map["data"]?["leave_allocated_summary"] ?? [];
     map.remove('data');
 
     return apiResponse(
