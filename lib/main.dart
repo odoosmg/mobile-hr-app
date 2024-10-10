@@ -7,9 +7,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hrm_employee/ConnectionCubit/connectivity_cubit.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
+import 'package:hrm_employee/Repository/employee_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
 import 'package:hrm_employee/Repository/leave_repository.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
+import 'package:hrm_employee/Screens/Employee%20Directory/bloc/employee_bloc.dart';
 import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/Screens/components/snackbar/connectivity_snackar.dart';
@@ -48,7 +50,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LeaveBloc(LeaveRepository()),
-        )
+        ),
+        BlocProvider(
+          create: (context) => EmployeeBloc(EmployeeRepository()),
+        ),
       ],
       child: MaterialApp(
         navigatorKey: AppServices.instance<NavigatorService>().navigationKey,

@@ -28,7 +28,8 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
         title: Text(
           'Employee Directory',
           maxLines: 2,
-          style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(
+              color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: const [
           Image(
@@ -47,7 +48,9 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
               width: context.width(),
               padding: const EdgeInsets.all(20.0),
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
@@ -59,7 +62,8 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(color: kGreyTextColor.withOpacity(0.5)),
+                      border:
+                          Border.all(color: kGreyTextColor.withOpacity(0.5)),
                     ),
                     child: ListTile(
                       onTap: () {
@@ -80,6 +84,7 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
                       ),
                     ),
                   ),
+                  /*
                   const SizedBox(
                     height: 20.0,
                   ),
@@ -161,6 +166,8 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
                       ),
                     ),
                   ),
+
+                  */
                 ],
               ),
             ),

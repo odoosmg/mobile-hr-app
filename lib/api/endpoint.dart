@@ -8,5 +8,6 @@ class Endpoint {
   static const leaveTypeList = "/soma-portal/my/leave_type";
   static const leaveRequest = "/soma-portal/my/leave/request",
       leaveMyList = "/soma-portal/my/leave/list";
-  static const employeeList = "/soma-portal/employee";
+  static const employeeList = "/soma-portal/employee",
+      employeeDetail = "/soma-portal/employee/detail";
 }
