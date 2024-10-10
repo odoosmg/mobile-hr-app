@@ -307,9 +307,9 @@ class _LeaveApplicationState extends State<LeaveApplication> {
 
   Widget _display() {
     List<LeaveModel> d = leaveBloc.state.myLeaveListResult!.data!.list!;
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: Measurement.heightPercent(context, 0.88),
+    return SizedBox(
+      height: Measurement.heightPercent(context, 0.88),
+      child: SingleChildScrollView(
         child: Column(
           children: [
             16.height,
