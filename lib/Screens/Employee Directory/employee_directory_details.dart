@@ -7,6 +7,7 @@ import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Screens/Employee%20Directory/bloc/employee_bloc.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
+import 'package:hrm_employee/Screens/components/ProfileImage/ui/profile_image.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../constant.dart';
@@ -42,7 +43,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
         iconTheme: const IconThemeData(color: Colors.white),
         title: ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: Image.asset('images/emp1.png'),
+          leading: ProfileImage(image: argData.image ?? ""),
           title: Text(
             argData.name ?? "",
             style: kTextStyle.copyWith(
@@ -55,10 +56,10 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                   style:
                       kTextStyle.copyWith(color: Colors.white.withOpacity(0.5)),
                 ),
-          trailing: const Icon(
-            Icons.close,
-            color: Colors.white,
-          ),
+          // trailing: const Icon(
+          //   Icons.close,
+          //   color: Colors.white,
+          // ),
         ),
       ),
       body: _blocBuilder(),

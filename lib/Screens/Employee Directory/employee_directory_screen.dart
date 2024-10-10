@@ -1,6 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +9,7 @@ import 'package:hrm_employee/Screens/Employee%20Directory/bloc/employee_bloc.dar
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
-import 'package:hrm_employee/utlis/app_color.dart';
+import 'package:hrm_employee/Screens/components/ProfileImage/ui/profile_image.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -261,12 +260,15 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
             random.nextInt(256),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(1.5),
-            child: CircleAvatar(
-              radius: 22,
-              backgroundColor: AppColor.kWhiteColor,
-              backgroundImage: MemoryImage(base64Decode(data.image ?? "")),
+            padding: const EdgeInsets.all(0),
+            child: ProfileImage(
+              image: data.image ?? "",
             ),
+            // child: CircleAvatar(
+            //   radius: 22,
+            //   backgroundColor: AppColor.kWhiteColor,
+            //   backgroundImage: MemoryImage(base64Decode(data.image ?? "")),
+            // ),
           ),
         ),
 
