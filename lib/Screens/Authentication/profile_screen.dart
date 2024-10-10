@@ -42,13 +42,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return CustomScaffold(
       appBar: CustomAppBar.titleActions(
         title: "Profile",
-        actions: [
-          const Image(
-            image: AssetImage('images/editprofile.png'),
-          ).onTap(() {
-            const EditProfile().launch(context);
-          }),
-        ],
+        // actions: [
+        //   const Image(
+        //     image: AssetImage('images/editprofile.png'),
+        //   ).onTap(() {
+        //     const EditProfile().launch(context);
+        //   }),
+        // ],
       ),
       body: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) =>

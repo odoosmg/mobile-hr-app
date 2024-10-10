@@ -319,10 +319,13 @@ class _LeaveApplicationState extends State<LeaveApplication> {
 
             /// Empty
             if (d.isEmpty)
-              Text(
-                "You don't have any request leave yet.",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.greyS13W400,
+              Padding(
+                padding: const EdgeInsets.only(top: Measurement.screenPadding),
+                child: Text(
+                  "You don't have any request leave yet.",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.greyS13W400,
+                ),
               ),
 
             ///

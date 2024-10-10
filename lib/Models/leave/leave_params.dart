@@ -9,7 +9,6 @@ class LeaveParams {
       "description": params.description,
       "half_day": params.isHalfDay,
       "request_date_from_period": params.datePeriod,
-      // "number_of_days": "0"
     };
     return d;
   }

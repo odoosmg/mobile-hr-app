@@ -20,7 +20,7 @@ class LeaveRepository extends BaseApi {
   }
 
   ///
-  Future<ApiResult> requestLeave(LeaveModel params) async {
+  Future<ApiResult<LeaveModel>> requestLeave(LeaveModel params) async {
     Map<String, dynamic> map = await request(
       uri: Endpoint.leaveRequest,
       params: LeaveParams.requestLeave(params),
@@ -28,7 +28,7 @@ class LeaveRepository extends BaseApi {
 
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
-      // data: LeaveModel.fromJson(map),
+      data: LeaveModel.fromJson(map['data'] ?? {}),
     );
   }
 

@@ -74,14 +74,7 @@ class _LeaveApplyState extends State<LeaveApply> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: CustomAppBar.titleActions(
-        title: "Leave Apply",
-        actions: const [
-          Image(
-            image: AssetImage('images/employeesearch.png'),
-          ),
-        ],
-      ),
+      appBar: CustomAppBar.titleActions(title: "Leave Apply"),
       body: _blocBuilder(),
     );
 
@@ -492,7 +485,6 @@ class _LeaveApplyState extends State<LeaveApply> {
       params.dateTo = params.dateFrom;
       params.datePeriod = datePeroid;
     }
-
     leaveBloc.add(LeaveSubmit(params: params));
   }
 
