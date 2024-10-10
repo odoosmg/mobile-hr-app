@@ -1,8 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:convert';
-import 'package:hrm_employee/Screens/Home/ui/menu_screen.dart';
-import 'package:hrm_employee/Screens/components/others/body_card.dart';
+
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,19 +16,19 @@ import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart'
 import 'package:hrm_employee/Screens/components/pages/home/attendance_list_card.dart';
 import 'package:hrm_employee/Screens/components/pages/home/attendance_static_chart.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
-
+import 'package:hrm_employee/Screens/Home/ui/menu_screen.dart';
+import 'package:hrm_employee/Screens/components/others/body_card.dart';
+import 'package:hrm_employee/Screens/components/others/profile_bar_listener.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
-import 'package:hrm_employee/Screens/Employee%20Directory/employee_directory_screen.dart';
+
 import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
-import 'package:hrm_employee/Screens/Leave%20Management/leave_management_screen.dart';
 import 'package:hrm_employee/Screens/Loan/loan_list.dart';
 import 'package:hrm_employee/Screens/Notice%20Board/notice_list.dart';
 import 'package:hrm_employee/Screens/Outwork%20Submission/outwork_list.dart';
 import 'package:hrm_employee/Screens/Salary%20Management/salary_statement_list.dart';
-import 'package:hrm_employee/Screens/Work%20Report/daily_work_report.dart';
 import 'package:hrm_employee/Screens/components/pages/home/in_out_card.dart';
 import 'package:hrm_employee/Screens/components/pages/home_drawer.dart';
 import 'package:hrm_employee/Services/app_services.dart';
@@ -37,12 +36,8 @@ import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/extensions/date_extension.dart';
 
 import 'package:hrm_employee/utlis/app_color.dart';
-import 'package:hrm_employee/utlis/measurement.dart';
 
-import '../../GlobalComponents/button_global.dart';
-import '../../GlobalComponents/purchase_model.dart';
 import '../../constant.dart';
-import '../Attendance Management/management_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -92,28 +87,32 @@ class _HomeScreenState extends State<HomeScreen> {
         toolbarHeight: 75,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: ListTile(
-          contentPadding: EdgeInsets.zero,
+        title: ProfileBarListener(
+          builder: (ses) {
+            return ListTile(
+              contentPadding: EdgeInsets.zero,
 
-          /// profile photo
-          leading: CircleAvatar(
-            radius: 20.0,
-            backgroundImage:
-                MemoryImage(base64Decode(session?.myProfile?.image ?? "")),
-          ),
+              /// profile photo
+              leading: CircleAvatar(
+                radius: 20.0,
+                backgroundImage:
+                    MemoryImage(base64Decode(session?.myProfile?.image ?? "")),
+              ),
 
-          /// name
-          title: Text(
-            'Hi, ${session?.myProfile?.name}',
-            style: kTextStyle.copyWith(color: Colors.white, fontSize: 12.0),
-          ),
+              /// name
+              title: Text(
+                'Hi, ${ses.myProfile?.name}',
+                style: kTextStyle.copyWith(color: Colors.white, fontSize: 12.0),
+              ),
 
-          /// Company
-          subtitle: Text(
-            '${session?.myProfile?.company}',
-            style: kTextStyle.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold),
-          ),
+              /// Company
+              subtitle: Text(
+                '${session?.myProfile?.company}',
+                style: kTextStyle.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            );
+          },
         ),
         actions: [
           GestureDetector(

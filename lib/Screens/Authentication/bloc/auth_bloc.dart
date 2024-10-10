@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:hrm_employee/Helper/k_enum.dart';
@@ -68,6 +66,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     ///
     await authRepository.myPf().then((value) {
+      if (value.isSuccess) {
+        /// Update session myProfile
+        Session s = AppServices.instance<DatabaseService>().getSession!;
+        s.myProfile!.name = value.data?.name ?? "";
+        s.myProfile!.image = value.data?.image ?? "";
+        s.myProfile!.department = value.data?.department ?? "";
+        AppServices.instance<DatabaseService>().putSession(s);
+      }
+
+      ///
       state.myProfileResult = value;
       emit(state.copyWith(state));
     });
