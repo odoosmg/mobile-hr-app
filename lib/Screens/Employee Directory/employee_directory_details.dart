@@ -64,35 +64,6 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
       ),
       body: _blocBuilder(),
     );
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: kMainColor,
-      appBar: AppBar(
-        backgroundColor: kMainColor,
-        elevation: 0.0,
-        titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: Image.asset('images/emp1.png'),
-          title: Text(
-            'Sahidul islam',
-            style: kTextStyle.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            'Designer',
-            style: kTextStyle.copyWith(color: Colors.white.withOpacity(0.5)),
-          ),
-          trailing: const Icon(
-            Icons.close,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: _blocBuilder(),
-    );
   }
 
   Widget _display(UserModel data) {
@@ -100,97 +71,68 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(
-          height: 20.0,
+          height: 10.0,
         ),
-        Expanded(
-          child: Container(
-            width: context.width(),
-            // padding: const EdgeInsets.all(20.0),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0)),
-              color: Color(0xFFFAFAFA),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Material(
-                  elevation: 2.0,
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        Text(
-                          'Personal Information',
-                          style: kTextStyle.copyWith(
-                              fontWeight: FontWeight.bold, fontSize: 20.0),
-                        ),
-                        const SizedBox(
-                          height: 30.0,
-                        ),
+        Container(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Personal Information',
+                style: kTextStyle.copyWith(
+                    fontWeight: FontWeight.bold, fontSize: 20.0),
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
 
-                        /// Email
-                        _appTextField(
-                          title: 'Email Address',
-                          value: data.email ?? "",
-                          showCursor: true,
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+              /// Email
+              _appTextField(
+                title: 'Email Address',
+                value: data.email ?? "",
+                showCursor: true,
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
 
-                        /// Phone
-                        _appTextField(
-                          title: 'Phone',
-                          value: data.phone ?? "",
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+              /// Phone
+              _appTextField(
+                title: 'Phone',
+                value: data.phone ?? "",
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
 
-                        /// Position
-                        _appTextField(
-                          title: 'Position',
-                          value: data.position ?? "",
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+              /// Position
+              _appTextField(
+                title: 'Position',
+                value: data.position ?? "",
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
 
-                        /// Department
-                        _appTextField(
-                          title: 'Department',
-                          value: data.department ?? "",
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+              /// Department
+              _appTextField(
+                title: 'Department',
+                value: data.department ?? "",
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
 
-                        /// Company
-                        _appTextField(
-                            title: 'Company', value: data.company ?? ""),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              /// Company
+              _appTextField(title: 'Company', value: data.company ?? ""),
+              const SizedBox(
+                height: 20.0,
+              ),
+            ],
           ),
         ),
       ],

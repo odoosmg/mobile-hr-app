@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
+import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/constant.dart';
@@ -31,62 +32,73 @@ class LeaveCard extends StatelessWidget {
             ),
             color: Colors.white,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                width: Measurement.widthPercent(context, 0.51),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Employee name
-                    Text(
-                      data.employeeName ?? "",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: kTextStyle.copyWith(
-                          color: kTitleColor, fontWeight: FontWeight.bold),
-                    ),
-
-                    /// Department
-                    Text(
-                      data.departmentName ?? "",
-                      style: kTextStyle.copyWith(
-                        color: kGreyTextColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// status
+                  /// Employee name
                   Text(
-                    data.status!,
+                    data.employeeName ?? "",
+                    // maxLines: 1,
+                    // overflow: TextOverflow.ellipsis,
                     style: kTextStyle.copyWith(
-                      color: data.getLeaveStatus()!.getColor,
-                    ),
+                        color: kTitleColor, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    width: 4.0,
-                  ),
-                  CircleAvatar(
-                    radius: 10.0,
-                    backgroundColor: data.getLeaveStatus()!.getColor,
 
-                    /// icon
-                    child: Icon(
-                      data.getLeaveStatus()!.iconData,
-                      color: Colors.white,
-                      size: 12,
-                    ),
+                  2.kHeight,
+
+                  /// Department
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          data.departmentName ?? "",
+                          style: kTextStyle.copyWith(
+                            color: kGreyTextColor,
+                          ),
+                        ),
+                      ),
+
+                      /// status
+                      _status(),
+                    ],
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _status() {
+    return Row(
+      children: [
+        Text(
+          data.status!,
+          style: kTextStyle.copyWith(
+            color: data.getLeaveStatus()!.getColor,
+          ),
+        ),
+        const SizedBox(
+          width: 4.0,
+        ),
+        CircleAvatar(
+          radius: 10.0,
+          backgroundColor: data.getLeaveStatus()!.getColor,
+
+          /// icon
+          child: Icon(
+            data.getLeaveStatus()!.iconData,
+            color: Colors.white,
+            size: 12,
+          ),
+        ),
+      ],
     );
   }
 }
