@@ -52,7 +52,7 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
   Widget _tableCalendar() {
     return TableCalendar(
       focusedDay: DateTime.now(),
-      firstDay: DateTime(2020),
+      firstDay: DateTime(2010),
       lastDay: DateTime(2050),
       headerStyle: const HeaderStyle(formatButtonVisible: false),
       weekendDays: const [DateTime.sunday],

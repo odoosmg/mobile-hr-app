@@ -31,50 +31,21 @@ class MenuScreen extends StatelessWidget {
       20.height,
       Row(
         children: [
-          Expanded(
-            child: Material(
-              elevation: 2.0,
-              child: GestureDetector(
-                onTap: () async {
-                  // bool isValid = await PurchaseModel().isActiveBuyer();
-                  // if (isValid) {
-                  //   const EmployeeManagement().launch(context);
-                  // } else {
-                  //   showLicense(context: context);
-                  // }
-                },
-                child: Container(
-                  width: context.width(),
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                        color: Color(0xFFFD72AF),
-                        width: 3.0,
-                      ),
-                    ),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Image(
-                          image: AssetImage('images/employeeattendace.png')),
-                      Text(
-                        'Employee',
-                        style: kTextStyle.copyWith(
-                            color: kTitleColor, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Attendance',
-                        style: kTextStyle.copyWith(
-                            color: kTitleColor, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
+          _material(
+            context: context,
+            image: const SizedBox(
+              height: 68,
+              child: Image(
+                image: AssetImage('images/calendar.png'),
+                height: 70,
               ),
             ),
+            borderColor: const Color.fromARGB(225, 226, 191, 116),
+            text1: "Public",
+            text2: "Holiday",
+            onTap: () {
+              const PublicHolidayScreen().launch(context);
+            },
           ),
           const SizedBox(
             width: 20.0,
@@ -210,6 +181,7 @@ class MenuScreen extends StatelessWidget {
           ),
         ],
       ),
+      /*
       20.height,
       Row(
         children: [
@@ -240,6 +212,7 @@ class MenuScreen extends StatelessWidget {
           ),
         ],
       ),
+      */
     ];
   }
 
