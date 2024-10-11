@@ -1,8 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'package:hrm_employee/GlobalComponents/button_global.dart';
-import 'package:hrm_employee/GlobalComponents/purchase_model.dart';
-import 'package:hrm_employee/Screens/Attendance%20Management/management_screen.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_application.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
@@ -14,9 +10,6 @@ import 'package:hrm_employee/constant.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hrm_employee/Screens/Employee%20Directory/employee_directory_screen.dart';
-
-import 'package:hrm_employee/Screens/Leave%20Management/leave_management_screen.dart';
-
 import 'package:hrm_employee/Screens/Work%20Report/daily_work_report.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -216,6 +209,83 @@ class MenuScreen extends StatelessWidget {
           ),
         ],
       ),
+      20.height,
+      Row(
+        children: [
+          _material(
+            context: context,
+            image: const Image(
+              image: AssetImage('images/calendar.png'),
+              height: 70,
+            ),
+            borderColor: const Color.fromARGB(225, 226, 191, 116),
+            text1: "Public",
+            text2: "Holiday",
+          ),
+          20.width,
+
+          /// Empty for space
+          Container(
+            child: _material(
+              context: context,
+              image: Container(),
+              borderColor: white,
+              text1: "",
+              text2: "",
+              elevation: 0,
+            ),
+          ),
+        ],
+      ),
     ];
+  }
+
+  Widget _material({
+    required BuildContext context,
+    required Widget image,
+    required String text1,
+    required String text2,
+    required Color borderColor,
+    double elevation = 2.0,
+  }) {
+    return Expanded(
+      child: Material(
+        elevation: elevation,
+        child: GestureDetector(
+          onTap: () {
+            const LeaveApplication().launch(context);
+          },
+          child: Container(
+            width: context.width(),
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(
+                  color: borderColor,
+                  width: 3.0,
+                ),
+              ),
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                image,
+                Text(
+                  text1,
+                  style: kTextStyle.copyWith(
+                      color: kTitleColor, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  text2,
+                  style: kTextStyle.copyWith(
+                      color: kTitleColor, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

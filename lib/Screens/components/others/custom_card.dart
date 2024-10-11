@@ -8,6 +8,7 @@ class CustomCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
   final double? width;
+  final double? height;
   final BoxBorder? border;
   const CustomCard({
     super.key,
@@ -17,6 +18,7 @@ class CustomCard extends StatelessWidget {
     this.padding,
     this.borderRadius,
     this.width = double.infinity,
+    this.height,
     this.border,
   });
 
@@ -25,6 +27,7 @@ class CustomCard extends StatelessWidget {
     return Container(
       padding: padding ?? const EdgeInsets.all(10),
       width: width,
+      height: height,
       decoration: BoxDecoration(
         color: background ?? Colors.white,
         border: border,
