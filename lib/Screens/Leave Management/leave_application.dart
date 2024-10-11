@@ -57,203 +57,6 @@ class _LeaveApplicationState extends State<LeaveApplication> {
         ),
       ),
     );
-
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => const LeaveApply().launch(context),
-        backgroundColor: kMainColor,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
-      resizeToAvoidBottomInset: false,
-      backgroundColor: kMainColor,
-      appBar: AppBar(
-        backgroundColor: kMainColor,
-        elevation: 0.0,
-        titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: Text(
-          'Leave List',
-          maxLines: 2,
-          style: kTextStyle.copyWith(
-              color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        actions: const [
-          Image(
-            image: AssetImage('images/employeesearch.png'),
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20.0,
-          ),
-          Expanded(
-            child: Container(
-              width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0)),
-                color: Colors.white,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        // const DailyWorkReport().launch(context);
-                      },
-                      child: Container(
-                        width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            left: BorderSide(
-                              color: Color(0xFF7D6AEF),
-                              width: 3.0,
-                            ),
-                          ),
-                          color: Colors.white,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Annual Leave',
-                              maxLines: 2,
-                              style: kTextStyle.copyWith(
-                                  color: kTitleColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'From 16, May 2021 to 20, May 2021',
-                              style: kTextStyle.copyWith(
-                                color: kGreyTextColor,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  '(Apply Date) 15, May 2021',
-                                  style: kTextStyle.copyWith(
-                                    color: kGreyTextColor,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  'Approved',
-                                  style: kTextStyle.copyWith(
-                                    color: kGreenColor,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 4.0,
-                                ),
-                                const CircleAvatar(
-                                  radius: 10.0,
-                                  backgroundColor: kGreenColor,
-                                  child: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        // const DailyWorkReport().launch(context);
-                      },
-                      child: Container(
-                        width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            left: BorderSide(
-                              color: kAlertColor,
-                              width: 3.0,
-                            ),
-                          ),
-                          color: Colors.white,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Exam Leave',
-                              maxLines: 2,
-                              style: kTextStyle.copyWith(
-                                  color: kTitleColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'From 16, May 2021 to 20, May 2021',
-                              style: kTextStyle.copyWith(
-                                color: kGreyTextColor,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  '(Apply Date) 15, May 2021',
-                                  style: kTextStyle.copyWith(
-                                    color: kGreyTextColor,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  'Pending',
-                                  style: kTextStyle.copyWith(
-                                    color: kAlertColor,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 4.0,
-                                ),
-                                const CircleAvatar(
-                                  radius: 10.0,
-                                  backgroundColor: kAlertColor,
-                                  child: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _kbuilder() {
@@ -307,14 +110,15 @@ class _LeaveApplicationState extends State<LeaveApplication> {
 
   Widget _display() {
     List<LeaveModel> d = leaveBloc.state.myLeaveListResult!.data!.list!;
+
     return SizedBox(
       height: Measurement.heightPercent(context, 0.88),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            16.height,
+            8.height,
             _count(),
-            16.height,
+            8.height,
             const Xborder(),
 
             /// Empty
@@ -343,14 +147,39 @@ class _LeaveApplicationState extends State<LeaveApplication> {
   Widget _count() {
     List<LeaveModel> d =
         leaveBloc.state.myLeaveListResult?.data?.leaveAllocatedSummary ?? [];
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        for (int i = 0; i < d.length; i++)
-          Text("${d[i].name} : ${d[i].allocate}",
-              style: Theme.of(context).textTheme.blackS12W400),
-      ],
+
+    return Container(
+      alignment: Alignment.center,
+      height: 30 * _caculateTotalRow(d.length).toDouble(),
+      width: double.infinity,
+      child: GridView.count(
+        primary: false,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisCount: 3,
+        childAspectRatio: 5, // space item
+        children: [
+          for (int i = 0; i < d.length; i++)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text("${d[i].name} : ${d[i].remaining}",
+                  style: Theme.of(context).textTheme.blackS12W400),
+            ),
+        ],
+      ),
     );
+  }
+
+  int _caculateTotalRow(int records) {
+    int v = records ~/ 3;
+
+    if (v == 0) {
+      return 1;
+    }
+
+    if (records % 3 > 0) {
+      v += 1;
+    }
+    return v;
   }
 
   @override
