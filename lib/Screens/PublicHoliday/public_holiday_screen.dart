@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Screens/PublicHoliday/Bloc/public_holiday_bloc.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 import 'package:hrm_employee/Screens/components/others/xborder.dart';
@@ -15,6 +17,14 @@ class PublicHolidayScreen extends StatefulWidget {
 }
 
 class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
+  late PublicHolidayBloc publicHolidayBloc;
+  @override
+  void initState() {
+    publicHolidayBloc = context.read<PublicHolidayBloc>();
+    publicHolidayBloc.add(PublicHolidayByYear());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -23,9 +33,8 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
         children: [
           _tableCalendar(),
           const Padding(
-            padding: EdgeInsets.only(
-                top: Measurement.screenPadding,
-                bottom: Measurement.screenPadding),
+            padding:
+                EdgeInsets.only(top: Measurement.screenPadding, bottom: 10),
             child: Xborder(),
           ),
 
@@ -104,7 +113,7 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
 
   Widget _dayCell() {
     return Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(top: 16, left: 10),
       child: Row(
         children: [
           Column(

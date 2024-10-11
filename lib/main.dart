@@ -10,10 +10,12 @@ import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Repository/employee_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
 import 'package:hrm_employee/Repository/leave_repository.dart';
+import 'package:hrm_employee/Repository/public_holiday_repository.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Screens/Employee%20Directory/bloc/employee_bloc.dart';
 import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
+import 'package:hrm_employee/Screens/PublicHoliday/Bloc/public_holiday_bloc.dart';
 import 'package:hrm_employee/Screens/components/snackbar/connectivity_snackar.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/global_scaffold_messenger_service.dart';
@@ -53,6 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => EmployeeBloc(EmployeeRepository()),
+        ),
+        BlocProvider(
+          create: (context) => PublicHolidayBloc(PublicHolidayRepository()),
         ),
       ],
       child: MaterialApp(

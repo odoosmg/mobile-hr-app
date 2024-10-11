@@ -10,4 +10,6 @@ class Endpoint {
       leaveMyList = "/soma-portal/my/leave/list";
   static const employeeList = "/soma-portal/employee",
       employeeDetail = "/soma-portal/employee/detail";
+
+  static const publicHolidayByYear = "/soma-portal/public-holiday/year";
 }
