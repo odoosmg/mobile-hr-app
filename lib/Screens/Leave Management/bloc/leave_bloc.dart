@@ -90,20 +90,26 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       if (value.isSuccess) {
         /// use delay when emit multi state the same time
         await Future.delayed(const Duration(seconds: 0)).then((_) {
-          event.params.state = 'To Approve';
-          event.params.requestDateFromPeriod =
-              value.data?.requestDateFromPeriod ?? "";
-          event.params.numberOfDays = value.data?.numberOfDays ?? 0;
+          final p = event.params;
+          p.state = 'To Approve'; // status pending
+          p.numberOfDays = value.data?.numberOfDays ?? 0;
+
+          /// get type name
+          p.leaveTypeName = (state.listTypeResult?.data?.leaveTypeList ?? [])
+                  .where((e) => e.id == p.leaveTypeId)
+                  .firstOrNull
+                  ?.name ??
+              "";
 
           /// add item to list
-          state.myLeaveListResult!.data!.list!.insert(0, event.params);
+          state.myLeaveListResult!.data!.list!.insert(0, p);
           state.stateType = LeaveStateType.myLeaveList;
           emit(state.copyWith(state));
         });
       }
 
+      ///
       await Future.delayed(const Duration(seconds: 0)).then((_) {
-        ///
         state.stateType = LeaveStateType.submit;
         state.submitLeaveResult = value;
         emit(state.copyWith(state));

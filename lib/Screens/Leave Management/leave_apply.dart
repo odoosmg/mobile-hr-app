@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
-import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
@@ -21,7 +19,8 @@ import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
-
+import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
+import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 import '../../constant.dart';
 
 class LeaveApply extends StatefulWidget {
@@ -53,11 +52,13 @@ class _LeaveApplyState extends State<LeaveApply> {
   TextEditingController dateToTEC = TextEditingController();
   TextEditingController descTEC = TextEditingController();
   int leaveTypeId = 4; // init id
-  String datePeroid = "am"; // default am
+  // String datePeroid = "am"; // default am
   String formatLabelDate = "yyyy-MM-dd";
-
+  late SelectFormModel datePeriod;
   @override
   void initState() {
+    datePeriod = amPmList[0];
+
     leaveBloc = context.read<LeaveBloc>();
 
     /// init default date and calculate day count
@@ -331,8 +332,8 @@ class _LeaveApplyState extends State<LeaveApply> {
             CustomLoading.hide(context);
             if (result.isSuccess) {
               /// success
-              // Navigator.of(context).pop();
-              CustomDialog.success(context, "Request submitted!");
+              Navigator.of(context).pop();
+              // CustomDialog.success(context, "Request submitted!");
             } else {
               /// error
               CustomDialog.error(context,
@@ -428,7 +429,7 @@ class _LeaveApplyState extends State<LeaveApply> {
       labelText: "AM / PM",
       initId: 0,
       onSelect: (d) {
-        datePeroid = d.keyword!;
+        datePeriod = d;
       },
     );
   }
@@ -483,7 +484,8 @@ class _LeaveApplyState extends State<LeaveApply> {
     /// half day, set dateFrom and dateTo to the same day
     if (params.isHalfDay!) {
       params.dateTo = params.dateFrom;
-      params.datePeriod = datePeroid;
+      params.datePeriod = datePeriod.keyword;
+      params.requestDateFromPeriod = datePeriod.name; // to display back at list
     }
     leaveBloc.add(LeaveSubmit(params: params));
   }
