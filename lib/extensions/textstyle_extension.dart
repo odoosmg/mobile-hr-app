@@ -22,7 +22,8 @@ extension TextstyleExtension on TextTheme {
   ///*************************
   ///           BLACK
   ///*************************/
-
+  TextStyle get blackS10W400 =>
+      blackColor.copyWith(fontSize: 10, fontWeight: FontWeight.w400);
   TextStyle get blackS12W400 =>
       blackColor.copyWith(fontSize: 12, fontWeight: FontWeight.w400);
   TextStyle get blackS12W700 =>

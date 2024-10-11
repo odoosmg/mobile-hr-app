@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:hrm_employee/Screens/Leave%20Management/leave_application.dart';
+import 'package:hrm_employee/Screens/PublicHoliday/public_holiday_screen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
@@ -213,15 +214,17 @@ class MenuScreen extends StatelessWidget {
       Row(
         children: [
           _material(
-            context: context,
-            image: const Image(
-              image: AssetImage('images/calendar.png'),
-              height: 70,
-            ),
-            borderColor: const Color.fromARGB(225, 226, 191, 116),
-            text1: "Public",
-            text2: "Holiday",
-          ),
+              context: context,
+              image: const Image(
+                image: AssetImage('images/calendar.png'),
+                height: 70,
+              ),
+              borderColor: const Color.fromARGB(225, 226, 191, 116),
+              text1: "Public",
+              text2: "Holiday",
+              onTap: () {
+                const PublicHolidayScreen().launch(context);
+              }),
           20.width,
 
           /// Empty for space
@@ -247,14 +250,13 @@ class MenuScreen extends StatelessWidget {
     required String text2,
     required Color borderColor,
     double elevation = 2.0,
+    Function()? onTap,
   }) {
     return Expanded(
       child: Material(
         elevation: elevation,
         child: GestureDetector(
-          onTap: () {
-            const LeaveApplication().launch(context);
-          },
+          onTap: onTap,
           child: Container(
             width: context.width(),
             padding: const EdgeInsets.all(10.0),
