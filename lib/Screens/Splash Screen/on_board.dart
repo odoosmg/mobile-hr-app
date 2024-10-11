@@ -80,7 +80,7 @@ class _OnBoardState extends State<OnBoard> {
                 _onBoardClose();
 
                 /// sign-in page
-                const SignIn().launch(context);
+                const SignIn().launch(context, isNewTask: true);
               },
               child: Text(
                 'Skip',
@@ -223,13 +223,13 @@ class _OnBoardState extends State<OnBoard> {
                                         duration:
                                             const Duration(microseconds: 3000),
                                         curve: Curves.bounceInOut)
-                                    : Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) {
-                                          _onBoardClose();
-                                          return const SignIn();
-                                        }),
-                                      );
+                                    : () {
+                                        _onBoardClose();
+
+                                        /// sign-in page
+                                        const SignIn()
+                                            .launch(context, isNewTask: true);
+                                      };
                               });
 
                               /// Default goto select type

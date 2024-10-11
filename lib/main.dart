@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
           listener: (context, state) {
             // print("listener ==============");
           },
-          child: Scaffold(body: const SplashScreen()),
+          child: const Scaffold(body: SplashScreen()),
         ),
       ),
     );

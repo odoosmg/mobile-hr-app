@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hrm_employee/Screens/components/pages/home/leave_card.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
@@ -224,6 +226,7 @@ class AttendanceListCard extends StatelessWidget {
         /// number
         Text(
           ': ${str[1]}',
+          overflow: TextOverflow.clip,
           style: Theme.of(context).textTheme.blackS13W400,
         ),
       ],
@@ -240,7 +243,7 @@ class AttendanceListCard extends StatelessWidget {
       Row(
         children: [
           SizedBox(
-            width: Measurement.widthPercent(context, 0.5),
+            width: Measurement.widthPercent(context, 0.45),
             child: Text(
               title,
               style: Theme.of(context).textTheme.blackS13W500,
