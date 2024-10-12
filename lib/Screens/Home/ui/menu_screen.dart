@@ -37,7 +37,7 @@ class MenuScreen extends StatelessWidget {
               height: 68,
               child: Image(
                 image: AssetImage('images/calendar.png'),
-                height: 70,
+                // height: 100,
               ),
             ),
             borderColor: const Color.fromARGB(225, 226, 191, 116),

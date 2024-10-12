@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/PublicHoliday/public_holiday_model.dart';
 import 'package:hrm_employee/Screens/PublicHoliday/Bloc/public_holiday_bloc.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 import 'package:hrm_employee/Screens/components/others/xborder.dart';
+import 'package:hrm_employee/extensions/date_extension.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
@@ -18,10 +22,15 @@ class PublicHolidayScreen extends StatefulWidget {
 
 class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
   late PublicHolidayBloc publicHolidayBloc;
+
+  /// for index
+  late int month;
+
   @override
   void initState() {
     publicHolidayBloc = context.read<PublicHolidayBloc>();
-    publicHolidayBloc.add(PublicHolidayByYear());
+    month = DateTime.now().month;
+    publicHolidayBloc.add(PublicHolidayByYear(DateTime.now().year.toString()));
     super.initState();
   }
 
@@ -37,13 +46,7 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
                 EdgeInsets.only(top: Measurement.screenPadding, bottom: 10),
             child: Xborder(),
           ),
-
-          ///
-          _dayCell(),
-
-          _dayCell(),
-
-          _dayCell(),
+          _daysBloc(),
         ],
       ),
     );
@@ -82,6 +85,29 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
     );
   }
 
+  Widget _daysBloc() {
+    return BlocBuilder<PublicHolidayBloc, PublicHolidayState>(
+        builder: (ctx, state) {
+      return KBuilder(
+        status: state.listResult!.status!,
+        builder: (st) {
+          return st == ApiStatus.loading
+              ? Container()
+              : _holiday(
+                  state.listResult?.data?.list![month - 1].holidays ?? []);
+        },
+      );
+    });
+  }
+
+  Widget _holiday(List<PublicHolidayModel> holidays) {
+    return Column(
+      children: [
+        for (int i = 0; i < holidays.length; i++) _dayCell(holidays[i])
+      ],
+    );
+  }
+
   Widget _calendarDeco({
     required int day,
     Color? color,
@@ -111,26 +137,33 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
     );
   }
 
-  Widget _dayCell() {
+  Widget _dayCell(PublicHolidayModel data) {
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 10),
       child: Row(
         children: [
           Column(
             children: [
+              /// day
               Text(
-                "12",
+                DateTime.parse(data.date!)
+                    .dateFormat(toFormat: "dd")
+                    .toString(),
                 style: Theme.of(context).textTheme.blackS13W700,
               ),
+
+              /// day of the week, Mon Tue...
               Text(
-                "Tue",
+                DateTime.parse(data.date!)
+                    .dateFormat(toFormat: "EEE")
+                    .toString(),
                 style: Theme.of(context).textTheme.blackS10W400,
               ),
             ],
           ),
           Measurement.screenPadding.width,
           Expanded(
-            child: Text("Khmer New Year",
+            child: Text(data.name ?? "",
                 style: Theme.of(context).textTheme.blackS14W500),
           )
         ],
