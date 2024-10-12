@@ -12,6 +12,7 @@ class PublicHolidayBloc extends Bloc<PublicHolidayEvent, PublicHolidayState> {
   PublicHolidayBloc(this.publicHolidayRepository)
       : super(PublicHolidayInitial()) {
     on<PublicHolidayByYear>(_holidayByYear);
+    on<PublicHolidayCalendarHolidays>(_calendarHolidays);
   }
 
   void _holidayByYear(
@@ -24,5 +25,12 @@ class PublicHolidayBloc extends Bloc<PublicHolidayEvent, PublicHolidayState> {
       state.listResult = value;
       emit(state.copyWith(state));
     });
+  }
+
+  void _calendarHolidays(PublicHolidayCalendarHolidays event,
+      Emitter<PublicHolidayState> emit) async {
+    state.stateType = PublicHolidayStateType.calendarHolidays;
+    state.calendarHolidays = state.listResult!.data!.list![event.index];
+    emit(state.copyWith(state));
   }
 }
