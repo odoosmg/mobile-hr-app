@@ -127,6 +127,8 @@ extension TextstyleExtension on TextTheme {
       greyColor.copyWith(fontSize: 13, fontWeight: FontWeight.w400);
 
   TextStyle get greyS14W400 => greyS13W400.copyWith(fontSize: 14);
+  TextStyle get greyS14W700 =>
+      greyS14W400.copyWith(fontWeight: FontWeight.w700);
 
   TextStyle get greyS13W500 =>
       greyS13W400.copyWith(fontWeight: FontWeight.w500);

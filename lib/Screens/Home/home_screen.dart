@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:hrm_employee/Screens/components/pages/home/select-company/ui/select_company.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -114,6 +115,9 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
+        actions: [
+          SelectCompany(),
+        ],
         // actions: [
         //   GestureDetector(
         //     onTap: () {

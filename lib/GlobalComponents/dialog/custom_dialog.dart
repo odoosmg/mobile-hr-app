@@ -96,6 +96,11 @@ class CustomDialog {
     return showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
+          print(" a1.value == ${a1.value}");
+          return Container(
+            height: a1.value,
+            child: child,
+          );
           return Transform.scale(
             scale: a1.value,
             child: Opacity(
