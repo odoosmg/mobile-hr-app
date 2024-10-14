@@ -21,7 +21,13 @@ class PublicHolidayBloc extends Bloc<PublicHolidayEvent, PublicHolidayState> {
     state.listResult!.status = ApiStatus.loading;
     emit(state.copyWith(state));
 
-    await publicHolidayRepository.byYear(event.year).then((value) {
+    await publicHolidayRepository.byYear(event.year.toString()).then((value) {
+      /// after get data, rebuild calendar
+      if (value.isSuccess) {
+        state.stateType = PublicHolidayStateType.calendarHolidays;
+        state.calendarHolidays = state.listResult!.data!.list![event.month - 1];
+        emit(state.copyWith(state));
+      }
       state.listResult = value;
       emit(state.copyWith(state));
     });
@@ -30,7 +36,7 @@ class PublicHolidayBloc extends Bloc<PublicHolidayEvent, PublicHolidayState> {
   void _calendarHolidays(PublicHolidayCalendarHolidays event,
       Emitter<PublicHolidayState> emit) async {
     state.stateType = PublicHolidayStateType.calendarHolidays;
-    state.calendarHolidays = state.listResult!.data!.list![event.index];
+    state.calendarHolidays = state.listResult!.data!.list![event.month - 1];
     emit(state.copyWith(state));
   }
 }

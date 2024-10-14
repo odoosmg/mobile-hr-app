@@ -33,7 +33,8 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
   void initState() {
     publicHolidayBloc = context.read<PublicHolidayBloc>();
 
-    publicHolidayBloc.add(PublicHolidayByYear(focusedDate.year.toString()));
+    publicHolidayBloc
+        .add(PublicHolidayByYear(focusedDate.year, focusedDate.month));
     super.initState();
   }
 
@@ -56,58 +57,47 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
   }
 
   Widget _tableCalendar() {
-    return BlocBuilder<PublicHolidayBloc, PublicHolidayState>(
-      buildWhen: (previous, current) {
-        return current.stateType == PublicHolidayStateType.calendarHolidays;
-      },
-      builder: (context, state) {
-        return TableCalendar(
-          focusedDay: focusedDate,
-          firstDay: DateTime(2010),
-          lastDay: DateTime(2050),
-          headerStyle: const HeaderStyle(formatButtonVisible: false),
-          weekendDays: const [DateTime.sunday],
-          daysOfWeekStyle: DaysOfWeekStyle(
-            // weekdayStyle: Get.textTheme.blackS13W400NoChange,
-            weekendStyle: Theme.of(context).textTheme.redS13W400,
-          ),
-          onPageChanged: (date) {
-            focusedDate = date;
-            publicHolidayBloc.add(PublicHolidayCalendarHolidays(date.month));
-          },
-          calendarBuilders: CalendarBuilders(
-            /// Today
-            todayBuilder: (context, date, event) {
-              return _calendarDeco(
-                day: date.day,
-                dayTextStyle: Theme.of(context).textTheme.redS13W400.copyWith(
-                    color: _isHoliday(date)
-                        ? AppColor.kDangerColor
-                        : AppColor.kBlackColor),
-                isDecoration: false,
-              );
-            },
+    return TableCalendar(
+      focusedDay: focusedDate,
+      firstDay: DateTime(2010),
+      lastDay: DateTime(2050),
+      headerStyle: const HeaderStyle(formatButtonVisible: false),
+      weekendDays: const [DateTime.sunday],
+      daysOfWeekStyle: DaysOfWeekStyle(
+        // weekdayStyle: Get.textTheme.blackS13W400NoChange,
+        weekendStyle: Theme.of(context).textTheme.redS13W400,
+      ),
+      onPageChanged: (date) async {
+        /// New year
+        if (focusedDate.year != date.year) {
+          publicHolidayBloc.add(PublicHolidayByYear(date.year, date.month));
+        }
 
-            /// Default
-            defaultBuilder: (context, date, focusedDay) {
-              return _calendarDeco(
-                day: date.day,
-                dayTextStyle: Theme.of(context).textTheme.redS13W400.copyWith(
-                    color: _isHoliday(date)
-                        ? AppColor.kDangerColor
-                        : AppColor.kBlackColor),
-                isDecoration: false,
-              );
-            },
-          ),
-        );
+        ///
+        focusedDate = date;
+
+        // await Future.delayed(Duration(milliseconds: 500));
+        publicHolidayBloc.add(PublicHolidayCalendarHolidays(date.month));
       },
+      calendarBuilders: CalendarBuilders(
+        /// Today
+        todayBuilder: (context, date, event) {
+          return _calendarDays(date);
+        },
+
+        /// Default
+        defaultBuilder: (context, date, focusedDay) {
+          return _calendarDays(date);
+        },
+      ),
     );
   }
 
   Widget _daysBloc() {
     return BlocBuilder<PublicHolidayBloc, PublicHolidayState>(
-        builder: (ctx, state) {
+        buildWhen: (previous, current) {
+      return current.stateType == PublicHolidayStateType.calendarHolidays;
+    }, builder: (ctx, state) {
       return KBuilder(
         status: state.listResult!.status!,
         builder: (st) {
@@ -124,7 +114,7 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
   Widget _holiday(List<PublicHolidayModel> holidays) {
     return Column(
       children: [
-        for (int i = 0; i < holidays.length; i++) _dayCell(holidays[i])
+        for (int i = 0; i < holidays.length; i++) _holidayCell(holidays[i])
       ],
     );
   }
@@ -158,7 +148,7 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
     );
   }
 
-  Widget _dayCell(PublicHolidayModel data) {
+  Widget _holidayCell(PublicHolidayModel data) {
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 10),
       child: Row(
@@ -170,16 +160,15 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
                 DateTime.parse(data.date!)
                     .dateFormat(toFormat: "dd")
                     .toString(),
-                style: Theme.of(context).textTheme.blackS13W700,
+                style: Theme.of(context).textTheme.blackS14W700,
               ),
 
               /// day of the week, Mon Tue...
               Text(
-                DateTime.parse(data.date!)
-                    .dateFormat(toFormat: "EEE")
-                    .toString(),
-                style: Theme.of(context).textTheme.blackS10W400,
-              ),
+                  DateTime.parse(data.date!)
+                      .dateFormat(toFormat: "EEE")
+                      .toString(),
+                  style: Theme.of(context).textTheme.blackS10W400),
             ],
           ),
           Measurement.screenPadding.width,
@@ -192,18 +181,27 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
     );
   }
 
-  bool _isHoliday(DateTime date) {
-    List<PublicHolidayModel> holidayDays =
-        publicHolidayBloc.state.calendarHolidays?.holidays ?? [];
-    print("length === ${holidayDays.length}");
-    for (int i = 0; i < holidayDays.length; i++) {
-      print("=== ${holidayDays[i].date}");
-    }
-    // PublicHolidayModel isHoliday = holidayDays
-    //     .where((element) =>
-    //         element.date == date.dateFormat(toFormat: "yyyy-MM-dd"))
-    //     .first;
+  ///
+  Widget _calendarDays(DateTime date) {
+    return BlocBuilder<PublicHolidayBloc, PublicHolidayState>(
+        buildWhen: (previous, current) {
+      return current.stateType == PublicHolidayStateType.calendarHolidays;
+    }, builder: (ctx, state) {
+      return _calendarDeco(
+        day: date.day,
+        dayTextStyle: Theme.of(context).textTheme.redS13W400.copyWith(
+            color: _isHoliday(date) // true = red
+                ? AppColor.kDangerColor
+                : AppColor.kBlackColor),
+        isDecoration: false,
+      );
+    });
+  }
 
-    return false;
+  bool _isHoliday(DateTime date) {
+    List<String> holidayDays =
+        publicHolidayBloc.state.calendarHolidays?.getListStrDates() ?? [];
+
+    return holidayDays.contains(date.dateFormat(toFormat: "yyyy-MM-dd"));
   }
 }
