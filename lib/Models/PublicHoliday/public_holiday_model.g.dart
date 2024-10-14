@@ -17,6 +17,9 @@ PublicHolidayModel _$PublicHolidayModelFromJson(Map<String, dynamic> json) =>
           .toList()
       ..holidays = (json['holidays'] as List<dynamic>?)
           ?.map((e) => PublicHolidayModel.fromJson(e as Map<String, dynamic>))
+          .toList()
+      ..listStrDates = (json['list_str_dates'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList();
 
 Map<String, dynamic> _$PublicHolidayModelToJson(PublicHolidayModel instance) =>
@@ -27,4 +30,5 @@ Map<String, dynamic> _$PublicHolidayModelToJson(PublicHolidayModel instance) =>
       'month': instance.month,
       'list': instance.list,
       'holidays': instance.holidays,
+      'list_str_dates': instance.listStrDates,
     };

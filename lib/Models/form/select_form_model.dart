@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -15,6 +16,9 @@ class SelectFormModel {
 
   @HiveField(2)
   String? keyword;
+
+  @HiveField(3)
+  bool? isSelected;
 
   SelectFormModel();
 

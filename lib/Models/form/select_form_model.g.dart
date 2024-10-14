@@ -19,19 +19,22 @@ class SelectFormModelAdapter extends TypeAdapter<SelectFormModel> {
     return SelectFormModel()
       ..id = fields[0] as int?
       ..name = fields[1] as String?
-      ..keyword = fields[2] as String?;
+      ..keyword = fields[2] as String?
+      ..isSelected = fields[3] == null ? false : fields[3] as bool?;
   }
 
   @override
   void write(BinaryWriter writer, SelectFormModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.keyword);
+      ..write(obj.keyword)
+      ..writeByte(3)
+      ..write(obj.isSelected);
   }
 
   @override
@@ -53,11 +56,13 @@ SelectFormModel _$SelectFormModelFromJson(Map<String, dynamic> json) =>
     SelectFormModel()
       ..id = (json['id'] as num?)?.toInt()
       ..name = json['name'] as String?
-      ..keyword = json['keyword'] as String?;
+      ..keyword = json['keyword'] as String?
+      ..isSelected = json['is_selected'] as bool?;
 
 Map<String, dynamic> _$SelectFormModelToJson(SelectFormModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'keyword': instance.keyword,
+      'is_selected': instance.isSelected,
     };

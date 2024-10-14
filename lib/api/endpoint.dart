@@ -12,4 +12,5 @@ class Endpoint {
       employeeDetail = "/soma-portal/employee/detail";
 
   static const publicHolidayByYear = "/soma-portal/public-holiday/year";
+  static const companyList = "/soma-portal/my/companies";
 }

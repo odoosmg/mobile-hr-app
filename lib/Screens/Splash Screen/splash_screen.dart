@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/GlobalComponents/others/loading_inidicator.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
+import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Screens/Home/home_screen.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
@@ -37,6 +40,8 @@ class _SplashScreenState extends State<SplashScreen> {
         logoSize = 1;
       });
     });
+
+    context.read<FormDataBloc>().add(FormDataCompanyList());
 
     await Future.delayed(const Duration(milliseconds: 2400));
 

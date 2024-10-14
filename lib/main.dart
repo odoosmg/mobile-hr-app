@@ -6,8 +6,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hrm_employee/ConnectionCubit/connectivity_cubit.dart';
+import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Repository/employee_repository.dart';
+import 'package:hrm_employee/Repository/form_data_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
 import 'package:hrm_employee/Repository/leave_repository.dart';
 import 'package:hrm_employee/Repository/public_holiday_repository.dart';
@@ -58,6 +60,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => PublicHolidayBloc(PublicHolidayRepository()),
+        ),
+        BlocProvider(
+          create: (context) => FormDataBloc(FormDataRepository()),
         ),
       ],
       child: MaterialApp(
