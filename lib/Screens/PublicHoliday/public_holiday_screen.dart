@@ -33,8 +33,7 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
   void initState() {
     publicHolidayBloc = context.read<PublicHolidayBloc>();
 
-    publicHolidayBloc
-        .add(PublicHolidayByYear(focusedDate.year, focusedDate.month));
+    _getData();
     super.initState();
   }
 
@@ -70,7 +69,8 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
       onPageChanged: (date) async {
         /// New year
         if (focusedDate.year != date.year) {
-          publicHolidayBloc.add(PublicHolidayByYear(date.year, date.month));
+          focusedDate = date;
+          _getData();
         }
 
         ///
@@ -98,8 +98,10 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
         buildWhen: (previous, current) {
       return current.stateType == PublicHolidayStateType.calendarHolidays;
     }, builder: (ctx, state) {
+      print("build ==== ${state.listResult!.status!}");
       return KBuilder(
         status: state.listResult!.status!,
+        onRetry: _getData,
         builder: (st) {
           return st == ApiStatus.loading
               ? Container()
@@ -203,5 +205,17 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
         publicHolidayBloc.state.calendarHolidays?.getListStrDates() ?? [];
 
     return holidayDays.contains(date.dateFormat(toFormat: "yyyy-MM-dd"));
+  }
+
+  void _getData() {
+    publicHolidayBloc.add(
+      PublicHolidayByYear(focusedDate.year, focusedDate.month),
+    );
+  }
+
+  @override
+  void dispose() {
+    publicHolidayBloc.add(PublicHolidayDispose());
+    super.dispose();
   }
 }

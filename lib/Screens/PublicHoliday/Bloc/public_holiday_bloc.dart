@@ -13,6 +13,7 @@ class PublicHolidayBloc extends Bloc<PublicHolidayEvent, PublicHolidayState> {
       : super(PublicHolidayInitial()) {
     on<PublicHolidayByYear>(_holidayByYear);
     on<PublicHolidayCalendarHolidays>(_calendarHolidays);
+    on<PublicHolidayDispose>(_dispose);
   }
 
   void _holidayByYear(
@@ -21,14 +22,23 @@ class PublicHolidayBloc extends Bloc<PublicHolidayEvent, PublicHolidayState> {
     state.listResult!.status = ApiStatus.loading;
     emit(state.copyWith(state));
 
-    await publicHolidayRepository.byYear(event.year.toString()).then((value) {
+    await publicHolidayRepository
+        .byYear(event.year.toString())
+        .then((value) async {
+      state.listResult = value;
+
       /// after get data, rebuild calendar
+      state.stateType = PublicHolidayStateType.calendarHolidays;
       if (value.isSuccess) {
-        state.stateType = PublicHolidayStateType.calendarHolidays;
         state.calendarHolidays = state.listResult!.data!.list![event.month - 1];
         emit(state.copyWith(state));
+      } else {
+        emit(state.copyWith(state));
       }
-      state.listResult = value;
+
+      ///
+      await Future.delayed(const Duration(seconds: 0));
+      state.stateType = PublicHolidayStateType.list;
       emit(state.copyWith(state));
     });
   }
@@ -38,5 +48,11 @@ class PublicHolidayBloc extends Bloc<PublicHolidayEvent, PublicHolidayState> {
     state.stateType = PublicHolidayStateType.calendarHolidays;
     state.calendarHolidays = state.listResult!.data!.list![event.month - 1];
     emit(state.copyWith(state));
+  }
+
+  void _dispose(PublicHolidayDispose event, Emitter<PublicHolidayState> emit) {
+    state.listResult!.status = ApiStatus.loading;
+    state.listResult!.data = PublicHolidayModel();
+    state.calendarHolidays = PublicHolidayModel();
   }
 }

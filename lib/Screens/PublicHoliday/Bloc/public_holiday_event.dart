@@ -12,3 +12,5 @@ class PublicHolidayCalendarHolidays extends PublicHolidayEvent {
   final int month;
   PublicHolidayCalendarHolidays(this.month);
 }
+
+class PublicHolidayDispose extends PublicHolidayEvent {}
