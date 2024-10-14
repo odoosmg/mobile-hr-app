@@ -98,7 +98,6 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
         buildWhen: (previous, current) {
       return current.stateType == PublicHolidayStateType.calendarHolidays;
     }, builder: (ctx, state) {
-      print("build ==== ${state.listResult!.status!}");
       return KBuilder(
         status: state.listResult!.status!,
         onRetry: _getData,

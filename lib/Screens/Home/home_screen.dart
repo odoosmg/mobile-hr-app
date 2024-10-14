@@ -114,28 +114,37 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              const MenuScreen().launch(context);
-            },
-            child: const Padding(
-              padding: EdgeInsets.only(right: 10),
-              child: SizedBox(
-                height: 50,
-                width: 50,
-                // color: Colors.red,
-                child: Icon(
-                  Icons.widgets,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-            ),
-          )
-        ],
+        // actions: [
+        //   GestureDetector(
+        //     onTap: () {
+        //       const MenuScreen().launch(context);
+        //     },
+        //     child: const Padding(
+        //       padding: EdgeInsets.only(right: 10),
+        //       child: SizedBox(
+        //         height: 50,
+        //         width: 50,
+        //         // color: Colors.red,
+        //         child: Icon(
+        //           Icons.widgets,
+        //           color: Colors.white,
+        //           size: 24,
+        //         ),
+        //       ),
+        //     ),
+        //   )
+        // ],
       ),
       drawer: const HomeDrawer(),
+
+      ///
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColor.kMainColor,
+        onPressed: () {
+          const MenuScreen().launch(context);
+        },
+        child: const Icon(Icons.widgets, color: AppColor.kWhiteColor),
+      ),
 
       /// ** Bloc
       body: BodyCard(
