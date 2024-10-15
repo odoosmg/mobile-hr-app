@@ -9,6 +9,13 @@ class FormDataRepository extends BaseApi {
   Future<ApiResult<List<SelectFormModel>>> companyList() async {
     Map<String, dynamic> map = await request(uri: Endpoint.companyList);
 
+    /// add new key
+    if (map["data"] != null) {
+      map["data"].map((e) {
+        e['is_selected'] = false;
+      }).toList();
+    }
+
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: List.from(
