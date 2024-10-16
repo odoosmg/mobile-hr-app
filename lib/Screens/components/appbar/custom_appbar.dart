@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Models/form/select_form_model.dart';
+import 'package:hrm_employee/Screens/components/pages/home/select-company/ui/select_company.dart';
 import 'package:hrm_employee/constant.dart';
 
 class CustomAppBar {
@@ -18,5 +20,12 @@ class CustomAppBar {
       ),
       actions: actions,
     );
+  }
+
+  static AppBar titleCompany(
+      {required String title,
+      required Function(List<int>, List<SelectFormModel>) onChanged}) {
+    return titleActions(
+        title: title, actions: [SelectCompany(onChanged: onChanged)]);
   }
 }
