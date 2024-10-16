@@ -116,7 +116,11 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         actions: [
-          SelectCompany(),
+          SelectCompany(
+            onChanged: (ids, _) {
+              print("ids ==== ${ids}");
+            },
+          ),
         ],
         // actions: [
         //   GestureDetector(
