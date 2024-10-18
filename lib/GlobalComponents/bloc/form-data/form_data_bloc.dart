@@ -111,6 +111,10 @@ class FormDataBloc extends Bloc<FormDataEvent, FormDataState> {
       state.companyList!.data = box.companyList;
       state.companyList!.status = ApiStatus.success;
       emit(state.copyWith(state));
+      return;
+    } else {
+      state.companyList!.status = ApiStatus.loading;
+      emit(state.copyWith(state));
     }
 
     ///

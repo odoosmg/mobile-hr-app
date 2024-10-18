@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
@@ -13,7 +13,15 @@ class SelectCompany extends StatefulWidget {
   /// 1st arg = List of id
   /// 2nd arg = List of selected item
   final void Function(List<int>, List<SelectFormModel>) onChanged;
-  const SelectCompany({super.key, required this.onChanged});
+
+  /// When refresh company
+  /// argument default compay
+  final Function(SelectFormModel?)? onRefresh;
+  const SelectCompany({
+    super.key,
+    required this.onChanged,
+    this.onRefresh,
+  });
 
   @override
   State<SelectCompany> createState() => _SelectCompanyState();
@@ -29,6 +37,7 @@ class _SelectCompanyState extends State<SelectCompany> {
   late FormDataBloc formDataBloc;
 
   List<SelectFormModel> selectedItems = [];
+  bool isRfresh = false;
 
   @override
   void initState() {
@@ -114,85 +123,115 @@ class _SelectCompanyState extends State<SelectCompany> {
     showDialog(
       context: context,
       builder: (contex) {
-        return StatefulBuilder(
-          builder: (context, setStateT) {
-            return AlertDialog(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(2),
-                ),
-              ),
-              contentPadding: EdgeInsets.zero,
-              title: _dialogTitle(),
-              content: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: KBuilder(
-                  status: formDataBloc.state.companyList!.status!,
-                  builder: (st) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: items
-                          .map(
-                            (e) => CheckboxListTile(
-                                value: e.isSelected,
-                                // checkColor: ,
-                                fillColor:
-                                    MaterialStateColor.resolveWith((states) {
-                                  return e.isSelected!
-                                      ? AppColor.kMainColor
-                                      : Colors.transparent;
-                                }),
+        return BlocBuilder<FormDataBloc, FormDataState>(
+          buildWhen: (previous, current) {
+            if (current.stateType == FormDataStateType.companyList) {
+              if (isRfresh) {
+                isRfresh = false;
 
-                                /// label
-                                title: Text(
-                                  '${e.name}',
-                                  style:
-                                      Theme.of(context).textTheme.blackS14W500,
-                                ),
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                onChanged: (isChecked) {
-                                  ///
-                                  setStateT(() {
-                                    e.isSelected = !e.isSelected!;
-                                  });
-                                }),
-                          )
-                          .toList(),
-                    );
-                  },
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel',
-                      style: Theme.of(context).textTheme.greyS14W700),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (items.where((e) => e.isSelected!).toList().isEmpty) {
-                      _validationDialog();
-                      return;
-                    }
-                    selectedItems = items.where((e) => e.isSelected!).toList();
+                /// default value is first index
+                widget.onRefresh?.call(current.companyList?.data?.first);
+              }
+              return true;
+            }
+            return false;
+          },
+          builder: (context, state) {
+            return StatefulBuilder(
+              builder: (context, setStateT) {
+                return AlertDialog(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(2),
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.zero,
+                  title: _dialogTitle(() {
+                    isRfresh = true;
+                    formDataBloc.add(FormDataCompanyList(true));
+                  }),
+                  content: SizedBox(
+                    height: state.companyList!.status == ApiStatus.loading
+                        ? 100
+                        : null,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: KBuilder(
+                        status: formDataBloc.state.companyList!.status!,
+                        builder: (st) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: items
+                                .map(
+                                  (e) => CheckboxListTile(
+                                      value: e.isSelected,
+                                      // checkColor: ,
+                                      fillColor: MaterialStateColor.resolveWith(
+                                          (states) {
+                                        return e.isSelected!
+                                            ? AppColor.kMainColor
+                                            : Colors.transparent;
+                                      }),
 
-                    /// Update box
-                    formDataBloc.add(FormDataCompanySelected(selectedItems));
+                                      /// label
+                                      title: Text(
+                                        '${e.name}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .blackS14W500,
+                                      ),
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      onChanged: (isChecked) {
+                                        ///
+                                        setStateT(() {
+                                          e.isSelected = !e.isSelected!;
+                                        });
+                                      }),
+                                )
+                                .toList(),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Cancel',
+                          style: Theme.of(context).textTheme.greyS14W700),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        if (items
+                            .where((e) => e.isSelected!)
+                            .toList()
+                            .isEmpty) {
+                          _validationDialog();
+                          return;
+                        }
+                        selectedItems =
+                            items.where((e) => e.isSelected!).toList();
 
-                    ///
-                    widget.onChanged.call(
-                      selectedItems.map((e) => e.id!).toList(),
-                      selectedItems,
-                    );
+                        /// Update box
+                        formDataBloc
+                            .add(FormDataCompanySelected(selectedItems));
 
-                    // selectedName = _selectedName(selectedItems);
+                        ///
+                        widget.onChanged.call(
+                          selectedItems.map((e) => e.id!).toList(),
+                          selectedItems,
+                        );
 
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Apply'),
-                ),
-              ],
+                        // selectedName = _selectedName(selectedItems);
+
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Apply'),
+                    ),
+                  ],
+                );
+              },
             );
           },
         );
@@ -200,7 +239,7 @@ class _SelectCompanyState extends State<SelectCompany> {
     );
   }
 
-  Widget _dialogTitle() {
+  Widget _dialogTitle(Function() setStateT) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -209,12 +248,15 @@ class _SelectCompanyState extends State<SelectCompany> {
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.blackS17W700,
         ),
+
+        /// Refresh
         GestureDetector(
+          onTap: setStateT,
           child: Container(
             color: Colors.transparent,
             height: 30,
             width: 50,
-            child: Icon(
+            child: const Icon(
               Icons.refresh,
               color: AppColor.kMainColor,
             ),
