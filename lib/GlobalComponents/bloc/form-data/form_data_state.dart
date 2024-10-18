@@ -2,7 +2,7 @@ part of 'form_data_bloc.dart';
 
 class FormDataState {
   FormDataStateType? stateType;
-  List<SelectFormModel>? companyList;
+  ApiResult<List<SelectFormModel>>? companyList;
   FormDataState({
     this.stateType,
     this.companyList,
@@ -18,7 +18,9 @@ class FormDataState {
 
 final class FormDataInitial extends FormDataState {
   @override
-  List<SelectFormModel> get companyList => [];
+  ApiResult<List<SelectFormModel>> get companyList => ApiResult()
+    ..status = ApiStatus.loading
+    ..data = [];
 }
 
 enum FormDataStateType {

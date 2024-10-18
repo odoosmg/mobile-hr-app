@@ -34,14 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> init() async {
+    context.read<FormDataBloc>().add(FormDataCompanyList(true));
+
     /// Animation
     Future.delayed(const Duration(milliseconds: 50)).then((_) {
       setState(() {
         logoSize = 1;
       });
     });
-
-    context.read<FormDataBloc>().add(FormDataCompanyList());
 
     await Future.delayed(const Duration(milliseconds: 2400));
 

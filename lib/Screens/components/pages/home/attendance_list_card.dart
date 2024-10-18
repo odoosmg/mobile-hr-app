@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hrm_employee/Screens/components/pages/home/leave_card.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
@@ -25,7 +23,7 @@ class AttendanceListCard extends StatelessWidget {
         ..._employeeLeave(context),
         Measurement.screenPadding.kHeight,
 
-        ///`
+        ///
         ..._leaveInfo(context),
       ],
     );

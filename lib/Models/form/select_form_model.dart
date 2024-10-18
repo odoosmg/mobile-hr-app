@@ -20,6 +20,11 @@ class SelectFormModel {
   @HiveField(3)
   bool? isSelected;
 
+  @HiveField(4)
+  List<SelectFormModel>? companySelected;
+  @HiveField(5)
+  List<SelectFormModel>? companyList;
+
   SelectFormModel();
 
   factory SelectFormModel.fromJson(Map<String, dynamic> json) =>

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
+import 'package:hrm_employee/Repository/form_data_repository.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
@@ -18,31 +24,20 @@ class SelectCompany extends StatefulWidget {
 class _SelectCompanyState extends State<SelectCompany> {
   String selectedName = "";
 
-  final List<SelectFormModel> items = [
-    SelectFormModel()
-      ..id = 0
-      ..name = "Company A"
-      ..isSelected = false,
-    SelectFormModel()
-      ..id = 1
-      ..name = "Company B"
-      ..isSelected = false,
-    SelectFormModel()
-      ..id = 2
-      ..name = "Company C"
-      ..isSelected = false,
-    SelectFormModel()
-      ..id = 3
-      ..name = "Company D"
-      ..isSelected = false,
-  ];
+  List<SelectFormModel> items = [];
+
+  late FormDataBloc formDataBloc;
 
   List<SelectFormModel> selectedItems = [];
 
   @override
   void initState() {
-    selectedItems = [items[0], items[1]];
-    selectedName = _selectedName(selectedItems);
+    // selectedItems = [items[0], items[1]];
+    // selectedName = _selectedName(selectedItems);
+
+    formDataBloc = context.read<FormDataBloc>();
+    formDataBloc.add(FormDataCompanyList(false));
+    selectedName = _selectedName([]);
     super.initState();
   }
 
@@ -50,7 +45,7 @@ class _SelectCompanyState extends State<SelectCompany> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        /// selcted id
+        /// selected id
         List<int> ids = selectedItems.map((e) => e.id!).toList();
 
         /// update list
@@ -107,31 +102,52 @@ class _SelectCompanyState extends State<SelectCompany> {
             ),
             content: Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: items
-                    .map(
-                      (e) => CheckboxListTile(
-                          value: e.isSelected,
-                          // checkColor: ,
-                          fillColor: MaterialStateColor.resolveWith((states) {
-                            return e.isSelected!
-                                ? AppColor.kMainColor
-                                : Colors.transparent;
-                          }),
-                          title: Text(
-                            e.name!,
-                            style: Theme.of(context).textTheme.blackS14W500,
-                          ),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          onChanged: (isChecked) {
-                            ///
-                            setStateT(() {
-                              e.isSelected = !e.isSelected!;
-                            });
-                          }),
-                    )
-                    .toList(),
+              child: BlocConsumer<FormDataBloc, FormDataState>(
+                // bloc: FormDataBloc(FormDataRepository()),
+                listener: (context, state) {
+                  print("liten ===== $state");
+                },
+                buildWhen: (previous, current) {
+                  print("build ======");
+                  return current.stateType == FormDataStateType.companyList;
+                },
+                builder: (context, state) {
+                  return KBuilder(
+                    status: state.companyList!.status!,
+                    builder: (st) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: state.companyList!.data!
+                            .map(
+                              (e) => CheckboxListTile(
+                                  value: e.isSelected,
+                                  // checkColor: ,
+                                  fillColor:
+                                      MaterialStateColor.resolveWith((states) {
+                                    return e.isSelected!
+                                        ? AppColor.kMainColor
+                                        : Colors.transparent;
+                                  }),
+                                  title: Text(
+                                    e.name!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .blackS14W500,
+                                  ),
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  onChanged: (isChecked) {
+                                    ///
+                                    setStateT(() {
+                                      e.isSelected = !e.isSelected!;
+                                    });
+                                  }),
+                            )
+                            .toList(),
+                      );
+                    },
+                  );
+                },
               ),
             ),
             actions: [
@@ -148,6 +164,14 @@ class _SelectCompanyState extends State<SelectCompany> {
                   }
                   selectedItems = items.where((e) => e.isSelected!).toList();
 
+                  /// Update box
+                  SelectFormModel box =
+                      AppServices.instance<DatabaseService>().getFormData ??
+                          SelectFormModel();
+                  box.companySelected = selectedItems;
+                  AppServices.instance<DatabaseService>().putFormData(box);
+
+                  ///
                   widget.onChanged.call(
                     selectedItems.map((e) => e.id!).toList(),
                     selectedItems,
@@ -189,6 +213,9 @@ class _SelectCompanyState extends State<SelectCompany> {
   }
 
   String _selectedName(List<SelectFormModel> data) {
+    if (data.isEmpty) {
+      return "Select company";
+    }
     return data.map((e) => e.name!).toList().join(", ");
   }
 }
