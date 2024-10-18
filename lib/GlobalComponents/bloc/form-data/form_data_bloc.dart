@@ -18,42 +18,68 @@ class FormDataBloc extends Bloc<FormDataEvent, FormDataState> {
   final FormDataRepository formDataRepository;
   FormDataBloc(this.formDataRepository) : super(FormDataInitial()) {
     on<FormDataCompanyList>(_companyList);
+    on<FormDataCompanySelected>(_companySelect);
   }
 
   void _companyList(
       FormDataCompanyList event, Emitter<FormDataState> emit) async {
-    SelectFormModel box = AppServices.instance<DatabaseService>().getFormData!;
+    final dbService = AppServices.instance<DatabaseService>();
+    SelectFormModel box = dbService.getFormData!;
     state.stateType = FormDataStateType.companyList;
-    if (!event.isRefresh) {
-      List<int> ids = box.companySelected!.map((e) => e.id!).toList();
 
+    /// selected id
+    List<int> ids = box.companySelected!.map((e) => e.id!).toList();
+
+    /// Not refresh
+    if (!event.isRefresh) {
+      /// update isSelected by id
       box.companyList!.map((e) {
         if (ids.contains(e.id)) {
           e.isSelected = true;
         }
       }).toList();
 
-      AppServices.instance<DatabaseService>().putFormData(box);
+      ///
+      dbService.putFormData(box);
       state.companyList!.data = box.companyList;
       state.companyList!.status = ApiStatus.success;
-      print("state === ${state.companyList!.data}");
-      print("box ======= ${box.companyList}");
       emit(state.copyWith(state));
 
       return;
     }
 
+    /// Refresh
     await formDataRepository.companyList().then((value) {
       if (value.isSuccess) {
-        /// update box
-        SelectFormModel box =
-            AppServices.instance<DatabaseService>().getFormData ??
-                SelectFormModel();
+        /// update isSelected by id
+        value.data!.map((e) {
+          if (ids.contains(e.id)) {
+            e.isSelected = true;
+          }
+        }).toList();
+
+        // if (value.data!.isNotEmpty) {
+        //   value.data![0].isSelected = true;
+        // }
+
         box.companyList = value.data;
-        AppServices.instance<DatabaseService>().putFormData(box);
+        dbService.putFormData(box);
       }
       state.companyList = value;
       emit(state.copyWith(state));
     });
+  }
+
+  void _companySelect(
+      FormDataCompanySelected event, Emitter<FormDataState> emit) async {
+    SelectFormModel box = AppServices.instance<DatabaseService>().getFormData ??
+        SelectFormModel();
+    box.companySelected = event.list;
+    AppServices.instance<DatabaseService>().putFormData(box);
+    state.stateType = FormDataStateType.companySelect;
+    state.companySelected = box.companySelected;
+
+    ///
+    emit(state.copyWith(state));
   }
 }

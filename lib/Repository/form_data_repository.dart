@@ -16,6 +16,34 @@ class FormDataRepository extends BaseApi {
       }).toList();
     }
 
+    map["data"] = [
+      {
+        "id": 1,
+        "name": "Company A",
+        "is_selected": false,
+      },
+      {
+        "id": 2,
+        "name": "Company B",
+        "is_selected": false,
+      },
+      {
+        "id": 3,
+        "name": "Company C",
+        "is_selected": false,
+      },
+      {
+        "id": 4,
+        "name": "Company D",
+        "is_selected": false,
+      },
+      {
+        "id": 5,
+        "name": "Company E",
+        "is_selected": false,
+      }
+    ];
+
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: List.from(

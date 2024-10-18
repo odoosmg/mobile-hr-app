@@ -6,3 +6,8 @@ class FormDataCompanyList extends FormDataEvent {
   final bool isRefresh;
   FormDataCompanyList(this.isRefresh);
 }
+
+class FormDataCompanySelected extends FormDataEvent {
+  final List<SelectFormModel> list;
+  FormDataCompanySelected(this.list);
+}
