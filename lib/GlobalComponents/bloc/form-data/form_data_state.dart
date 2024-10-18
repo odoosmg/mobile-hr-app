@@ -13,9 +13,10 @@ class FormDataState {
 
   FormDataState copyWith(FormDataState d) {
     return FormDataState(
-        stateType: d.stateType,
-        companyList: d.companyList,
-        companySelected: d.companySelected);
+      stateType: d.stateType,
+      companyList: d.companyList,
+      companySelected: d.companySelected,
+    );
   }
 }
 

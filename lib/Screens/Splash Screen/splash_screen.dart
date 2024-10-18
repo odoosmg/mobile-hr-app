@@ -1,17 +1,13 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
-import 'package:hrm_employee/GlobalComponents/others/loading_inidicator.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
-import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Screens/Home/home_screen.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
-import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../constant.dart';
@@ -34,7 +30,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> init() async {
-    context.read<FormDataBloc>().add(FormDataCompanyList(true));
+    /// temp solution.
+    /// put here to fixed company loading status.
+    /// but rebuild 2 times.
+    context.read<FormDataBloc>().add(FormDataCompanyList(false));
 
     /// Animation
     Future.delayed(const Duration(milliseconds: 50)).then((_) {

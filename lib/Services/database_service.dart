@@ -34,7 +34,15 @@ class DatabaseService {
   /// clear data login Data
   /// data that use in Login
   Future clearSession() async {
+    clearCompanyList();
     await session?.clear();
+  }
+
+  void clearCompanyList() {
+    SelectFormModel d = getFormData!;
+    d.companyList = [];
+    d.companySelected = [];
+    putFormData(d);
   }
 
   ///*****************

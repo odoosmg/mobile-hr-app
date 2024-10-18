@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
@@ -170,6 +171,11 @@ class _SignInState extends State<SignIn> {
                           CustomLoading.hide(context);
 
                           if (current.signin!.isSuccess) {
+                            ///
+                            context
+                                .read<FormDataBloc>()
+                                .add(FormDataCompanyList(true));
+
                             /// Success
                             const HomeScreen().launch(context, isNewTask: true);
                           } else {

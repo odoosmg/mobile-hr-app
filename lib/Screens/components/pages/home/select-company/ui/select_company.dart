@@ -50,8 +50,7 @@ class _SelectCompanyState extends State<SelectCompany> {
 
           selectedItems =
               items.where((element) => element.isSelected!).toList();
-          selectedName = _selectedName(
-              items.where((element) => element.isSelected!).toList());
+          selectedName = _selectedName(selectedItems);
 
           ///
           return true;
