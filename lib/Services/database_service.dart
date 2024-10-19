@@ -79,6 +79,6 @@ class DatabaseService {
   void putFormData(SelectFormModel data) =>
       formData?.put(SelectFormModel.boxName, data);
 
-  List<int>? get formDataCompanyIds =>
+  List<int>? get getCompanyIds =>
       (getFormData!.companySelected ?? []).map((e) => e.id!).toList();
 }

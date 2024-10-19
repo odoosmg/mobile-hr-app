@@ -3,19 +3,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
+
 import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
+import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_up.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../../GlobalComponents/button_global.dart';
-import '../../GlobalComponents/purchase_model.dart';
 import '../../constant.dart';
 import '../Home/home_screen.dart';
 import 'forgot_password.dart';
@@ -172,9 +173,14 @@ class _SignInState extends State<SignIn> {
 
                           if (current.signin!.isSuccess) {
                             ///
-                            context
-                                .read<FormDataBloc>()
-                                .add(FormDataCompanyList(true));
+                            final formDataBox =
+                                AppServices.instance<DatabaseService>()
+                                        .getFormData ??
+                                    SelectFormModel();
+                            formDataBox.companyList = [];
+                            formDataBox.companySelected = [];
+                            AppServices.instance<DatabaseService>()
+                                .putFormData(formDataBox);
 
                             /// Success
                             const HomeScreen().launch(context, isNewTask: true);

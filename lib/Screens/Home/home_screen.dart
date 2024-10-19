@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/Screens/components/pages/home/select-company/ui/select_company.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
   /// to not conflicting with initState
   bool isOnRefresh = false;
 
+  /// for display SelectCompany
+  bool isLoadSuccess = false;
+
   int checkInId = 0;
 
   @override
@@ -116,9 +120,25 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         actions: [
-          SelectCompany(
-            onChanged: (ids, _) {
-              print("ids ==== ${ids}");
+          BlocBuilder<HomeBloc, HomeState>(
+            buildWhen: (previous, current) {
+              if (current.stateType == HomeStateType.getData) {
+                if (current.getDataResult!.status != ApiStatus.loading) {
+                  isLoadSuccess = true;
+                  return true;
+                }
+              }
+              return false;
+            },
+            builder: (context, state) {
+              return !isLoadSuccess
+                  ? Container()
+                  : SelectCompany(
+                      // key: ValueKey(isLoadSuccess),
+                      onChanged: (ids, _) {
+                        print("ids ==== ${ids}");
+                      },
+                    );
             },
           ),
         ],

@@ -1,6 +1,8 @@
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/api/base_api.dart';
 import 'package:hrm_employee/api/endpoint.dart';
 
@@ -28,7 +30,12 @@ class HomeRepository extends BaseApi {
   }
 
   Future<ApiResult<InOutModel>> getInOutData() async {
-    Map<String, dynamic> map = await request(uri: Endpoint.leaveSummary);
+    Map<String, dynamic> map = await request(
+        uri: Endpoint.leaveSummary,
+        params: {
+          "company_ids":
+              AppServices.instance<DatabaseService>().getCompanyIds.toString()
+        });
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: InOutModel.fromJson(map["data"] ?? {}),

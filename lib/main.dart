@@ -1,5 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,14 +16,12 @@ import 'package:hrm_employee/Screens/Employee%20Directory/bloc/employee_bloc.dar
 import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/Screens/PublicHoliday/Bloc/public_holiday_bloc.dart';
-import 'package:hrm_employee/Screens/components/snackbar/connectivity_snackar.dart';
+
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/global_scaffold_messenger_service.dart';
 import 'package:hrm_employee/Services/navigation_service.dart';
 import 'package:hrm_employee/generated/l10n/trans_localizations.dart';
 import 'package:hrm_employee/l10n/l10n.dart';
-import 'package:hrm_employee/utlis/app_color.dart';
-import 'package:hrm_employee/utlis/measurement.dart';
 
 import 'Screens/Splash Screen/splash_screen.dart';
 
@@ -47,7 +43,7 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthBloc(AuthRepository()),
         ),
         BlocProvider(
-          create: (context) => HomeBloc(HomeRepository()),
+          create: (context) => HomeBloc(HomeRepository(), FormDataRepository()),
         ),
         BlocProvider(
           create: (context) => ConnectivityCubit(),
