@@ -30,10 +30,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> init() async {
-    /// temp solution.
-    /// put here to fixed company loading status.
-    /// but rebuild 2 times.
-    context.read<FormDataBloc>().add(FormDataCompanyList(false));
+    /// call only login
+    if (AppServices.instance<DatabaseService>().getToken.isNotEmpty) {
+      /// temp solution.
+      /// put here to fixed company loading status.
+      /// but rebuild 2 times.
+      context.read<FormDataBloc>().add(FormDataCompanyList(false));
+    }
 
     /// Animation
     Future.delayed(const Duration(milliseconds: 50)).then((_) {

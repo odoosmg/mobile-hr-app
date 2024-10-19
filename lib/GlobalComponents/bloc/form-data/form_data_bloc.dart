@@ -93,7 +93,9 @@ class FormDataBloc extends Bloc<FormDataEvent, FormDataState> {
     state.stateType = FormDataStateType.companyList;
 
     final dbService = AppServices.instance<DatabaseService>();
-    SelectFormModel box = dbService.getFormData!;
+    SelectFormModel box = dbService.getFormData ?? SelectFormModel()
+      ..companySelected = []
+      ..companyList = [];
     List<int> ids = box.companySelected!.map((e) => e.id!).toList();
 
     if (!event.isRefresh) {
