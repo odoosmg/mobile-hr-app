@@ -40,7 +40,8 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: CustomAppBar.titleActions(title: "Public Holiday"),
+      appBar: CustomAppBar.titleCompany(
+          title: "Public Holiday", onChanged: (v, _) {}),
       body: Column(
         children: [
           _tableCalendar(),

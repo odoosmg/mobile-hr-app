@@ -38,7 +38,8 @@ class _EmployeeDirectoryState extends State<EmployeeDirectory> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: CustomAppBar.titleActions(title: "Employee Directory"),
+      appBar:
+          CustomAppBar.titleCompany(title: "Employee", onChanged: (v, _) {}),
       body: _blocBuilder(),
     );
     return Scaffold(

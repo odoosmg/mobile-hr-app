@@ -135,9 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? Container()
                   : SelectCompany(
                       // key: ValueKey(isLoadSuccess),
-                      onChanged: (ids, _) {
-                        print("ids ==== ${ids}");
-                      },
+                      onChanged: (ids, _) {},
                     );
             },
           ),

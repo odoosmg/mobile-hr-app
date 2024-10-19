@@ -75,7 +75,8 @@ class _LeaveApplyState extends State<LeaveApply> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: CustomAppBar.titleActions(title: "Leave Apply"),
+      appBar:
+          CustomAppBar.titleCompany(title: "Leave Apply", onChanged: (v, _) {}),
       body: _blocBuilder(),
     );
 

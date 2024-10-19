@@ -46,7 +46,8 @@ class _LeaveApplicationState extends State<LeaveApplication> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: CustomAppBar.titleActions(title: "Leave List", actions: []),
+      appBar:
+          CustomAppBar.titleCompany(title: "Leave List", onChanged: (v, _) {}),
       body: _blocBuilder(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => const LeaveApply().launch(context),
