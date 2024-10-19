@@ -12,14 +12,14 @@ import 'package:hrm_employee/utlis/measurement.dart';
 class SelectCompany extends StatefulWidget {
   /// 1st arg = List of id
   /// 2nd arg = List of selected item
-  final void Function(List<int>, List<SelectFormModel>) onChanged;
+  final void Function(List<int>, List<SelectFormModel>)? onChanged;
 
   /// When refresh company
   /// argument default compay
   final Function(SelectFormModel?)? onRefresh;
   const SelectCompany({
     super.key,
-    required this.onChanged,
+    this.onChanged,
     this.onRefresh,
   });
 
@@ -218,7 +218,7 @@ class _SelectCompanyState extends State<SelectCompany> {
                             .add(FormDataCompanySelected(selectedItems));
 
                         ///
-                        widget.onChanged.call(
+                        widget.onChanged?.call(
                           selectedItems.map((e) => e.id!).toList(),
                           selectedItems,
                         );

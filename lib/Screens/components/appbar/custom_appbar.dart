@@ -24,7 +24,7 @@ class CustomAppBar {
 
   static AppBar titleCompany(
       {required String title,
-      required Function(List<int>, List<SelectFormModel>) onChanged}) {
+      Function(List<int>, List<SelectFormModel>)? onChanged}) {
     return titleActions(
         title: title, actions: [SelectCompany(onChanged: onChanged)]);
   }

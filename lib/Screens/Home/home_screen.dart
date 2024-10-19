@@ -134,8 +134,11 @@ class _HomeScreenState extends State<HomeScreen> {
               return !isLoadSuccess
                   ? Container()
                   : SelectCompany(
+                      onRefresh: (_) {},
                       // key: ValueKey(isLoadSuccess),
-                      onChanged: (ids, _) {},
+                      onChanged: (ids, _) {
+                        homeBloc.add(HomeGetData());
+                      },
                     );
             },
           ),
