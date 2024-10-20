@@ -125,6 +125,9 @@ class FormDataBloc extends Bloc<FormDataEvent, FormDataState> {
           value.data![0].isSelected = true;
           box.companySelected = [value.data![0]];
         }
+      } else {
+        /// faild, set id = 0
+        box.companySelected = [SelectFormModel()..id = 0];
       }
       state.companyList = value;
 

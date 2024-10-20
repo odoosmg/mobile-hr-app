@@ -10,7 +10,7 @@ import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 class KBuilder extends StatelessWidget {
   final ApiStatus status;
   final Widget Function(ApiStatus) builder;
-
+  final String? errorMessage;
   final Widget? loading;
   final Widget? empty;
   final Widget? failed;
@@ -23,6 +23,7 @@ class KBuilder extends StatelessWidget {
     super.key,
     required this.status,
     required this.builder,
+    this.errorMessage,
     this.loading,
     this.empty,
     this.failed,
@@ -79,7 +80,7 @@ class KBuilder extends StatelessWidget {
     return failed ??
         _retry(
           context: context,
-          text: AppTrans.t.processFailedMsg,
+          text: errorMessage ?? AppTrans.t.processFailedMsg,
           iconData: Icons.error_outline,
         );
   }

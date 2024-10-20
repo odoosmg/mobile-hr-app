@@ -5,6 +5,8 @@ import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
@@ -76,6 +78,13 @@ class _SelectCompanyState extends State<SelectCompany> {
       builder: (context, state) {
         return GestureDetector(
           onTap: () {
+            /// retrieve from local databae
+            /// prevent change from other pages back to current page not changing.
+            selectedItems = AppServices.instance<DatabaseService>()
+                    .getFormData
+                    ?.companySelected ??
+                [];
+
             /// selected id
             List<int> ids = selectedItems.map((e) => e.id!).toList();
 
@@ -130,7 +139,9 @@ class _SelectCompanyState extends State<SelectCompany> {
                 isRfresh = false;
 
                 /// default value is first index
-                widget.onRefresh?.call(current.companyList?.data?.first);
+                widget.onRefresh?.call(
+                    current.companyList?.data?.firstOrNull ?? SelectFormModel()
+                      ..id = 0);
               }
               return true;
             }
@@ -158,6 +169,8 @@ class _SelectCompanyState extends State<SelectCompany> {
                       padding: const EdgeInsets.only(top: 10),
                       child: KBuilder(
                         status: formDataBloc.state.companyList!.status!,
+                        errorMessage:
+                            formDataBloc.state.companyList!.errorMessage,
                         builder: (st) {
                           return Column(
                             mainAxisSize: MainAxisSize.min,

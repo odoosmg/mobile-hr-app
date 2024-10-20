@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/Screens/components/pages/home/select-company/ui/select_company.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -206,6 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _kBuilder() {
     return KBuilder(
         status: homeBloc.state.getDataResult!.status!,
+        errorMessage: homeBloc.state.getDataResult!.errorMessage,
         onRetry: () {
           homeBloc.add(HomeGetData());
         },
