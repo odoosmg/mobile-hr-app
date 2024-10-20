@@ -25,6 +25,9 @@ class _OnBoardState extends State<OnBoard> {
   String buttonText = 'Next';
   double percent = 0.34;
 
+  /// conditoin next slider and goto next scereen
+  bool isCompleteSlider = false;
+
   List<Map<String, dynamic>> sliderList = [
     {
       "icon": 'images/onboard1.png',
@@ -217,6 +220,21 @@ class _OnBoardState extends State<OnBoard> {
                           animation: true,
                           center: GestureDetector(
                             onTap: () {
+                              if (currentIndexPage < 2) {
+                                setState(() {
+                                  pageController.nextPage(
+                                      duration:
+                                          const Duration(microseconds: 3000),
+                                      curve: Curves.bounceInOut);
+                                });
+                              } else {
+                                _onBoardClose();
+
+                                /// sign-in page
+                                const SignIn().launch(context, isNewTask: true);
+                              }
+
+                              /*
                               setState(() {
                                 currentIndexPage < 2
                                     ? pageController.nextPage(
@@ -231,7 +249,7 @@ class _OnBoardState extends State<OnBoard> {
                                             .launch(context, isNewTask: true);
                                       };
                               });
-
+                            */
                               /// Default goto select type
                               /*
                               setState(() {
