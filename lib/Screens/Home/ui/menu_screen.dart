@@ -139,6 +139,8 @@ class MenuScreen extends StatelessWidget {
           const SizedBox(
             width: 20.0,
           ),
+          _emptyCard(context),
+          /*
           Expanded(
             child: Material(
               elevation: 2.0,
@@ -179,8 +181,10 @@ class MenuScreen extends StatelessWidget {
               ),
             ),
           ),
+          */
         ],
       ),
+
       /*
       20.height,
       Row(
@@ -260,6 +264,19 @@ class MenuScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Container _emptyCard(BuildContext context) {
+    return Container(
+      child: _material(
+        context: context,
+        image: Container(),
+        borderColor: white,
+        text1: "",
+        text2: "",
+        elevation: 0,
       ),
     );
   }
