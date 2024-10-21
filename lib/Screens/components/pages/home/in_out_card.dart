@@ -217,7 +217,7 @@ class _InOutCardState extends State<InOutCard> {
               size: 16,
               color: isCheckIn ? AppColor.kMainColor : AppColor.kGreyTextColor,
             ),
-            Measurement.gap.width,
+            Measurement.gap.kWidth,
             Text(
               title,
               style: Theme.of(context).textTheme.mainS13W500,

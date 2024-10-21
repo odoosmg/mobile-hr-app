@@ -210,7 +210,7 @@ class AttendanceListCard extends StatelessWidget {
           size: 6,
           color: Colors.grey.shade500,
         ),
-        Measurement.gap.width,
+        Measurement.gap.kWidth,
 
         /// label
         SizedBox(

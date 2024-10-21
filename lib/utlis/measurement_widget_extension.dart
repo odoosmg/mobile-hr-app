@@ -6,7 +6,7 @@ extension MeasurementWidgetExtension on num {
         height: this.toDouble(),
       );
 
-  SizedBox get width => SizedBox(
+  SizedBox get kWidth => SizedBox(
         // ignore: unnecessary_this
         width: this.toDouble(),
       );

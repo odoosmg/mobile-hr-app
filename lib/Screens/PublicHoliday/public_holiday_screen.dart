@@ -173,7 +173,7 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
                   style: Theme.of(context).textTheme.blackS10W400),
             ],
           ),
-          Measurement.screenPadding.width,
+          Measurement.screenPadding.kWidth,
           Expanded(
             child: Text(data.name ?? "",
                 style: Theme.of(context).textTheme.blackS14W500),
