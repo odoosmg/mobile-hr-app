@@ -20,8 +20,7 @@ class AttendanceListCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ///
-        ..._employeeLeave(context),
-        Measurement.screenPadding.kHeight,
+        if ((data.todayLeave ?? []).isNotEmpty) ..._employeeLeave(context),
 
         ///
         ..._leaveInfo(context),
@@ -44,6 +43,7 @@ class AttendanceListCard extends StatelessWidget {
             const EdgeInsets.only(left: 10, right: 10, bottom: 14, top: 10),
         child: _employeeLeaveTodayTable(context),
       ),
+      Measurement.screenPadding.kHeight,
     ];
   }
 
@@ -69,7 +69,7 @@ class AttendanceListCard extends StatelessWidget {
 
   /// Employee Table
   Widget _employeeLeaveTodayTable(BuildContext context) {
-    List<UserModel> list = data.todayLeave ?? [];
+    List<UserModel> list = data.todayLeave!;
 
     return SizedBox(
       width: double.infinity,
