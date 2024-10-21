@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 
 import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
@@ -173,14 +174,7 @@ class _SignInState extends State<SignIn> {
 
                           if (current.signin!.isSuccess) {
                             ///
-                            final formDataBox =
-                                AppServices.instance<DatabaseService>()
-                                        .getFormData ??
-                                    SelectFormModel();
-                            formDataBox.companyList = [];
-                            formDataBox.companySelected = [];
-                            AppServices.instance<DatabaseService>()
-                                .putFormData(formDataBox);
+                            _initCompany();
 
                             /// Success
                             const HomeScreen().launch(context, isNewTask: true);
@@ -279,5 +273,19 @@ class _SignInState extends State<SignIn> {
           username: usernameTEC.text,
           password: passwordTEC.text,
         ));
+  }
+
+  ///
+  void _initCompany() {
+    /// Fixed null
+    final formDataBox = AppServices.instance<DatabaseService>().getFormData ??
+        SelectFormModel();
+    formDataBox.companyList = [];
+    formDataBox.companySelected = [];
+    AppServices.instance<DatabaseService>().putFormData(formDataBox);
+
+    /// fixed always loading after login.
+    /// first init, status is loading.
+    context.read<FormDataBloc>().add(FormDataCompanyList(false));
   }
 }
