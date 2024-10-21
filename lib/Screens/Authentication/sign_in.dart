@@ -119,6 +119,8 @@ class _SignInState extends State<SignIn> {
                   const SizedBox(
                     height: 20.0,
                   ),
+
+                  /*
                   Row(
                     children: [
                       Transform.scale(
@@ -147,10 +149,11 @@ class _SignInState extends State<SignIn> {
                       }),
                     ],
                   ),
+
                   const SizedBox(
                     height: 20.0,
                   ),
-
+*/
                   /// ** Bloc
                   BlocBuilder<AuthBloc, AuthState>(
                     buildWhen: (previous, current) {
@@ -233,6 +236,7 @@ class _SignInState extends State<SignIn> {
                   //           }
                   //         },
                   // ),
+/*
                   const SizedBox(
                     height: 20.0,
                   ),
@@ -259,6 +263,7 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                   ),
+*/
                 ],
               ),
             ),
