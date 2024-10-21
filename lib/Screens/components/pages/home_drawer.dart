@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
@@ -11,6 +12,8 @@ import 'package:hrm_employee/Screens/Chat/chat_list.dart';
 import 'package:hrm_employee/Screens/Notification/notification_screen.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
+import 'package:hrm_employee/extensions/textstyle_extension.dart';
+import 'package:hrm_employee/utlis/app_trans.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/constant.dart';
 
@@ -264,10 +267,7 @@ class HomeDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {
-              AppServices.instance<DatabaseService>().clearSession();
-              const SignIn().launch(context, isNewTask: true);
-            },
+            onTap: () => _confirmLogout(context),
             title: Text(
               'Logout',
               style: kTextStyle.copyWith(color: kTitleColor),
@@ -280,5 +280,37 @@ class HomeDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _confirmLogout(BuildContext context) {
+    CustomDialog.dialog(context,
+        title: Text(
+          "Logout",
+          style: Theme.of(context).textTheme.blackS14W700,
+        ),
+        content: Text(
+          "Are you sure to logout?",
+          style: Theme.of(context).textTheme.blackS13W400,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Cancel'.toUpperCase(),
+              style: Theme.of(context).textTheme.greyS14W400,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              /// clear
+              AppServices.instance<DatabaseService>().clearSession();
+              const SignIn().launch(context, isNewTask: true);
+            },
+            child: Text(
+              'Logout'.toUpperCase(),
+              style: Theme.of(context).textTheme.mainS15W500,
+            ),
+          ),
+        ]);
   }
 }
