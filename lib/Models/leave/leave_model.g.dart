@@ -27,6 +27,9 @@ LeaveModel _$LeaveModelFromJson(Map<String, dynamic> json) => LeaveModel()
   ..leaveAllocatedSummary = (json['leave_allocated_summary'] as List<dynamic>?)
       ?.map((e) => LeaveModel.fromJson(e as Map<String, dynamic>))
       .toList()
+  ..toApprovedList = (json['to_approved_list'] as List<dynamic>?)
+      ?.map((e) => LeaveModel.fromJson(e as Map<String, dynamic>))
+      .toList()
   ..list = (json['list'] as List<dynamic>?)
       ?.map((e) => LeaveModel.fromJson(e as Map<String, dynamic>))
       .toList()
@@ -51,6 +54,7 @@ Map<String, dynamic> _$LeaveModelToJson(LeaveModel instance) =>
       'state': instance.state,
       'leave_type_list': instance.leaveTypeList,
       'leave_allocated_summary': instance.leaveAllocatedSummary,
+      'to_approved_list': instance.toApprovedList,
       'list': instance.list,
       'request_date_from_period': instance.requestDateFromPeriod,
       'request_unit_half': instance.requestUnitHalf,

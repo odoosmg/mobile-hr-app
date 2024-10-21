@@ -23,6 +23,7 @@ class LeaveModel {
 
   List<SelectFormModel>? leaveTypeList;
   List<LeaveModel>? leaveAllocatedSummary;
+  List<LeaveModel>? toApprovedList;
   List<LeaveModel>? list;
   String? requestDateFromPeriod;
   bool? requestUnitHalf;

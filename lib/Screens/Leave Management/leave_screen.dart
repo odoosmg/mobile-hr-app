@@ -41,7 +41,7 @@ class _LeaveScreenState extends State<LeaveScreen>
     return CustomScaffold(
       bodyPadding: EdgeInsets.zero,
       appBar:
-          CustomAppBar.titleCompany(title: "Leave Sreen", onChanged: (v, _) {}),
+          CustomAppBar.titleCompany(title: "Leave List", onChanged: (v, _) {}),
       body: Column(
         children: [
           /// header
