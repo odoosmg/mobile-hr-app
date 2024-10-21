@@ -1,6 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
 import 'package:flutter/material.dart';
-import 'package:hrm_employee/Screens/Leave%20Management/leave_application.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/leave_my_attendance_list.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
@@ -25,7 +25,8 @@ class _LeaveManagementScreenState extends State<LeaveManagementScreen> {
         title: Text(
           'Employee Attendance',
           maxLines: 2,
-          style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(
+              color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
@@ -38,7 +39,9 @@ class _LeaveManagementScreenState extends State<LeaveManagementScreen> {
             child: Container(
               padding: const EdgeInsets.all(20.0),
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
@@ -62,13 +65,15 @@ class _LeaveManagementScreenState extends State<LeaveManagementScreen> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          const LeaveApplication().launch(context);
+                          const LeaveAttendanceMyList().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/leaveapplication.png')),
+                        leading: const Image(
+                            image: AssetImage('images/leaveapplication.png')),
                         title: Text(
                           'My Leave Application',
                           maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
@@ -96,11 +101,15 @@ class _LeaveManagementScreenState extends State<LeaveManagementScreen> {
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading: const Image(image: AssetImage('images/leaverecommendation.png')),
+                          leading: const Image(
+                              image:
+                                  AssetImage('images/leaverecommendation.png')),
                           title: Text(
                             'Leave Recommendation',
                             maxLines: 2,
-                            style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                            style: kTextStyle.copyWith(
+                                color: kTitleColor,
+                                fontWeight: FontWeight.bold),
                           ),
                           trailing: const Icon(Icons.arrow_forward_ios),
                         ),

@@ -6,11 +6,13 @@ class CustomScaffold extends StatelessWidget {
   final Widget body;
   final AppBar? appBar;
   final Widget? floatingActionButton;
+  final EdgeInsetsGeometry? bodyPadding;
   const CustomScaffold({
     super.key,
     required this.body,
     this.appBar,
     this.floatingActionButton,
+    this.bodyPadding,
   });
 
   @override
@@ -22,7 +24,7 @@ class CustomScaffold extends StatelessWidget {
       appBar: appBar,
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
-        child: BodyCard(child: body),
+        child: BodyCard(padding: bodyPadding, child: body),
       ),
     );
   }

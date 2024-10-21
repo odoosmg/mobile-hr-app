@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:hrm_employee/Screens/Leave%20Management/leave_application.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/leave_my_attendance_list.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/leave_screen.dart';
 import 'package:hrm_employee/Screens/PublicHoliday/public_holiday_screen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
@@ -102,7 +103,8 @@ class MenuScreen extends StatelessWidget {
               elevation: 2.0,
               child: GestureDetector(
                 onTap: () {
-                  const LeaveApplication().launch(context);
+                  // const LeaveApplication().launch(context);
+                  const LeaveScreen().launch(context);
                 },
                 child: Container(
                   width: context.width(),

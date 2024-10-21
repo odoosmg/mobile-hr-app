@@ -20,15 +20,16 @@ import 'package:hrm_employee/utlis/measurement.dart';
 
 import '../../constant.dart';
 
-class LeaveApplication extends StatefulWidget {
-  const LeaveApplication({super.key});
+class LeaveAttendanceMyList extends StatefulWidget {
+  const LeaveAttendanceMyList({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _LeaveApplicationState createState() => _LeaveApplicationState();
+  _LeaveAttendanceMyListState createState() => _LeaveAttendanceMyListState();
 }
 
-class _LeaveApplicationState extends State<LeaveApplication> {
+class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
+    with AutomaticKeepAliveClientMixin {
   late LeaveBloc leaveBloc;
 
   final EasyRefreshController easyRefreshController =
@@ -45,6 +46,14 @@ class _LeaveApplicationState extends State<LeaveApplication> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    return Padding(
+      padding: const EdgeInsets.only(
+        right: Measurement.screenPadding,
+        left: Measurement.screenPadding,
+      ),
+      child: _blocBuilder(),
+    );
     return CustomScaffold(
       appBar:
           CustomAppBar.titleCompany(title: "Leave List", onChanged: (v, _) {}),
@@ -136,7 +145,9 @@ class _LeaveApplicationState extends State<LeaveApplication> {
             ///
             for (int i = 0; i < d.length; i++)
               Padding(
-                padding: const EdgeInsets.only(top: Measurement.screenPadding),
+                padding: const EdgeInsets.only(
+                  top: Measurement.screenPadding,
+                ),
                 child: MyLeaveCard(data: d[i]),
               )
           ],
@@ -188,4 +199,8 @@ class _LeaveApplicationState extends State<LeaveApplication> {
     easyRefreshController.dispose();
     super.dispose();
   }
+
+  /// fixed refresh from TabBarView
+  @override
+  bool get wantKeepAlive => true;
 }
