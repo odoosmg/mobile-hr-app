@@ -33,3 +33,5 @@ final class LeaveMyList extends LeaveEvent {
   final bool isLoading;
   LeaveMyList({required this.isLoading});
 }
+
+final class LeaveAction extends LeaveEvent {}

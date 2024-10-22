@@ -47,4 +47,16 @@ class LeaveRepository extends BaseApi {
       data: LeaveModel.fromJson(map),
     );
   }
+
+  /// Approved or Refuse
+  Future<ApiResult<LeaveModel>> leaveAction(int id, String state) async {
+    Map<String, dynamic> map = await request(
+      uri: Endpoint.leaveAction,
+    );
+
+    return apiResponse(
+      status: ApiStatusModel.fromJson(map),
+      data: LeaveModel.fromJson(map['data'] ?? {}),
+    );
+  }
 }

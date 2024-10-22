@@ -1,8 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/constant.dart';
 import 'package:hrm_employee/extensions/date_extension.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
@@ -14,7 +18,8 @@ import 'package:nb_utils/nb_utils.dart';
 
 class MyLeaveCard extends StatelessWidget {
   final LeaveModel data;
-  const MyLeaveCard({super.key, required this.data});
+  final Function(bool)? onAction; // true = accept, false = refuse
+  const MyLeaveCard({super.key, required this.data, this.onAction});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +97,7 @@ class MyLeaveCard extends StatelessWidget {
                   ),
                 ],
               ),
-/*
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -101,7 +106,6 @@ class MyLeaveCard extends StatelessWidget {
                   _btn(context, false),
                 ],
               )
-              */
             ],
           ),
         ),
@@ -218,7 +222,7 @@ class MyLeaveCard extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'Are you sure to ${isAccept ? "Accept" : "Refuse"}',
+                text: 'Are you sure to ${isAccept ? "accept" : "refuse"}',
                 style: Theme.of(context).textTheme.blackS14W400,
               ),
               TextSpan(
@@ -241,13 +245,42 @@ class MyLeaveCard extends StatelessWidget {
               style: Theme.of(context).textTheme.greyS14W400,
             ),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              (isAccept ? "Accept" : "Refuse").toUpperCase(),
-              style: Theme.of(context).textTheme.blackS15W700.copyWith(
-                  color:
-                      isAccept ? AppColor.kGreenColor : AppColor.kDangerColor),
+          BlocListener<LeaveBloc, LeaveState>(
+            listener: (ctx, state) {
+              print("liten ==========");
+              if (state.stateType == LeaveStateType.leaveAction) {
+                final result = state.leaveActionResult;
+
+                print("status ============ ${result!.status}");
+
+                if (result!.status == ApiStatus.loading) {
+                  CustomLoading.show(context);
+                } else {
+                  CustomLoading.hide(context);
+                  if (result.isSuccess) {
+                    Navigator.pop(context);
+                  } else {
+                    CustomDialog.error(context,
+                        errCode: result.statuscode,
+                        errMsg: result.errorMessage);
+                  }
+                }
+              }
+            },
+            child: TextButton(
+              onPressed: () {
+                context.read<LeaveBloc>().add(LeaveAction());
+
+                /// close modal
+                Navigator.pop(context);
+              },
+              child: Text(
+                (isAccept ? "Accept" : "Refuse").toUpperCase(),
+                style: Theme.of(context).textTheme.blackS15W700.copyWith(
+                    color: isAccept
+                        ? AppColor.kGreenColor
+                        : AppColor.kDangerColor),
+              ),
             ),
           ),
         ]);

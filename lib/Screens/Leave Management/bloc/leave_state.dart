@@ -5,6 +5,7 @@ class LeaveState {
   ApiResult<LeaveModel>? listTypeResult;
   ApiResult? submitLeaveResult;
   ApiResult<LeaveModel>? myLeaveListResult;
+  ApiResult<LeaveModel>? leaveActionResult;
 
   double? dayCount; // how many day request leave
   bool? isHalfDay;
@@ -18,6 +19,7 @@ class LeaveState {
     this.listTypeResult,
     this.submitLeaveResult,
     this.myLeaveListResult,
+    this.leaveActionResult,
     // this.isShowSelectFullHalf,
   });
 
@@ -29,6 +31,7 @@ class LeaveState {
       listTypeResult: d.listTypeResult,
       submitLeaveResult: d.submitLeaveResult,
       myLeaveListResult: d.myLeaveListResult,
+      leaveActionResult: leaveActionResult,
       // isShowSelectFullHalf: d.isShowSelectFullHalf,
     );
   }
@@ -56,6 +59,10 @@ final class LeaveInitial extends LeaveState {
   @override
   ApiResult<LeaveModel>? get myLeaveListResult =>
       ApiResult()..status = ApiStatus.loading;
+
+  @override
+  ApiResult<LeaveModel>? get leaveActionResult =>
+      ApiResult()..status = ApiStatus.loading;
 }
 
 enum LeaveStateType {
@@ -65,4 +72,5 @@ enum LeaveStateType {
   dayCount,
   submit,
   myLeaveList,
+  leaveAction
 }

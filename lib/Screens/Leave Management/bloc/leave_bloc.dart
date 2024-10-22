@@ -16,6 +16,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     on<LeaveDayCount>(_dayCount);
     on<LeaveSubmit>(_submit);
     on<LeaveMyList>(_myLeaveList);
+    on<LeaveAction>(_leaveAction);
     // on<LeaveShowFullHalf>(_showFullHalf);
   }
 
@@ -132,6 +133,17 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     });
   }
 
+  ///
+  void _leaveAction(LeaveAction event, Emitter<LeaveState> emit) async {
+    state.stateType = LeaveStateType.leaveAction;
+    state.leaveActionResult!.status = ApiStatus.loading;
+    emit(state.copyWith(state));
+
+    await leaveRepository.leaveAction(0, "").then((value) async {
+      state.leaveActionResult = value;
+      emit(state.copyWith(state));
+    });
+  }
   // @override
   // void onChange(Change<LeaveState> change) {
   //   // TODO: implement onChange
