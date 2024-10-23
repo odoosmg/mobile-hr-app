@@ -72,6 +72,34 @@ class LeaveRepository extends BaseApi {
     /// update key to 1 level
     map['list'] = map["data"]?["to_approve"] ?? [];
     map['to_approved_list'] = map["data"]?["to_approve"] ?? [];
+    map['to_approved_list'] = [
+      {
+        "id": 148,
+        "date_from": "2024-10-19",
+        "date_to": "2024-10-19",
+        "employee_id": 4,
+        "employee_name": "tester_1",
+        "number_of_days": 1.0,
+        "leave_type_id": 4,
+        "leave_type_name": "Unpaid",
+        "state": "To Approve",
+        "request_unit_half": false,
+        "request_date_from_period": ""
+      },
+      {
+        "id": 2,
+        "date_from": "2024-09-28",
+        "date_to": "2024-09-28",
+        "employee_id": 4,
+        "employee_name": "tester_1",
+        "number_of_days": 0.0,
+        "leave_type_id": 2,
+        "leave_type_name": "Sick Time Off",
+        "state": "To Approve",
+        "request_unit_half": false,
+        "request_date_from_period": ""
+      },
+    ];
     map.remove('data');
 
     return apiResponse(

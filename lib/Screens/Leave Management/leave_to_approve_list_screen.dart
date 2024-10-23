@@ -101,7 +101,8 @@ class _LeaveToApproveListScreenState extends State<LeaveToApproveListScreen>
   }
 
   Widget _display() {
-    List<LeaveModel> d = leaveBloc.state.toApproveListResult!.data!.list!;
+    List<LeaveModel> d =
+        leaveBloc.state.toApproveListResult!.data!.toApprovedList!;
 
     return SizedBox(
       height: Measurement.heightPercent(context, 0.88),
@@ -128,7 +129,7 @@ class _LeaveToApproveListScreenState extends State<LeaveToApproveListScreen>
                 padding: const EdgeInsets.only(
                   top: Measurement.screenPadding,
                 ),
-                child: MyLeaveCard(data: d[i]),
+                child: MyLeaveCard(data: d[i], isToApproved: true),
               )
           ],
         ),

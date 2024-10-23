@@ -19,7 +19,13 @@ import 'package:nb_utils/nb_utils.dart';
 class MyLeaveCard extends StatelessWidget {
   final LeaveModel data;
   final Function(bool)? onAction; // true = accept, false = refuse
-  const MyLeaveCard({super.key, required this.data, this.onAction});
+  final bool isToApproved;
+  const MyLeaveCard({
+    super.key,
+    required this.data,
+    this.onAction,
+    this.isToApproved = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +54,14 @@ class MyLeaveCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                data.leaveTypeName ?? "",
-                maxLines: 2,
-                style: kTextStyle.copyWith(
-                    color: kTitleColor, fontWeight: FontWeight.bold),
-              ),
+              if (isToApproved) ..._nameType(),
+              if (!isToApproved)
+                Text(
+                  data.leaveTypeName ?? "",
+                  maxLines: 2,
+                  style: kTextStyle.copyWith(
+                      color: kTitleColor, fontWeight: FontWeight.bold),
+                ),
 
               /// From date To date
               Text(
@@ -97,16 +105,17 @@ class MyLeaveCard extends StatelessWidget {
                   ),
                 ],
               ),
-/*
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _btn(context, true),
-                  8.kWidth,
-                  _btn(context, false),
-                ],
-              )
-              */
+
+              /// Btn Approve, Refuse
+              if (isToApproved)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _btn(context, true), // Approve
+                    8.kWidth,
+                    _btn(context, false), // Refuse
+                  ],
+                )
             ],
           ),
         ),
@@ -153,7 +162,7 @@ class MyLeaveCard extends StatelessWidget {
 
         _textRow('Duration', '${data.numberOfDays} day(s)${_period()}'),
         Measurement.gap.kHeight,
-        _textRow('Reasons', 'ewlfnewk fewf kewf kjewf kjew nf'),
+        _textRow('Reasons', data.description ?? ""),
       ],
     );
   }
@@ -196,7 +205,7 @@ class MyLeaveCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.blackS14W400,
               ),
               TextSpan(
-                text: ' Name ',
+                text: ' ${data.employeeName} ',
                 style: Theme.of(context).textTheme.blackS14W700,
               ),
               TextSpan(
@@ -217,11 +226,8 @@ class MyLeaveCard extends StatelessWidget {
           ),
           BlocListener<LeaveBloc, LeaveState>(
             listener: (ctx, state) {
-              print("liten ==========");
               if (state.stateType == LeaveStateType.leaveAction) {
                 final result = state.leaveActionResult;
-
-                print("status ============ ${result!.status}");
 
                 if (result!.status == ApiStatus.loading) {
                   CustomLoading.show(context);
@@ -254,6 +260,24 @@ class MyLeaveCard extends StatelessWidget {
             ),
           ),
         ]);
+  }
+
+  List<Widget> _nameType() {
+    return [
+      Text(
+        data.employeeName ?? "",
+        maxLines: 1,
+        style: kTextStyle.copyWith(
+            color: kTitleColor, fontWeight: FontWeight.bold),
+      ),
+      Text(
+        data.leaveTypeName ?? "",
+        maxLines: 1,
+        style: kTextStyle.copyWith(
+          color: kGreyTextColor,
+        ),
+      ),
+    ];
   }
 
   String _period() {

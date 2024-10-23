@@ -148,7 +148,10 @@ class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
                 padding: const EdgeInsets.only(
                   top: Measurement.screenPadding,
                 ),
-                child: MyLeaveCard(data: d[i]),
+                child: MyLeaveCard(
+                  data: d[i],
+                  isToApproved: false,
+                ),
               )
           ],
         ),
