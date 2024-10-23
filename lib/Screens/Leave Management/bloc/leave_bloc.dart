@@ -3,6 +3,8 @@ import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Repository/leave_repository.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 
 part 'leave_event.dart';
 part 'leave_state.dart';
@@ -160,16 +162,20 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     await leaveRepository.leaveAction(0, "").then((value) async {
       ///
       if (value.isSuccess) {
-        /// Update item at my List. Append new item
-        if (event.status == LeaveStatus.approved) {
-          event.data.state = LeaveStatus.approved.name;
-        } else {
-          event.data.state = LeaveStatus.refused.name;
-        }
+        /// Append to list if current current UserId = employeeId
+        if (AppServices.instance<DatabaseService>().getSession!.myProfile!.id ==
+            event.data.employeeId) {
+          /// Update item at my List. Append new item
+          if (event.status == LeaveStatus.approved) {
+            event.data.state = LeaveStatus.approved.name;
+          } else {
+            event.data.state = LeaveStatus.refused.name;
+          }
 
-        state.myLeaveListResult!.data!.list!.insert(0, event.data);
-        state.stateType = LeaveStateType.myLeaveList;
-        emit(state.copyWith(state));
+          state.myLeaveListResult!.data!.list!.insert(0, event.data);
+          state.stateType = LeaveStateType.myLeaveList;
+          emit(state.copyWith(state));
+        }
 
         /// update item at To Approve List. Remove item
         if (state.toApproveListResult!.data!.toApprovedList!.isNotEmpty) {

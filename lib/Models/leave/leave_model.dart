@@ -6,7 +6,7 @@ part 'leave_model.g.dart';
 
 @JsonSerializable()
 class LeaveModel {
-  int? id;
+  int? id, employeeId;
   String? name, employeeName;
   String? allocate;
   String? approved;

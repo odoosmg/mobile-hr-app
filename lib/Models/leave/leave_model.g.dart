@@ -8,6 +8,7 @@ part of 'leave_model.dart';
 
 LeaveModel _$LeaveModelFromJson(Map<String, dynamic> json) => LeaveModel()
   ..id = (json['id'] as num?)?.toInt()
+  ..employeeId = (json['employee_id'] as num?)?.toInt()
   ..name = json['name'] as String?
   ..employeeName = json['employee_name'] as String?
   ..allocate = json['allocate'] as String?
@@ -40,6 +41,7 @@ LeaveModel _$LeaveModelFromJson(Map<String, dynamic> json) => LeaveModel()
 Map<String, dynamic> _$LeaveModelToJson(LeaveModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'employee_id': instance.employeeId,
       'name': instance.name,
       'employee_name': instance.employeeName,
       'allocate': instance.allocate,
