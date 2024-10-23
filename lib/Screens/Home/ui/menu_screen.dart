@@ -1,9 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
+import 'package:hrm_employee/extensions/textstyle_extension.dart';
+import 'package:hrm_employee/utlis/app_color.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 
@@ -41,7 +44,16 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: CustomAppBar.titleActions(title: "Apps"),
-      body: BlocBuilder<HomeBloc, HomeState>(
+      body: BlocConsumer<HomeBloc, HomeState>(
+        listener: (context, state) {
+          /// Alert message when failed
+          if (state.stateType == HomeStateType.appPermission) {
+            if (state.permissionResult!.status != ApiStatus.loading &&
+                !state.permissionResult!.isSuccess) {
+              _permissionFailedSnackbar();
+            }
+          }
+        },
         buildWhen: (previous, current) {
           return current.stateType == HomeStateType.appPermission;
         },
@@ -55,6 +67,9 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget _kbuilder() {
     return KBuilder(
       status: homeBloc.state.permissionResult!.status!,
+      failed: Column(
+        children: _gridMenu(context),
+      ),
       builder: (st) {
         return st == ApiStatus.loading
             ? Container()
@@ -63,6 +78,14 @@ class _MenuScreenState extends State<MenuScreen> {
               );
       },
     );
+  }
+
+  Widget _display(ApiStatus st) {
+    return st == ApiStatus.loading
+        ? Container()
+        : Column(
+            children: _gridMenu(context),
+          );
   }
 
   List<Widget> _gridMenu(BuildContext context) {
@@ -320,5 +343,37 @@ class _MenuScreenState extends State<MenuScreen> {
         elevation: 0,
       ),
     );
+  }
+
+  void _permissionFailedSnackbar() {
+    Flushbar(
+      // isDismissible: false,
+      backgroundColor: AppColor.kDangerColor,
+      boxShadows: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: const Offset(0, 3),
+        ),
+      ],
+      animationDuration: const Duration(milliseconds: 500),
+      forwardAnimationCurve: Curves.easeIn,
+      reverseAnimationCurve: Curves.easeOut,
+      duration: const Duration(seconds: 2),
+      flushbarPosition: FlushbarPosition.BOTTOM,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      titleText: const Icon(
+        Icons.error_outline,
+        color: Colors.white,
+        size: 24,
+      ),
+      messageText: Text(
+        "Get Permission failed!",
+        style: Theme.of(context).textTheme.whiteS13W500.copyWith(fontSize: 17),
+        textAlign: TextAlign.center,
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+    ).show(context);
   }
 }
