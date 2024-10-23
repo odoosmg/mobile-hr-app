@@ -89,6 +89,8 @@ class DatabaseService {
   ///     Permissoin
   ///*****************/
 
+  ///** Note. [null] set as failed */
+
   /// get
   AppPermissionModel? get getPermissoin =>
       permission?.get(AppPermissionModel.boxName);
@@ -96,4 +98,7 @@ class DatabaseService {
   /// put
   void putPermission(AppPermissionModel data) =>
       permission?.put(AppPermissionModel.boxName, data);
+
+  /// Get App Permissoin Success
+  bool get isGetPermissionSucces => getPermissoin!.isRetrieveSuccess!;
 }

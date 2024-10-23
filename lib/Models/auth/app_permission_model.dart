@@ -1,3 +1,4 @@
+import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -15,6 +16,13 @@ class AppPermissionModel {
 
   @HiveField(2)
   AppPermissionModel? leave;
+
+  /// Retrieve success
+  @HiveField(3)
+  bool? isRetrieveSuccess;
+
+  @HiveField(4)
+  AppPermissionModel? data;
 
   AppPermissionModel();
 

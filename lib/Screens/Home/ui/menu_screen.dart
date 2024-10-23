@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 // ignore: depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 
@@ -132,53 +134,54 @@ class _MenuScreenState extends State<MenuScreen> {
       const SizedBox(
         height: 20.0,
       ),
-      Row(
-        children: [
-          Expanded(
-            child: Material(
-              elevation: 2.0,
-              child: GestureDetector(
-                onTap: () {
-                  // const LeaveApplication().launch(context);
-                  const LeaveScreen().launch(context);
-                },
-                child: Container(
-                  width: context.width(),
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                        color: Color(0xFF4ACDF9),
-                        width: 3.0,
+      if (AppServices.instance<DatabaseService>().isGetPermissionSucces)
+        Row(
+          children: [
+            Expanded(
+              child: Material(
+                elevation: 2.0,
+                child: GestureDetector(
+                  onTap: () {
+                    // const LeaveApplication().launch(context);
+                    const LeaveScreen().launch(context);
+                  },
+                  child: Container(
+                    width: context.width(),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: Color(0xFF4ACDF9),
+                          width: 3.0,
+                        ),
                       ),
+                      color: Colors.white,
                     ),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Image(image: AssetImage('images/leave.png')),
-                      Text(
-                        'Leave',
-                        style: kTextStyle.copyWith(
-                            color: kTitleColor, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Application',
-                        style: kTextStyle.copyWith(
-                            color: kTitleColor, fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Image(image: AssetImage('images/leave.png')),
+                        Text(
+                          'Leave',
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Application',
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            width: 20.0,
-          ),
-          _emptyCard(context),
-          /*
+            const SizedBox(
+              width: 20.0,
+            ),
+            _emptyCard(context),
+            /*
           Expanded(
             child: Material(
               elevation: 2.0,
@@ -220,8 +223,8 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
           ),
           */
-        ],
-      ),
+          ],
+        ),
 
       /*
       20.height,

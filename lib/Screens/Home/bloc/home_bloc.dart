@@ -99,6 +99,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     state.permissionResult!.status = ApiStatus.loading;
     emit(state.copyWith(state));
     await homeRepository.appPermission().then((value) {
+      /// Update Local
+      AppPermissionModel permission =
+          AppServices.instance<DatabaseService>().getPermissoin ??
+              AppPermissionModel();
+      permission.isRetrieveSuccess = value.isSuccess;
+      permission.data = value.data;
+      AppServices.instance<DatabaseService>().putPermission(permission);
+
       state.permissionResult = value;
       emit(state.copyWith(state));
     });

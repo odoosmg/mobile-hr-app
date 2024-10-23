@@ -19,19 +19,25 @@ class AppPermissionModelAdapter extends TypeAdapter<AppPermissionModel> {
     return AppPermissionModel()
       ..id = fields[0] as int?
       ..isApprover = fields[1] as bool?
-      ..leave = fields[2] as AppPermissionModel?;
+      ..leave = fields[2] as AppPermissionModel?
+      ..isRetrieveSuccess = fields[3] as bool?
+      ..data = fields[4] as AppPermissionModel?;
   }
 
   @override
   void write(BinaryWriter writer, AppPermissionModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.isApprover)
       ..writeByte(2)
-      ..write(obj.leave);
+      ..write(obj.leave)
+      ..writeByte(3)
+      ..write(obj.isRetrieveSuccess)
+      ..writeByte(4)
+      ..write(obj.data);
   }
 
   @override
@@ -55,11 +61,17 @@ AppPermissionModel _$AppPermissionModelFromJson(Map<String, dynamic> json) =>
       ..isApprover = json['is_approver'] as bool?
       ..leave = json['leave'] == null
           ? null
-          : AppPermissionModel.fromJson(json['leave'] as Map<String, dynamic>);
+          : AppPermissionModel.fromJson(json['leave'] as Map<String, dynamic>)
+      ..isRetrieveSuccess = json['is_retrieve_success'] as bool?
+      ..data = json['data'] == null
+          ? null
+          : AppPermissionModel.fromJson(json['data'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$AppPermissionModelToJson(AppPermissionModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'is_approver': instance.isApprover,
       'leave': instance.leave,
+      'is_retrieve_success': instance.isRetrieveSuccess,
+      'data': instance.data,
     };
