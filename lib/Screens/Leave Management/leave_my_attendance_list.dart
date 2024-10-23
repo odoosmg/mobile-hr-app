@@ -150,6 +150,7 @@ class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
                 ),
                 child: MyLeaveCard(
                   data: d[i],
+                  index: i,
                   isToApproved: false,
                 ),
               )

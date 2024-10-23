@@ -19,10 +19,12 @@ import 'package:nb_utils/nb_utils.dart';
 class MyLeaveCard extends StatelessWidget {
   final LeaveModel data;
   final Function(bool)? onAction; // true = accept, false = refuse
+  final int index;
   final bool isToApproved;
   const MyLeaveCard({
     super.key,
     required this.data,
+    required this.index,
     this.onAction,
     this.isToApproved = false,
   });
@@ -245,10 +247,19 @@ class MyLeaveCard extends StatelessWidget {
             },
             child: TextButton(
               onPressed: () {
-                context.read<LeaveBloc>().add(LeaveAction());
+                ///
+                context.read<LeaveBloc>().add(
+                      LeaveAction(
+                        data: data,
+                        status: isAccept
+                            ? LeaveStatus.approved
+                            : LeaveStatus.refused,
+                        index: index,
+                      ),
+                    );
 
                 /// close modal
-                Navigator.pop(context);
+                // Navigator.pop(context);
               },
               child: Text(
                 (isAccept ? "Accept" : "Refuse").toUpperCase(),

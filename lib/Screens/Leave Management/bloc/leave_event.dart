@@ -39,4 +39,9 @@ final class LeaveToApproveList extends LeaveEvent {
   LeaveToApproveList({required this.isLoading});
 }
 
-final class LeaveAction extends LeaveEvent {}
+final class LeaveAction extends LeaveEvent {
+  final LeaveModel data;
+  final int index;
+  final LeaveStatus status;
+  LeaveAction({required this.data, required this.index, required this.status});
+}

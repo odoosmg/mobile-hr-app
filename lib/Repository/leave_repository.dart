@@ -52,10 +52,9 @@ class LeaveRepository extends BaseApi {
 
   /// Approved or Refuse
   Future<ApiResult<LeaveModel>> leaveAction(int id, String state) async {
-    Map<String, dynamic> map = await request(
-      uri: Endpoint.leaveAction,
-    );
-
+    Map<String, dynamic> map =
+        await request(uri: Endpoint.leaveAction, params: {});
+    map = {"status_code": 200};
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: LeaveModel.fromJson(map['data'] ?? {}),
@@ -72,6 +71,7 @@ class LeaveRepository extends BaseApi {
     /// update key to 1 level
     map['list'] = map["data"]?["to_approve"] ?? [];
     map['to_approved_list'] = map["data"]?["to_approve"] ?? [];
+    /*
     map['to_approved_list'] = [
       {
         "id": 148,
@@ -90,8 +90,8 @@ class LeaveRepository extends BaseApi {
         "id": 2,
         "date_from": "2024-09-28",
         "date_to": "2024-09-28",
-        "employee_id": 4,
-        "employee_name": "tester_1",
+        "employee_id": 10,
+        "employee_name": "Rainy Vay",
         "number_of_days": 0.0,
         "leave_type_id": 2,
         "leave_type_name": "Sick Time Off",
@@ -100,6 +100,7 @@ class LeaveRepository extends BaseApi {
         "request_date_from_period": ""
       },
     ];
+    */
     map.remove('data');
 
     return apiResponse(

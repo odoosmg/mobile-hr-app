@@ -119,4 +119,26 @@ enum LeaveStatus {
         return Icons.hourglass_empty;
     }
   }
+
+  String get keyword {
+    switch (this) {
+      case approved:
+        return "approve";
+      case refused:
+        return "refuse";
+      default:
+        return "to_approve";
+    }
+  }
+
+  String get name {
+    switch (this) {
+      case approved:
+        return "Approved";
+      case refused:
+        return "Refused";
+      default:
+        return "To Approv";
+    }
+  }
 }

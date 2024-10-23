@@ -129,7 +129,7 @@ class _LeaveToApproveListScreenState extends State<LeaveToApproveListScreen>
                 padding: const EdgeInsets.only(
                   top: Measurement.screenPadding,
                 ),
-                child: MyLeaveCard(data: d[i], isToApproved: true),
+                child: MyLeaveCard(data: d[i], index: i, isToApproved: true),
               )
           ],
         ),

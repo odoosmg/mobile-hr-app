@@ -14,8 +14,10 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     on<LeaveTypeListForm>(_leaveTypeListForm);
     on<LeaveDayCount>(_dayCount);
     on<LeaveSubmit>(_submit);
+
     on<LeaveMyList>(_myLeaveList);
     on<LeaveToApproveList>(_toApproveList);
+
     on<LeaveAction>(_leaveAction);
     // on<LeaveShowFullHalf>(_showFullHalf);
   }
@@ -80,7 +82,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     emit(state.copyWith(state));
   }
 
-  ///
+  /// request leave
   void _submit(LeaveSubmit event, Emitter<LeaveState> emit) async {
     state.stateType = LeaveStateType.submit;
     state.submitLeaveResult!.status = ApiStatus.loading;
@@ -156,6 +158,32 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     emit(state.copyWith(state));
 
     await leaveRepository.leaveAction(0, "").then((value) async {
+      ///
+      if (value.isSuccess) {
+        /// Update item at my List. Append new item
+        if (event.status == LeaveStatus.approved) {
+          event.data.state = LeaveStatus.approved.name;
+        } else {
+          event.data.state = LeaveStatus.refused.name;
+        }
+
+        state.myLeaveListResult!.data!.list!.insert(0, event.data);
+        state.stateType = LeaveStateType.myLeaveList;
+        emit(state.copyWith(state));
+
+        /// update item at To Approve List. Remove item
+        if (state.toApproveListResult!.data!.toApprovedList!.isNotEmpty) {
+          await Future.delayed(Duration.zero);
+          state.toApproveListResult!.data!.toApprovedList!
+              .removeAt(event.index);
+          state.stateType = LeaveStateType.toApproveList;
+          emit(state.copyWith(state));
+        }
+      }
+
+      /// Current Action
+      await Future.delayed(Duration.zero);
+      state.stateType = LeaveStateType.leaveAction;
       state.leaveActionResult = value;
       emit(state.copyWith(state));
     });
