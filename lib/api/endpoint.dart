@@ -7,7 +7,8 @@ class Endpoint {
   static const leaveSummary = "/soma-portal/my/leaves-summary";
   static const leaveTypeList = "/soma-portal/my/leave_type";
   static const leaveRequest = "/soma-portal/my/leave/request",
-      leaveMyList = "/soma-portal/my/leave/list";
+      leaveMyList = "/soma-portal/my/leave/list",
+      leaveToApproveList = "/soma-portal/my/leave/to_validate";
   static const employeeList = "/soma-portal/employee",
       employeeDetail = "/soma-portal/employee/detail";
 

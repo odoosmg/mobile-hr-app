@@ -2,6 +2,8 @@ import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Models/leave/leave_params.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/api/base_api.dart';
 import 'package:hrm_employee/api/endpoint.dart';
 
@@ -57,6 +59,27 @@ class LeaveRepository extends BaseApi {
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: LeaveModel.fromJson(map['data'] ?? {}),
+    );
+  }
+
+  ///
+  Future<ApiResult<LeaveModel>> toApproveList() async {
+    Map<String, dynamic> map =
+        await request(uri: Endpoint.leaveToApproveList, params: {
+      "comapny_ids": AppServices.instance<DatabaseService>()
+              .getFormData
+              ?.companySelected ??
+          []
+    });
+
+    /// update key to 1 level
+    map['list'] = map["data"]?["to_approve"] ?? [];
+    map['to_approved_list'] = map["data"]?["to_approve"] ?? [];
+    map.remove('data');
+
+    return apiResponse(
+      status: ApiStatusModel.fromJson(map),
+      data: LeaveModel.fromJson(map),
     );
   }
 }
