@@ -108,13 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Hi, ${ses.myProfile?.name}',
                 style: kTextStyle.copyWith(color: Colors.white, fontSize: 12.0),
               ),
-
+/*
               /// Company
               subtitle: Text(
                 '${session?.myProfile?.company}',
+                maxLines: 1,
                 style: kTextStyle.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12),
               ),
+*/
             );
           },
         ),
