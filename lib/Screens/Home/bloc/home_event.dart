@@ -15,3 +15,5 @@ class HomeGetData extends HomeEvent {
   final bool isLoading;
   HomeGetData({this.isLoading = true});
 }
+
+class HomeAppPermission extends HomeEvent {}

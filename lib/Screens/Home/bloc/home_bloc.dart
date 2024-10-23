@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
+import 'package:hrm_employee/Models/auth/app_permission_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
+import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Repository/form_data_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
 import 'package:hrm_employee/Services/app_services.dart';
@@ -18,6 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeCheckIn>(_checkIn);
     on<HomeCheckOut>(_checkOut);
     on<HomeGetData>(_getData);
+    on<HomeAppPermission>(_appPermission);
   }
 
   ///
@@ -86,6 +89,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await homeRepository.getInOutData().then((value) {
       state.getDataResult = value;
 
+      emit(state.copyWith(state));
+    });
+  }
+
+  ///
+  void _appPermission(HomeAppPermission event, Emitter<HomeState> emit) async {
+    state.stateType = HomeStateType.appPermission;
+    state.permissionResult!.status = ApiStatus.loading;
+    emit(state.copyWith(state));
+    await homeRepository.appPermission().then((value) {
+      state.permissionResult = value;
       emit(state.copyWith(state));
     });
   }

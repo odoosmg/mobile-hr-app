@@ -1,5 +1,6 @@
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
+import 'package:hrm_employee/Models/auth/app_permission_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
@@ -38,6 +39,15 @@ class HomeRepository extends BaseApi {
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: InOutModel.fromJson(map["data"] ?? {}),
+    );
+  }
+
+  ///
+  Future<ApiResult<AppPermissionModel>> appPermission() async {
+    Map<String, dynamic> map = await request(uri: Endpoint.permission);
+    return apiResponse(
+      status: ApiStatusModel.fromJson(map),
+      data: AppPermissionModel.fromJson(map["data"] ?? {}),
     );
   }
 }

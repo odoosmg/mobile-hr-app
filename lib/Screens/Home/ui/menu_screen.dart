@@ -1,29 +1,65 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:hrm_employee/Screens/Leave%20Management/leave_my_attendance_list.dart';
-import 'package:hrm_employee/Screens/Leave%20Management/leave_screen.dart';
-import 'package:hrm_employee/Screens/PublicHoliday/public_holiday_screen.dart';
-// ignore: depend_on_referenced_packages
-import 'package:nb_utils/nb_utils.dart';
-import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
-
-import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
-import 'package:hrm_employee/constant.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: depend_on_referenced_packages
+import 'package:nb_utils/nb_utils.dart';
 
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/leave_screen.dart';
+import 'package:hrm_employee/Screens/PublicHoliday/public_holiday_screen.dart';
+import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
+import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
+import 'package:hrm_employee/constant.dart';
+import 'package:hrm_employee/Screens/Home/bloc/home_bloc.dart';
 import 'package:hrm_employee/Screens/Employee%20Directory/employee_directory_screen.dart';
-import 'package:hrm_employee/Screens/Work%20Report/daily_work_report.dart';
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
+
+  @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
+  late HomeBloc homeBloc;
+
+  @override
+  void initState() {
+    homeBloc = context.read<HomeBloc>();
+
+    /// get data
+    homeBloc.add(HomeAppPermission());
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: CustomAppBar.titleActions(title: "Apps"),
-      body: Column(
-        children: _gridMenu(context),
+      body: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) {
+          return current.stateType == HomeStateType.appPermission;
+        },
+        builder: (context, state) {
+          return _kbuilder();
+        },
       ),
+    );
+  }
+
+  Widget _kbuilder() {
+    return KBuilder(
+      status: homeBloc.state.permissionResult!.status!,
+      builder: (st) {
+        return st == ApiStatus.loading
+            ? Container()
+            : Column(
+                children: _gridMenu(context),
+              );
+      },
     );
   }
 

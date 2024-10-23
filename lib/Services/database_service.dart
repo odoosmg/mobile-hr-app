@@ -1,29 +1,32 @@
 import 'dart:async';
 import 'package:hive/hive.dart';
+import 'package:hrm_employee/Models/auth/app_permission_model.dart';
 
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Models/auth/app_local.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
-import 'package:hrm_employee/Screens/components/select/SelectForm/ui/select_form.dart';
 
 class DatabaseService {
   late Box<Session>? session;
   late Box<AppLocal>? appLocal;
   late Box<UserModel>? user;
   late Box<SelectFormModel>? formData;
+  late Box<AppPermissionModel>? permission;
 
   Future registerAdapter() async {
     Hive.registerAdapter(SessionAdapter());
     Hive.registerAdapter(AppLocalAdapter());
     Hive.registerAdapter(UserModelAdapter());
     Hive.registerAdapter(SelectFormModelAdapter());
+    Hive.registerAdapter(AppPermissionModelAdapter());
 
     ///
     session = await Hive.openBox(Session.boxName);
     appLocal = await Hive.openBox(AppLocal.boxName);
     user = await Hive.openBox(UserModel.boxName);
     formData = await Hive.openBox(SelectFormModel.boxName);
+    permission = await Hive.openBox(AppPermissionModel.boxName);
 
     /// init default value, if null.
     if (getAppLocal == null) {
@@ -81,4 +84,16 @@ class DatabaseService {
 
   List<int>? get getCompanyIds =>
       (getFormData!.companySelected ?? []).map((e) => e.id!).toList();
+
+  ///*****************
+  ///     Permissoin
+  ///*****************/
+
+  /// get
+  AppPermissionModel? get getPermissoin =>
+      permission?.get(AppPermissionModel.boxName);
+
+  /// put
+  void putPermission(AppPermissionModel data) =>
+      permission?.put(AppPermissionModel.boxName, data);
 }
