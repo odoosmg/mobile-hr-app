@@ -66,10 +66,7 @@ class LeaveRepository extends BaseApi {
   Future<ApiResult<LeaveModel>> toApproveList() async {
     Map<String, dynamic> map =
         await request(uri: Endpoint.leaveToApproveList, params: {
-      "comapny_ids": AppServices.instance<DatabaseService>()
-              .getFormData
-              ?.companySelected ??
-          []
+      "company_ids": AppServices.instance<DatabaseService>().getCompanyIds ?? []
     });
 
     /// update key to 1 level

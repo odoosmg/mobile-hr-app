@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/leave_to_approve_list_screen.dart';
 
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,8 +23,8 @@ class LeaveScreen extends StatefulWidget {
 class _LeaveScreenState extends State<LeaveScreen>
     with SingleTickerProviderStateMixin {
   List<Widget> myTabs = [
-    Tab(text: 'My List'),
-    Tab(text: 'To Approve List'),
+    const Tab(text: 'My List'),
+    const Tab(text: 'To Approve List'),
   ];
   late TabController _tabController;
 
@@ -40,8 +41,11 @@ class _LeaveScreenState extends State<LeaveScreen>
   Widget build(BuildContext context) {
     return CustomScaffold(
       bodyPadding: EdgeInsets.zero,
-      appBar:
-          CustomAppBar.titleCompany(title: "Leave List", onChanged: (v, _) {}),
+      appBar: CustomAppBar.titleCompany(
+          title: "Leave List",
+          onChanged: (v, _) {
+            leaveBloc.add(LeaveToApproveList(isLoading: true));
+          }),
       body: Column(
         children: [
           /// header
@@ -50,16 +54,19 @@ class _LeaveScreenState extends State<LeaveScreen>
             onTap: (index) {},
             tabs: const <Widget>[
               Tab(text: 'My List'),
-              Tab(text: 'To Approve List'),
+              Tab(text: 'Approve List'),
             ],
           ),
 
           /// body
           Expanded(
-            child: TabBarView(controller: _tabController, children: [
-              const LeaveAttendanceMyList(),
-              Text("========= ${_tabController.index}")
-            ]),
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                LeaveAttendanceMyList(),
+                LeaveToApproveListScreen()
+              ],
+            ),
           ),
         ],
       ),

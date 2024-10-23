@@ -136,15 +136,15 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   ///
   void _toApproveList(
       LeaveToApproveList event, Emitter<LeaveState> emit) async {
-    state.stateType = LeaveStateType.myLeaveList;
+    state.stateType = LeaveStateType.toApproveList;
     if (event.isLoading) {
-      state.myLeaveListResult!.status = ApiStatus.loading;
+      state.toApproveListResult!.status = ApiStatus.loading;
     }
     emit(state.copyWith(state));
 
     ///
-    await leaveRepository.myList().then((value) {
-      state.myLeaveListResult = value;
+    await leaveRepository.toApproveList().then((value) async {
+      state.toApproveListResult = value;
       emit(state.copyWith(state));
     });
   }
