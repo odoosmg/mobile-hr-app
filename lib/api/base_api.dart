@@ -20,7 +20,7 @@ import 'package:nb_utils/nb_utils.dart' show WidgetExtension;
 
 class BaseApi extends ResponseT {
   final Map<String, dynamic> _headers = {
-    'Content-Type': 'multipart/form-data',
+    'Content-Type': 'application/json',
   };
 
   final Dio _dio = Dio(
@@ -33,7 +33,7 @@ class BaseApi extends ResponseT {
   Future<Map<String, dynamic>> request({
     required String uri,
     Map<String, dynamic>? params,
-    Object? data,
+    Object? object,
     Method method = Method.post,
   }) async {
     Map<String, dynamic> data = {};
@@ -56,9 +56,10 @@ class BaseApi extends ResponseT {
           options: Options(
             method: method.name,
             headers: _headers,
+            // extra: params,
           ),
-          data: data,
-          queryParameters: params ?? {},
+          data: params, // BODY
+          // queryParameters: params ?? {},
         );
         data = response.data;
       } on DioException catch (e) {

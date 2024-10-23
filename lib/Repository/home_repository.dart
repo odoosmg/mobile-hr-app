@@ -33,8 +33,7 @@ class HomeRepository extends BaseApi {
     Map<String, dynamic> map = await request(
         uri: Endpoint.leaveSummary,
         params: {
-          "company_ids":
-              AppServices.instance<DatabaseService>().getCompanyIds.toString()
+          "company_ids": AppServices.instance<DatabaseService>().getCompanyIds
         });
     return apiResponse(
       status: ApiStatusModel.fromJson(map),

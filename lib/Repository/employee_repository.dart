@@ -12,8 +12,7 @@ class EmployeeRepository extends BaseApi {
     Map<String, dynamic> map = await request(
         uri: Endpoint.employeeList,
         params: {
-          "company_ids":
-              AppServices.instance<DatabaseService>().getCompanyIds.toString()
+          "company_ids": AppServices.instance<DatabaseService>().getCompanyIds
         });
 
     map["list"] = map["data"] ?? [];
