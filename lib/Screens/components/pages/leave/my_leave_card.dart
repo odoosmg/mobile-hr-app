@@ -97,7 +97,7 @@ class MyLeaveCard extends StatelessWidget {
                   ),
                 ],
               ),
-
+/*
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -106,6 +106,7 @@ class MyLeaveCard extends StatelessWidget {
                   _btn(context, false),
                 ],
               )
+              */
             ],
           ),
         ),
@@ -150,40 +151,9 @@ class MyLeaveCard extends StatelessWidget {
         _textRow('Type', '${data.leaveTypeName}'),
         Measurement.gap.kHeight,
 
-        /// Duration
-        // Text(
-        //   'Duration : ${data.numberOfDays} day(s)${_period()}',
-        //   style: kTextStyle.copyWith(
-        //     color: kGreyTextColor,
-        //   ),
-        // ),
-
         _textRow('Duration', '${data.numberOfDays} day(s)${_period()}'),
         Measurement.gap.kHeight,
         _textRow('Reasons', 'ewlfnewk fewf kewf kjewf kjew nf'),
-        //// Reason
-        // Row(
-        //   mainAxisSize: MainAxisSize.min,
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     Text(
-        //       'Reasons :',
-        //       style: kTextStyle.copyWith(
-        //         color: kGreyTextColor,
-        //       ),
-        //     ),
-        //     10.kWidth,
-        //     Expanded(
-        //       child: Text(
-        //         'f ewlew flew flewf lew fkew fwef ew fwl fewf lnewf',
-        //         style: kTextStyle.copyWith(
-        //           color: kGreyTextColor,
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // )
       ],
     );
   }
