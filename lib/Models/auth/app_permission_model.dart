@@ -21,8 +21,8 @@ class AppPermissionModel {
   @HiveField(3)
   bool? isRetrieveSuccess;
 
-  @HiveField(4)
-  AppPermissionModel? data;
+  // @HiveField(4)
+  // AppPermissionModel? data;
 
   AppPermissionModel();
 

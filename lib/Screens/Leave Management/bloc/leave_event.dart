@@ -45,3 +45,5 @@ final class LeaveAction extends LeaveEvent {
   final LeaveStatus status;
   LeaveAction({required this.data, required this.index, required this.status});
 }
+
+final class LeaveListScreenDispose extends LeaveEvent {}

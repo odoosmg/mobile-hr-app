@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_to_approve_list_screen.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 
 import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,10 +32,18 @@ class _LeaveScreenState extends State<LeaveScreen>
 
   late LeaveBloc leaveBloc;
 
+  late bool isApprover = false;
+
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: myTabs.length);
     leaveBloc = context.read<LeaveBloc>();
+
+    isApprover = AppServices.instance<DatabaseService>()
+        .getPermissoin!
+        .leave!
+        .isApprover!;
+
     super.initState();
   }
 
@@ -48,26 +58,12 @@ class _LeaveScreenState extends State<LeaveScreen>
           }),
       body: Column(
         children: [
-          /// header
-          TabBar.secondary(
-            controller: _tabController,
-            onTap: (index) {},
-            tabs: const <Widget>[
-              Tab(text: 'My List'),
-              Tab(text: 'Approve List'),
-            ],
-          ),
-
-          /// body
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: const [
-                LeaveAttendanceMyList(),
-                LeaveToApproveListScreen()
-              ],
-            ),
-          ),
+          /// display my_list and approve_list
+          if (isApprover) ...[
+            ..._hasApprover(),
+          ] else ...[
+            const Expanded(child: LeaveAttendanceMyList()),
+          ]
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -79,5 +75,36 @@ class _LeaveScreenState extends State<LeaveScreen>
         ),
       ),
     );
+  }
+
+  List<Widget> _hasApprover() {
+    return [
+      /// header
+      TabBar.secondary(
+        controller: _tabController,
+        onTap: (index) {},
+        tabs: const <Widget>[
+          Tab(text: 'Approve List'),
+          Tab(text: 'My List'),
+        ],
+      ),
+
+      /// body
+      Expanded(
+        child: TabBarView(
+          controller: _tabController,
+          children: const [
+            LeaveToApproveListScreen(),
+            LeaveAttendanceMyList(),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  @override
+  void dispose() {
+    leaveBloc.add(LeaveListScreenDispose());
+    super.dispose();
   }
 }

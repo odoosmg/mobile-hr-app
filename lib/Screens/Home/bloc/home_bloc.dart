@@ -103,8 +103,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       AppPermissionModel permission =
           AppServices.instance<DatabaseService>().getPermissoin ??
               AppPermissionModel();
+
+      permission = value.data ?? AppPermissionModel();
       permission.isRetrieveSuccess = value.isSuccess;
-      permission.data = value.data;
       AppServices.instance<DatabaseService>().putPermission(permission);
 
       state.permissionResult = value;

@@ -21,6 +21,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     on<LeaveToApproveList>(_toApproveList);
 
     on<LeaveAction>(_leaveAction);
+    on<LeaveListScreenDispose>(_leaveListScreenDispose);
     // on<LeaveShowFullHalf>(_showFullHalf);
   }
 
@@ -194,6 +195,16 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       emit(state.copyWith(state));
     });
   }
+
+  ///
+  void _leaveListScreenDispose(
+      LeaveListScreenDispose event, Emitter<LeaveState> emit) async {
+    state.myLeaveListResult!.data!.list = [];
+    state.myLeaveListResult!.status = ApiStatus.loading;
+    state.toApproveListResult!.data!.toApprovedList = [];
+    state.toApproveListResult!.status = ApiStatus.loading;
+  }
+
   // @override
   // void onChange(Change<LeaveState> change) {
   //   // TODO: implement onChange
