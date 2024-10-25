@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:hive/hive.dart';
+import 'package:hrm_employee/Models/PublicHoliday/public_holiday_model.dart';
 import 'package:hrm_employee/Models/auth/app_permission_model.dart';
 
 import 'package:hrm_employee/Models/auth/user_model.dart';
@@ -13,6 +14,7 @@ class DatabaseService {
   late Box<UserModel>? user;
   late Box<SelectFormModel>? formData;
   late Box<AppPermissionModel>? permission;
+  late Box<PublicHolidayModel>? publicHoliday;
 
   Future registerAdapter() async {
     Hive.registerAdapter(SessionAdapter());
@@ -20,6 +22,7 @@ class DatabaseService {
     Hive.registerAdapter(UserModelAdapter());
     Hive.registerAdapter(SelectFormModelAdapter());
     Hive.registerAdapter(AppPermissionModelAdapter());
+    Hive.registerAdapter(PublicHolidayModelAdapter());
 
     ///
     session = await Hive.openBox(Session.boxName);
@@ -27,6 +30,7 @@ class DatabaseService {
     user = await Hive.openBox(UserModel.boxName);
     formData = await Hive.openBox(SelectFormModel.boxName);
     permission = await Hive.openBox(AppPermissionModel.boxName);
+    publicHoliday = await Hive.openBox(PublicHolidayModel.boxName);
 
     /// init default value, if null.
     if (getAppLocal == null) {
@@ -39,6 +43,7 @@ class DatabaseService {
   Future clearSession() async {
     clearCompanyList();
     await session?.clear();
+    await publicHoliday?.clear();
   }
 
   void clearCompanyList() {
@@ -101,4 +106,16 @@ class DatabaseService {
 
   /// Get App Permissoin Success
   bool get isGetPermissionSucces => getPermissoin!.isRetrieveSuccess!;
+
+  ///***********************
+  ///     Public Holiday
+  ///***********************/
+
+  /// Get
+  PublicHolidayModel? get getPublicHoliday =>
+      publicHoliday?.get(PublicHolidayModel.boxName);
+
+  /// Put
+  void putPublicHoliday(PublicHolidayModel data) =>
+      publicHoliday?.put(PublicHolidayModel.boxName, data);
 }

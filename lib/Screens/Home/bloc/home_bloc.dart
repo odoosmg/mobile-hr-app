@@ -1,10 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/PublicHoliday/public_holiday_model.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/auth/app_permission_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Repository/form_data_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
+import 'package:hrm_employee/Repository/public_holiday_repository.dart';
+import 'package:hrm_employee/Screens/PublicHoliday/Bloc/public_holiday_bloc.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 
@@ -20,6 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeCheckOut>(_checkOut);
     on<HomeGetData>(_getData);
     on<HomeAppPermission>(_appPermission);
+    on<HomeGetCurrentAndNextYear>(_getCurrentAndNextYear);
   }
 
   ///
@@ -111,5 +115,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       state.permissionResult = value;
       emit(state.copyWith(state));
     });
+  }
+
+  void _getCurrentAndNextYear(
+      HomeGetCurrentAndNextYear event, Emitter<HomeState> emit) async {
+    int year = DateTime.now().year;
+    PublicHolidayModel publicHoliday =
+        AppServices.instance<DatabaseService>().getPublicHoliday ??
+            PublicHolidayModel();
+
+    /// set always empty
+    publicHoliday.listCurrentYear = [];
+    publicHoliday.listNextYear = [];
+
+    /// Current Year
+    await PublicHolidayRepository().byYear(year.toString()).then((value) {
+      if (value.isSuccess) {
+        publicHoliday.listCurrentYear = value.data!.list;
+      }
+    });
+
+    /// Next Year
+    await PublicHolidayRepository().byYear((year + 1).toString()).then((value) {
+      if (value.isSuccess) {
+        publicHoliday.listNextYear = value.data!.list;
+      }
+    });
+    AppServices.instance<DatabaseService>().putPublicHoliday(publicHoliday);
   }
 }

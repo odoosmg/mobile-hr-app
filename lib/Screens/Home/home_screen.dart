@@ -75,6 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
     session = AppServices.instance<DatabaseService>().getSession;
     homeBloc = context.read<HomeBloc>();
 
+    homeBloc.add(HomeGetCurrentAndNextYear());
+
     /// get data
     homeBloc.add(HomeGetData());
 
@@ -518,6 +520,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onRefresh() async {
     isOnRefresh = true;
+    homeBloc.add(HomeGetCurrentAndNextYear());
     homeBloc.add(HomeGetData(isLoading: false));
   }
 
