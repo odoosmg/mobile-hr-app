@@ -95,7 +95,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     await leaveRepository.requestLeave(event.params).then((value) async {
       if (value.isSuccess) {
         /// use delay when emit multi state the same time
-        await Future.delayed(const Duration(seconds: 0)).then((_) {
+        await Future.delayed(const Duration(seconds: 0)).then((_) async {
           final p = event.params;
           p.state = 'To Approve'; // status pending
           p.numberOfDays = value.data?.numberOfDays ?? 0;
@@ -108,18 +108,41 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
               "";
 
           /// add item to list
+          ///  if null equal
+          state.myLeaveListResult?.data ??= LeaveModel()..list = [];
+
           state.myLeaveListResult!.data!.list!.insert(0, p);
           state.stateType = LeaveStateType.myLeaveList;
           emit(state.copyWith(state));
+
+          /// * add item to Approve List
+          if (AppServices.instance<DatabaseService>()
+              .getPermissoin!
+              .leave!
+              .isApprover!) {
+            await Future.delayed(const Duration(seconds: 0));
+
+            /// id
+            p.id = value.data?.id ?? 0;
+
+            /// name
+            p.employeeName = AppServices.instance<DatabaseService>()
+                    .getSession
+                    ?.myProfile
+                    ?.name ??
+                "";
+            state.toApproveListResult!.data!.toApprovedList!.insert(0, p);
+            state.stateType = LeaveStateType.toApproveList;
+            emit(state.copyWith(state));
+          }
         });
       }
 
       ///
-      await Future.delayed(const Duration(seconds: 0)).then((_) {
-        state.stateType = LeaveStateType.submit;
-        state.submitLeaveResult = value;
-        emit(state.copyWith(state));
-      });
+      await Future.delayed(const Duration(seconds: 0));
+      state.stateType = LeaveStateType.submit;
+      state.submitLeaveResult = value;
+      emit(state.copyWith(state));
     });
   }
 
@@ -160,7 +183,9 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     state.leaveActionResult!.status = ApiStatus.loading;
     emit(state.copyWith(state));
 
-    await leaveRepository.leaveAction(0, "").then((value) async {
+    await leaveRepository
+        .leaveAction(event.data.id ?? 0, event.status.keyword)
+        .then((value) async {
       ///
       if (value.isSuccess) {
         /// Append to list if current current UserId = employeeId
@@ -175,6 +200,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
           state.myLeaveListResult!.data!.list!.insert(0, event.data);
           state.stateType = LeaveStateType.myLeaveList;
+
           emit(state.copyWith(state));
         }
 
@@ -201,7 +227,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       LeaveListScreenDispose event, Emitter<LeaveState> emit) async {
     state.myLeaveListResult!.data!.list = [];
     state.myLeaveListResult!.status = ApiStatus.loading;
-    state.toApproveListResult!.data!.toApprovedList = [];
+    state.toApproveListResult?.data = LeaveModel();
     state.toApproveListResult!.status = ApiStatus.loading;
   }
 

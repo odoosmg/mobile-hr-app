@@ -3,7 +3,6 @@ import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/auth/app_permission_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
-import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Repository/form_data_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
 import 'package:hrm_employee/Services/app_services.dart';
@@ -106,6 +105,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       permission = value.data ?? AppPermissionModel();
       permission.isRetrieveSuccess = value.isSuccess;
+
       AppServices.instance<DatabaseService>().putPermission(permission);
 
       state.permissionResult = value;

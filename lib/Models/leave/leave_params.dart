@@ -12,4 +12,7 @@ class LeaveParams {
     };
     return d;
   }
+
+  static Map<String, dynamic> action(int id, String state) =>
+      {"leave_id": id, "action_name": state};
 }
