@@ -105,7 +105,7 @@ class DatabaseService {
       permission?.put(AppPermissionModel.boxName, data);
 
   /// Get App Permissoin Success
-  bool get isGetPermissionSucces => getPermissoin!.isRetrieveSuccess!;
+  bool get isGetPermissionSucces => getPermissoin?.isRetrieveSuccess ?? false;
 
   ///***********************
   ///     Public Holiday

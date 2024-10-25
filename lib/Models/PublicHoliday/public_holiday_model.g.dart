@@ -22,16 +22,13 @@ class PublicHolidayModelAdapter extends TypeAdapter<PublicHolidayModel> {
       ..date = fields[2] as String?
       ..month = fields[3] as String?
       ..list = (fields[4] as List?)?.cast<PublicHolidayModel>()
-      ..holidays = (fields[5] as List?)?.cast<PublicHolidayModel>()
-      ..listCurre = (fields[6] as List?)?.cast<PublicHolidayModel>()
-      ..listCurrentYear = (fields[7] as List?)?.cast<PublicHolidayModel>()
-      ..listNextYear = (fields[8] as List?)?.cast<PublicHolidayModel>();
+      ..holidays = (fields[5] as List?)?.cast<PublicHolidayModel>();
   }
 
   @override
   void write(BinaryWriter writer, PublicHolidayModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -43,13 +40,7 @@ class PublicHolidayModelAdapter extends TypeAdapter<PublicHolidayModel> {
       ..writeByte(4)
       ..write(obj.list)
       ..writeByte(5)
-      ..write(obj.holidays)
-      ..writeByte(6)
-      ..write(obj.listCurre)
-      ..writeByte(7)
-      ..write(obj.listCurrentYear)
-      ..writeByte(8)
-      ..write(obj.listNextYear);
+      ..write(obj.holidays);
   }
 
   @override
@@ -78,15 +69,6 @@ PublicHolidayModel _$PublicHolidayModelFromJson(Map<String, dynamic> json) =>
           .toList()
       ..holidays = (json['holidays'] as List<dynamic>?)
           ?.map((e) => PublicHolidayModel.fromJson(e as Map<String, dynamic>))
-          .toList()
-      ..listCurre = (json['list_curre'] as List<dynamic>?)
-          ?.map((e) => PublicHolidayModel.fromJson(e as Map<String, dynamic>))
-          .toList()
-      ..listCurrentYear = (json['list_current_year'] as List<dynamic>?)
-          ?.map((e) => PublicHolidayModel.fromJson(e as Map<String, dynamic>))
-          .toList()
-      ..listNextYear = (json['list_next_year'] as List<dynamic>?)
-          ?.map((e) => PublicHolidayModel.fromJson(e as Map<String, dynamic>))
           .toList();
 
 Map<String, dynamic> _$PublicHolidayModelToJson(PublicHolidayModel instance) =>
@@ -97,7 +79,4 @@ Map<String, dynamic> _$PublicHolidayModelToJson(PublicHolidayModel instance) =>
       'month': instance.month,
       'list': instance.list,
       'holidays': instance.holidays,
-      'list_curre': instance.listCurre,
-      'list_current_year': instance.listCurrentYear,
-      'list_next_year': instance.listNextYear,
     };

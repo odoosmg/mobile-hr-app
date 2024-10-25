@@ -24,14 +24,6 @@ class PublicHolidayModel {
   @HiveField(5)
   List<PublicHolidayModel>? holidays;
 
-  @HiveField(6)
-  List<PublicHolidayModel>? listCurre;
-
-  @HiveField(7)
-  List<PublicHolidayModel>? listCurrentYear;
-  @HiveField(8)
-  List<PublicHolidayModel>? listNextYear;
-
   PublicHolidayModel();
 
   factory PublicHolidayModel.fromJson(Map<String, dynamic> json) =>

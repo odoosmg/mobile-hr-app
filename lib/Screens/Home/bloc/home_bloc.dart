@@ -119,26 +119,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _getCurrentAndNextYear(
       HomeGetCurrentAndNextYear event, Emitter<HomeState> emit) async {
-    int year = DateTime.now().year;
     PublicHolidayModel publicHoliday =
         AppServices.instance<DatabaseService>().getPublicHoliday ??
             PublicHolidayModel();
 
     /// set always empty
-    publicHoliday.listCurrentYear = [];
-    publicHoliday.listNextYear = [];
-
-    /// Current Year
-    await PublicHolidayRepository().byYear(year.toString()).then((value) {
-      if (value.isSuccess) {
-        publicHoliday.listCurrentYear = value.data!.list;
-      }
-    });
+    publicHoliday.list = [];
 
     /// Next Year
-    await PublicHolidayRepository().byYear((year + 1).toString()).then((value) {
+    await PublicHolidayRepository()
+        .byYear(DateTime.now().year.toString())
+        .then((value) {
       if (value.isSuccess) {
-        publicHoliday.listNextYear = value.data!.list;
+        publicHoliday.list = value.data!.list;
       }
     });
     AppServices.instance<DatabaseService>().putPublicHoliday(publicHoliday);
