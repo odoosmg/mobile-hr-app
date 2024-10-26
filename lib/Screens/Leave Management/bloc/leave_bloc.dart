@@ -108,32 +108,39 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
               "";
 
           /// add item to list
-          ///  if null equal
+          /// ??= mean if null equal
           state.myLeaveListResult?.data ??= LeaveModel()..list = [];
 
-          state.myLeaveListResult!.data!.list!.insert(0, p);
-          state.stateType = LeaveStateType.myLeaveList;
-          emit(state.copyWith(state));
-
-          /// * add item to Approve List
-          if (AppServices.instance<DatabaseService>()
+          /// approver = false
+          if (!AppServices.instance<DatabaseService>()
               .getPermissoin!
               .leave!
               .isApprover!) {
-            await Future.delayed(const Duration(seconds: 0));
-
-            /// id
-            p.id = value.data?.id ?? 0;
-
-            /// name
-            p.employeeName = AppServices.instance<DatabaseService>()
-                    .getSession
-                    ?.myProfile
-                    ?.name ??
-                "";
-            state.toApproveListResult!.data!.toApprovedList!.insert(0, p);
-            state.stateType = LeaveStateType.toApproveList;
+            state.myLeaveListResult!.data!.list!.insert(0, p);
+            state.stateType = LeaveStateType.myLeaveList;
             emit(state.copyWith(state));
+          } else {
+            /// approver = true
+            List<int> companyIds =
+                AppServices.instance<DatabaseService>().getCompanyIds!;
+            int currentUserComapnyId = 1; // Update later
+
+            /// append when have company id in filter
+            if (companyIds.contains(currentUserComapnyId)) {
+              /// id
+              p.id = value.data?.id ?? 0;
+
+              /// name
+              p.employeeName = AppServices.instance<DatabaseService>()
+                      .getSession
+                      ?.myProfile
+                      ?.name ??
+                  "";
+              state.toApproveListResult!.data!.toApprovedList!.insert(0, p);
+              state.stateType = LeaveStateType.toApproveList;
+              await Future.delayed(const Duration(seconds: 0));
+              emit(state.copyWith(state));
+            }
           }
         });
       }
