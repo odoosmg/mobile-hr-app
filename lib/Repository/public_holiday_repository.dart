@@ -6,7 +6,7 @@ import 'package:hrm_employee/api/endpoint.dart';
 
 class PublicHolidayRepository extends BaseApi {
   ///
-  Future<ApiResult<PublicHolidayModel>> byYear(String year) async {
+  Future<ApiResult<PublicHolidayModel>> byYear(int year) async {
     Map<String, dynamic> map = await request(
         uri: Endpoint.publicHolidayByYear, params: {"year": year});
 

@@ -109,7 +109,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       permission = value.data ?? AppPermissionModel();
       permission.isRetrieveSuccess = value.isSuccess;
-
+      // permission.leave!.isApprover = true;
       AppServices.instance<DatabaseService>().putPermission(permission);
 
       state.permissionResult = value;
@@ -127,9 +127,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     publicHoliday.list = [];
 
     /// Next Year
-    await PublicHolidayRepository()
-        .byYear(DateTime.now().year.toString())
-        .then((value) {
+    await PublicHolidayRepository().byYear(DateTime.now().year).then((value) {
       if (value.isSuccess) {
         publicHoliday.list = value.data!.list;
       }

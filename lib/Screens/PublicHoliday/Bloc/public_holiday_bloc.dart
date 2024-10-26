@@ -22,9 +22,7 @@ class PublicHolidayBloc extends Bloc<PublicHolidayEvent, PublicHolidayState> {
     state.listResult!.status = ApiStatus.loading;
     emit(state.copyWith(state));
 
-    await publicHolidayRepository
-        .byYear(event.year.toString())
-        .then((value) async {
+    await publicHolidayRepository.byYear(event.year).then((value) async {
       state.listResult = value;
 
       /// after get data, rebuild calendar
