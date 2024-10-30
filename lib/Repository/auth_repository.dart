@@ -19,7 +19,11 @@ class AuthRepository extends BaseApi {
 
   Future<ApiResult<UserModel>> myPf() async {
     Map<String, dynamic> map = await request(uri: Endpoint.myPf);
-
+    if (map["data"] != null) {
+      /// remove key
+      map["data"]["company_str"] = map["data"]["company"];
+      map["data"].remove("company");
+    }
     return apiResponse(
         status: ApiStatusModel.fromJson(map),
         data: UserModel.fromJson(map["data"] ?? {}));

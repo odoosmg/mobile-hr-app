@@ -128,7 +128,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
               ),
 
               /// Company
-              _appTextField(title: 'Company', value: data.company ?? ""),
+              _appTextField(title: 'Company', value: data.company?.name ?? ""),
               const SizedBox(
                 height: 20.0,
               ),

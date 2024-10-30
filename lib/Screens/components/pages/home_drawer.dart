@@ -68,7 +68,7 @@ class HomeDrawer extends StatelessWidget {
                               kTextStyle.copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '${profile.company}',
+                          '${profile.company?.name}',
                           style: kTextStyle.copyWith(color: kGreyTextColor),
                         ),
                       ],

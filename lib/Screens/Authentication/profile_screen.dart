@@ -177,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _field(AppTrans.t.department, data.department ?? ""),
 
         /// Company
-        _field(AppTrans.t.company, data.company ?? ""),
+        _field(AppTrans.t.company, data.companyStr ?? ""),
 
         /*
                   AppTextField(

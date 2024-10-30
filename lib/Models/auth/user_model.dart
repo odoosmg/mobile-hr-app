@@ -1,4 +1,5 @@
 import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -27,7 +28,7 @@ class UserModel {
   String? position;
 
   @HiveField(6)
-  String? company;
+  SelectFormModel? company;
 
   @HiveField(7)
   String? image;
@@ -43,6 +44,9 @@ class UserModel {
 
   @HiveField(11)
   String? departmentName;
+
+  @HiveField(12)
+  String? companyStr;
 
   UserModel();
 
