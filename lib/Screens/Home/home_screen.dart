@@ -73,7 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    AppServices.instance<LocationService>().requestPermission();
+    /// Permission
+    // AppServices.instance<LocationService>().requestPermission();
 
     /// from local
     session = AppServices.instance<DatabaseService>().getSession;
@@ -144,26 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ],
-        // actions: [
-        //   GestureDetector(
-        //     onTap: () {
-        //       const MenuScreen().launch(context);
-        //     },
-        //     child: const Padding(
-        //       padding: EdgeInsets.only(right: 10),
-        //       child: SizedBox(
-        //         height: 50,
-        //         width: 50,
-        //         // color: Colors.red,
-        //         child: Icon(
-        //           Icons.widgets,
-        //           color: Colors.white,
-        //           size: 24,
-        //         ),
-        //       ),
-        //     ),
-        //   )
-        // ],
       ),
       drawer: const HomeDrawer(),
 
@@ -223,6 +204,12 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            // ElevatedButton(
+            //     onPressed: () {
+            //       // print("per ========= ${}")
+            //     },
+            //     child: Text("Test")),
+
             /// Check in-out
             ..._inOut(),
 
