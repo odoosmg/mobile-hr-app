@@ -2,8 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:hrm_employee/Screens/components/ProfileImage/ui/profile_image.dart';
-import 'package:hrm_employee/Screens/components/pages/home/select-company/ui/select_company.dart';
 import 'package:hrm_employee/Services/location_service.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
@@ -37,7 +36,8 @@ import 'package:hrm_employee/Screens/components/pages/home_drawer.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/extensions/date_extension.dart';
-
+import 'package:hrm_employee/Screens/components/ProfileImage/ui/profile_image.dart';
+import 'package:hrm_employee/Screens/components/pages/home/select-company/ui/select_company.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 
 import '../../constant.dart';
@@ -204,11 +204,15 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            // ElevatedButton(
-            //     onPressed: () {
-            //       // print("per ========= ${}")
-            //     },
-            //     child: Text("Test")),
+            /// Test Geo Distance
+/*
+            ElevatedButton(
+              onPressed: () async {
+                await _geoDistance();
+              },
+              child: Text("Test"),
+            ),
+*/
 
             /// Check in-out
             ..._inOut(),
@@ -569,6 +573,47 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
     return false;
+  }
+
+  Future<void> _geoDistance() async {
+    final isGranted = await AppServices.instance<LocationService>().isGranted();
+    double lat = 11.587648513228721;
+    double long = 11.587648513228721;
+    double gpsRange = 20;
+
+    /// is has permission
+    if (isGranted) {
+      final distance = await AppServices.instance<LocationService>()
+          .distanceWithCurrentPosition(lat, long);
+
+      /// gpsRange = 0 , can \check in-out
+      if (gpsRange == 0 || distance <= gpsRange) {
+        /// *** call api here
+      } else {
+        /// Not in range dialog
+        CustomDialog.dialog(context,
+            title: Text(
+              "Not in range.",
+              style: Theme.of(context).textTheme.blackS14W700,
+            ),
+            content: Text(
+              "Unable to process. Your coordinates are not within range.",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.blackS13W400,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  'close'.toUpperCase(),
+                  style: Theme.of(context).textTheme.greyS14W400,
+                ),
+              ),
+            ]);
+      }
+    } else {
+      await AppServices.instance<LocationService>().requestPermission();
+    }
   }
 
   /// Where initial, and onRfresh

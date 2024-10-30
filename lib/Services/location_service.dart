@@ -22,9 +22,9 @@ class LocationService {
     return permission;
   }
 
-  /// Status
-  Future<geo.LocationPermission> permissoinStatus() async {
-    return await geo.Geolocator.checkPermission();
+  Future<bool> isGranted() async {
+    final hasPermission = await location_.Location().hasPermission();
+    return hasPermission == location_.PermissionStatus.granted;
   }
 
   /// Current location
@@ -33,5 +33,19 @@ class LocationService {
       desiredAccuracy: geo.LocationAccuracy.high,
     );
     return position;
+  }
+
+  /// Compare lat,long with Current lat,long
+  Future<double> distanceWithCurrentPosition(double lat, double long) async {
+    final currentPosition = await getCurrentLocation();
+
+    ///
+    final distance = geo.Geolocator.distanceBetween(
+      lat,
+      long,
+      currentPosition.altitude,
+      currentPosition.longitude,
+    );
+    return distance;
   }
 }
