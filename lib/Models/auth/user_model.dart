@@ -46,7 +46,7 @@ class UserModel {
   String? departmentName;
 
   @HiveField(12)
-  String? companyStr;
+  String? companyName;
 
   UserModel();
 

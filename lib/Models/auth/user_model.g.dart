@@ -29,7 +29,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..status = fields[9] as String?
       ..employeeName = fields[10] as String?
       ..departmentName = fields[11] as String?
-      ..companyStr = fields[12] as String?;
+      ..companyName = fields[12] as String?;
   }
 
   @override
@@ -61,7 +61,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(11)
       ..write(obj.departmentName)
       ..writeByte(12)
-      ..write(obj.companyStr);
+      ..write(obj.companyName);
   }
 
   @override
@@ -94,7 +94,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel()
   ..status = json['status'] as String?
   ..employeeName = json['employee_name'] as String?
   ..departmentName = json['department_name'] as String?
-  ..companyStr = json['company_str'] as String?;
+  ..companyName = json['company_name'] as String?;
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'id': instance.id,
@@ -109,5 +109,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'status': instance.status,
       'employee_name': instance.employeeName,
       'department_name': instance.departmentName,
-      'company_str': instance.companyStr,
+      'company_name': instance.companyName,
     };

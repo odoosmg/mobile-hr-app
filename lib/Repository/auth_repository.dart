@@ -21,7 +21,7 @@ class AuthRepository extends BaseApi {
     Map<String, dynamic> map = await request(uri: Endpoint.myPf);
     if (map["data"] != null) {
       /// remove key
-      map["data"]["company_str"] = map["data"]["company"];
+      map["data"]["company_name"] = map["data"]["company"];
       map["data"].remove("company");
     }
     return apiResponse(

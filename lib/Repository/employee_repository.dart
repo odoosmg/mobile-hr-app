@@ -20,7 +20,7 @@ class EmployeeRepository extends BaseApi {
 
     map["list"].map((e) {
       /// change key
-      e["company_str"] = e["company"];
+      e["company_name"] = e["company"];
       e.remove("company");
     }).toList();
 
@@ -38,7 +38,7 @@ class EmployeeRepository extends BaseApi {
     );
 
     if (map["data"] != null) {
-      map["data"]["company_str"] = map["data"]["company"];
+      map["data"]["company_name"] = map["data"]["company"];
       map["data"].remove("company");
     }
 
