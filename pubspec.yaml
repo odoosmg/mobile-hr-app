@@ -44,6 +44,8 @@ dependencies:
   easy_refresh: ^3.4.0
   pie_chart: ^5.4.0
   table_calendar: ^3.0.9
+  geolocator: any
+  location: ^6.0.2
 
 dev_dependencies:
   flutter_test:
