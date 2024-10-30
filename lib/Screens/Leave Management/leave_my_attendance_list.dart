@@ -47,13 +47,7 @@ class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: Measurement.screenPadding,
-        left: Measurement.screenPadding,
-      ),
-      child: _blocBuilder(),
-    );
+    return _blocBuilder();
     return CustomScaffold(
       appBar:
           CustomAppBar.titleCompany(title: "Leave List", onChanged: (v, _) {}),
@@ -125,6 +119,8 @@ class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
       height: Measurement.heightPercent(context, 0.88),
       child: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             8.height,
             _count(),
@@ -147,6 +143,8 @@ class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
               Padding(
                 padding: const EdgeInsets.only(
                   top: Measurement.screenPadding,
+                  left: Measurement.screenPadding,
+                  right: Measurement.screenPadding,
                 ),
                 child: MyLeaveCard(
                   data: d[i],
@@ -163,6 +161,15 @@ class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
   Widget _count() {
     List<LeaveModel> d =
         leaveBloc.state.myLeaveListResult?.data?.leaveAllocatedSummary ?? [];
+
+    return Wrap(
+      children: [
+        for (int i = 0; i < d.length; i++)
+          Padding(
+              padding: const EdgeInsets.only(left: 24, top: 4),
+              child: Text("${d[i].name} : ${d[i].remaining}")),
+      ],
+    );
 
     return Container(
       alignment: Alignment.center,
