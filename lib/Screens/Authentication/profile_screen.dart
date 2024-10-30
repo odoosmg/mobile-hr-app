@@ -1,12 +1,10 @@
 // ignore_for_file: depend_on_referenced_packages
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
+import 'package:hrm_employee/Screens/components/ProfileImage/ui/profile_image.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/body_card.dart';
@@ -155,10 +153,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
 
         /// image
-        CircleAvatar(
-          radius: 60.0,
+
+        ProfileImage(
           backgroundColor: AppColor.kMainColor.withOpacity(0.5),
-          backgroundImage: MemoryImage(base64Decode(data.image ?? "")),
+          radius: 60,
+          image: data.image ?? "",
         ),
         const SizedBox(
           height: 10.0,
