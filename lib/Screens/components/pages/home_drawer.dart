@@ -10,9 +10,11 @@ import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
 import 'package:hrm_employee/Screens/Chat/chat_list.dart';
 import 'package:hrm_employee/Screens/Notification/notification_screen.dart';
+import 'package:hrm_employee/Screens/components/ProfileImage/ui/profile_image.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
+import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/app_trans.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/constant.dart';
@@ -53,11 +55,10 @@ class HomeDrawer extends StatelessWidget {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        CircleAvatar(
-                          radius: 60.0,
-                          backgroundColor: kMainColor,
-                          backgroundImage:
-                              MemoryImage(base64Decode(profile.image ?? "")),
+                        ProfileImage(
+                          image: profile.image ?? "",
+                          radius: 60,
+                          backgroundColor: AppColor.kMainColor,
                         ),
                         const SizedBox(
                           height: 10.0,

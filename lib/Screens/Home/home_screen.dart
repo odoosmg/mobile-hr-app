@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:hrm_employee/Screens/components/ProfileImage/ui/profile_image.dart';
 import 'package:hrm_employee/Screens/components/pages/home/select-company/ui/select_company.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -95,11 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
               contentPadding: EdgeInsets.zero,
 
               /// profile photo
-              leading: CircleAvatar(
-                radius: 20.0,
-                backgroundImage:
-                    MemoryImage(base64Decode(session?.myProfile?.image ?? "")),
-              ),
+              leading: ProfileImage(image: ses.myProfile?.image ?? ""),
 
               /// name
               title: Text(

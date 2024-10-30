@@ -18,6 +18,12 @@ class EmployeeRepository extends BaseApi {
     map["list"] = map["data"] ?? [];
     map.remove("data");
 
+    map["list"].map((e) {
+      /// change key
+      e["company_str"] = e["company"];
+      e.remove("company");
+    }).toList();
+
     return apiResponse(
         status: ApiStatusModel.fromJson(map),
         data: EmployeeModel.fromJson(map));
@@ -30,6 +36,11 @@ class EmployeeRepository extends BaseApi {
         "employee_id": id,
       },
     );
+
+    if (map["data"] != null) {
+      map["data"]["company_str"] = map["data"]["company"];
+      map["data"].remove("company");
+    }
 
     return apiResponse(
         status: ApiStatusModel.fromJson(map),

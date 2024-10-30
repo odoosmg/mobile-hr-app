@@ -9,11 +9,13 @@ class ProfileImage extends StatefulWidget {
   final String image;
   final double radius;
   final Color? backgroundColor;
+  final Widget? imageErr;
   const ProfileImage({
     super.key,
     required this.image,
     this.radius = 20,
     this.backgroundColor,
+    this.imageErr,
   });
 
   @override
@@ -50,11 +52,12 @@ class _ProfileImageState extends State<ProfileImage> {
           /// not error get null,
           child: !isErr
               ? null
-              : const Image(
-                  image: AssetImage('images/user_1.png'),
-                  color: Colors.grey,
-                  width: 26,
-                ),
+              : widget.imageErr ??
+                  Image(
+                    image: const AssetImage('images/user_1.png'),
+                    color: Colors.grey,
+                    width: widget.radius,
+                  ),
         );
       },
     );
