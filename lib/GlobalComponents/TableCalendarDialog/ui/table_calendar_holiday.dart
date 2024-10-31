@@ -33,18 +33,18 @@ class _CustomTableCalendarHolidayState
   DateTime selectDate = DateTime.now();
 
   PublicHolidayModel publicHoliday = PublicHolidayModel();
+  List<PublicHolidayModel> publicHolidayList = [];
 
   @override
   void initState() {
-    calendarBloc.add(TCDGetPublicHolidays());
     calendarBloc.add(TCDFocusDate(DateTime.now()));
 
-    final list =
+    publicHolidayList =
         AppServices.instance<DatabaseService>().getPublicHoliday?.list ?? [];
 
     /// prevent empty when use -1
-    if (list.isNotEmpty) {
-      publicHoliday = list[DateTime.now().month - 1];
+    if (publicHolidayList.isNotEmpty) {
+      publicHoliday = publicHolidayList[DateTime.now().month - 1];
     }
 
     super.initState();
@@ -83,11 +83,11 @@ class _CustomTableCalendarHolidayState
             weekdayStyle: Theme.of(context).textTheme.blackS13W400NoChange,
             weekendStyle: Theme.of(context).textTheme.redS13W400,
           ),
-          enabledDayPredicate: (date) {
-            // return false;
-            return date.isAfter(date.subtract(Duration(days: 1))) &&
-                date.isBefore(date.add(Duration(days: 1)));
-          },
+          // enabledDayPredicate: (date) {
+          //   // return false;
+          //   return date.isAfter(date.subtract(Duration(days: 1))) &&
+          //       date.isBefore(date.add(Duration(days: 1)));
+          // },
           onDaySelected: (selectedDay, focusedDay) {
             widget.onSelected.call(selectedDay);
 
@@ -98,8 +98,10 @@ class _CustomTableCalendarHolidayState
           },
 
           onPageChanged: (focusedDay) {
-            publicHoliday =
-                calendarBloc.state.publicHolidays![focusedDay.month - 1];
+            /// check only current year
+            if (focusedDay.year == DateTime.now().year) {
+              publicHoliday = publicHolidayList[focusedDay.month - 1];
+            }
 
             ///
             calendarBloc.add(TCDFocusDate(focusedDay));

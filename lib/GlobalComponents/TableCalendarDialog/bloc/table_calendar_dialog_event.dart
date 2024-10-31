@@ -13,6 +13,4 @@ class TCDFocusDate extends TableCalendarDialogEvent {
   TCDFocusDate(this.date);
 }
 
-class TCDGetPublicHolidays extends TableCalendarDialogEvent {}
-
 class TCDPageChange extends TableCalendarDialogEvent {}

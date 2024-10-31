@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/function_global.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import 'package:hrm_employee/GlobalComponents/button/main_btn.dart';
@@ -245,11 +246,14 @@ class _LeaveApplyState extends State<LeaveApply> {
       textFieldType: TextFieldType.NAME,
       readOnly: true,
       onTap: () async {
-        var date = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(1900),
-            lastDate: DateTime(2100));
+        // var date = await showDatePicker(
+        //     context: context,
+        //     initialDate: DateTime.now(),
+        //     firstDate: DateTime(1900),
+        //     lastDate: DateTime(2100));
+
+        final date = await showHolidayCalendar(context: context);
+
         if (date != null) {
           dateFromTEC.text = date.dateFormat(toFormat: formatLabelDate) ?? "";
 
@@ -275,11 +279,13 @@ class _LeaveApplyState extends State<LeaveApply> {
       textFieldType: TextFieldType.NAME,
       readOnly: true,
       onTap: () async {
-        var date = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(1900),
-            lastDate: DateTime(2100));
+        // var date = await showDatePicker(
+        //     context: context,
+        //     initialDate: DateTime.now(),
+        //     firstDate: DateTime(1900),
+        //     lastDate: DateTime(2100));
+
+        final date = await showHolidayCalendar(context: context);
 
         if (date != null) {
           dateToTEC.text = date.dateFormat(toFormat: formatLabelDate) ?? "";

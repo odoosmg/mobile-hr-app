@@ -4,13 +4,11 @@ class TableCalendarDialogState {
   StateType? stateType;
   DateTime? selectedDate;
   DateTime? focusedDate;
-  List<PublicHolidayModel>? publicHolidays;
 
   TableCalendarDialogState({
     this.stateType,
     this.selectedDate,
     this.focusedDate,
-    this.publicHolidays,
   });
 
   TableCalendarDialogState copyWith(TableCalendarDialogState d) {
@@ -18,7 +16,6 @@ class TableCalendarDialogState {
       stateType: d.stateType,
       selectedDate: d.selectedDate,
       focusedDate: d.focusedDate,
-      publicHolidays: d.publicHolidays,
     );
   }
 }

@@ -11,7 +11,6 @@ class TableCalendarDialogBloc
     extends Bloc<TableCalendarDialogEvent, TableCalendarDialogState> {
   TableCalendarDialogBloc() : super(TableCalendarDialogInitial()) {
     on<TCDSelectedDate>(_selectedDate);
-    on<TCDGetPublicHolidays>(_getPublicHoliday);
     on<TCDPageChange>(_pageChange);
     on<TCDFocusDate>(_focusDate);
   }
@@ -19,7 +18,6 @@ class TableCalendarDialogBloc
   void _selectedDate(
       TCDSelectedDate event, Emitter<TableCalendarDialogState> emit) async {
     state.selectedDate = event.date;
-
     emit(state.copyWith(state));
   }
 
@@ -27,13 +25,6 @@ class TableCalendarDialogBloc
       TCDFocusDate event, Emitter<TableCalendarDialogState> emit) async {
     state.focusedDate = event.date;
     emit(state.copyWith(state));
-  }
-
-  /// will remove soon
-  void _getPublicHoliday(TCDGetPublicHolidays event,
-      Emitter<TableCalendarDialogState> emit) async {
-    state.publicHolidays =
-        AppServices.instance<DatabaseService>().getPublicHoliday?.list ?? [];
   }
 
   void _pageChange(
