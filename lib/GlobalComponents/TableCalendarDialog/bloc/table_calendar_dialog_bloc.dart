@@ -29,6 +29,7 @@ class TableCalendarDialogBloc
     emit(state.copyWith(state));
   }
 
+  /// will remove soon
   void _getPublicHoliday(TCDGetPublicHolidays event,
       Emitter<TableCalendarDialogState> emit) async {
     state.publicHolidays =
