@@ -104,9 +104,9 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         }
 
         /// if Sunday
-        if (dateIncrease.weekday == 7) {
-          totalHolidays += 1;
-        }
+        // if (dateIncrease.weekday == 7) {
+        //   totalHolidays += 1;
+        // }
       }
       dayCount = dayCount - totalHolidays;
     }

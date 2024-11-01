@@ -41,7 +41,22 @@ final class LeaveInitial extends LeaveState {
   bool? get isHalfDay => false;
 
   @override
-  double? get dayCount => 1; // init value is today. so the count is 1
+  double? get dayCount {
+    final holidays =
+        AppServices.instance<DatabaseService>().getPublicHoliday?.list ?? [];
+
+    /// if today is holiday return 0
+    if (holidays.isNotEmpty) {
+      if (holidays[DateTime.now().month - 1]
+          .getListStrDates()
+          .contains(DateTime.now().dateFormat(toFormat: "yyyy-MM-dd"))) {
+        return 0;
+      }
+    }
+
+    /// default value set as 1
+    return 1;
+  }
 
   @override
   // bool? get isShowSelectFullHalf => true;

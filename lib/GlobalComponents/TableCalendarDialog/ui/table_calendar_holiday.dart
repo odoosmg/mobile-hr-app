@@ -91,8 +91,9 @@ class _CustomTableCalendarHolidayState
           onDaySelected: (selectedDay, focusedDay) {
             widget.onSelected.call(selectedDay);
 
-            /// To not select holiday and Sunday
-            if (!_isHoliday(selectedDay) && selectedDay.weekday != 7) {
+            /// To not select holiday
+            /// sunday condition && selectedDay.weekday != 7
+            if (!_isHoliday(selectedDay)) {
               calendarBloc.add(TCDSelectedDate(selectedDay));
             }
           },

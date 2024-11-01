@@ -69,7 +69,7 @@ class _LeaveApplyState extends State<LeaveApply> {
     leaveBloc.add(LeaveTypeListForm());
 
     /// default 1, the same day
-    leaveBloc.state.dayCount = 1;
+    // leaveBloc.state.dayCount = 1;
     super.initState();
   }
 
@@ -252,7 +252,8 @@ class _LeaveApplyState extends State<LeaveApply> {
         //     firstDate: DateTime(1900),
         //     lastDate: DateTime(2100));
 
-        final date = await showHolidayCalendar(context: context);
+        final date =
+            await showHolidayCalendar(context: context, title: "From Date");
 
         if (date != null) {
           dateFromTEC.text = date.dateFormat(toFormat: formatLabelDate) ?? "";
@@ -285,7 +286,8 @@ class _LeaveApplyState extends State<LeaveApply> {
         //     firstDate: DateTime(1900),
         //     lastDate: DateTime(2100));
 
-        final date = await showHolidayCalendar(context: context);
+        final date =
+            await showHolidayCalendar(context: context, title: "To Date");
 
         if (date != null) {
           dateToTEC.text = date.dateFormat(toFormat: formatLabelDate) ?? "";

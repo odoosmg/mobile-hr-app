@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hrm_employee/GlobalComponents/TableCalendarDialog/ui/table_calendar_holiday.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
+import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 
 Future<DateTime?> showHolidayCalendar({
   required BuildContext context,
+  String? title,
 }) async {
   /// store date value
   DateTime d = DateTime.now();
@@ -21,9 +23,11 @@ Future<DateTime?> showHolidayCalendar({
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                "Select a Date",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              10.kHeight,
+              Text(
+                title ?? "Select a Date",
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
 
               /// Table Calendar
@@ -49,7 +53,7 @@ Future<DateTime?> showHolidayCalendar({
                         style: Theme.of(context)
                             .textTheme
                             .blackS15W700
-                            .copyWith(color: AppColor.kMainColor),
+                            .copyWith(color: Colors.purple.shade700),
                       ),
                     ),
                     TextButton(
@@ -63,7 +67,7 @@ Future<DateTime?> showHolidayCalendar({
                         style: Theme.of(context)
                             .textTheme
                             .blackS15W700
-                            .copyWith(color: AppColor.kMainColor),
+                            .copyWith(color: Colors.purple.shade700),
                       ),
                     ),
                   ],
