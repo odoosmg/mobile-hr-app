@@ -5,6 +5,7 @@ import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Repository/leave_repository.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
+import 'package:hrm_employee/extensions/date_extension.dart';
 
 part 'leave_event.dart';
 part 'leave_state.dart';
@@ -50,17 +51,20 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   ///
   void _dayCount(LeaveDayCount event, Emitter<LeaveState> emit) async {
     state.stateType = LeaveStateType.dayCount;
+    final holidays =
+        AppServices.instance<DatabaseService>().getPublicHoliday?.list ?? [];
+
     double dayCount = 0.0;
+
+    DateTime from = DateTime.parse(event.from);
+    DateTime to = DateTime.parse(event.to);
 
     /// half day
     if (state.isHalfDay!) {
       dayCount = 0.5;
     } else {
       /// full day
-      DateTime from = DateTime.parse(event.from);
-      DateTime to = DateTime.parse(event.to);
-
-      /// differnent
+      /// different
       int day = to.difference(from).inDays;
 
       if (day > 0) {
@@ -81,6 +85,32 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         }
       }
     }
+
+    /// ** calciulate with holidays **
+    if (holidays.isNotEmpty) {
+      int totalHolidays = 0;
+
+      /// loop all in dayCount
+      for (int i = 1; i < dayCount.toInt(); i++) {
+        /// increase day follow by dayCount
+        DateTime dateIncrease = from.add(Duration(days: i));
+        List<String> holidayInMonth =
+            holidays[dateIncrease.month - 1].getListStrDates();
+
+        /// if date increase contain holiday
+        if (holidayInMonth
+            .contains(dateIncrease.dateFormat(toFormat: "yyyy-MM-dd"))) {
+          totalHolidays += 1;
+        }
+
+        /// if Sunday
+        if (dateIncrease.weekday == 7) {
+          totalHolidays += 1;
+        }
+      }
+      dayCount = dayCount - totalHolidays;
+    }
+
     state.dayCount = dayCount;
     emit(state.copyWith(state));
   }

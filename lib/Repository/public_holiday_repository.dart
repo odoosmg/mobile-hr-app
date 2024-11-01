@@ -13,6 +13,9 @@ class PublicHolidayRepository extends BaseApi {
     map["list"] = map["data"] ?? [];
     map.remove("data");
 
+    /// * mock
+    // map["list"][10]["holidays"]
+    //     .add({"name": "Welcome November", "date": "2024-11-01"});
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: PublicHolidayModel.fromJson(map),
