@@ -182,21 +182,31 @@ class _CustomTableCalendarHolidayState
   }
 
   Widget _selectedBuilder(DateTime date) {
-    Color color = AppColor.kBlackColor;
+    bool isHoliday = false;
 
     /// check holiday only in current year
     if (date.year == DateTime.now().year) {
       /// if has holiday
       if (_isHoliday(date)) {
-        color = AppColor.kDangerColor;
+        isHoliday = true;
       }
     }
     return Container(
-      padding: const EdgeInsets.all(10),
-      margin: EdgeInsets.only(bottom: 6),
-      child: Text(
-        date.day.toString(),
-        style: Theme.of(context).textTheme.blackS15W400.copyWith(color: color),
+      padding: const EdgeInsets.all(6),
+      child: CircleAvatar(
+        backgroundColor: isHoliday
+            ? AppColor.kDangerColor.withOpacity(0.2)
+            : Colors.transparent,
+        child: Container(
+          // padding: const EdgeInsets.all(10),
+          // margin: EdgeInsets.only(bottom: 6),
+          child: Text(
+            date.day.toString(),
+            style: Theme.of(context).textTheme.blackS15W400.copyWith(
+                color:
+                    isHoliday ? AppColor.kDangerColor : AppColor.kBlackColor),
+          ),
+        ),
       ),
     );
   }

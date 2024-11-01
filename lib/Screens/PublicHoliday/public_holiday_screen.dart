@@ -190,13 +190,17 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
         buildWhen: (previous, current) {
       return current.stateType == PublicHolidayStateType.calendarHolidays;
     }, builder: (ctx, state) {
+      bool isHoliday = _isHoliday(date);
       return _calendarDeco(
         day: date.day,
         dayTextStyle: Theme.of(context).textTheme.redS13W400.copyWith(
-            color: _isHoliday(date) // true = red
+            color: isHoliday // true = red
                 ? AppColor.kDangerColor
                 : AppColor.kBlackColor),
-        isDecoration: false,
+        color: isHoliday // background circle
+            ? AppColor.kDangerColor
+            : Colors.white,
+        isDecoration: true,
       );
     });
   }

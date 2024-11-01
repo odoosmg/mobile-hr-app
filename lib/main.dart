@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           }),
         ),
-        title: 'Maan HRM',
+        title: 'Attendance',
         home: BlocListener<ConnectivityCubit, ConnectivityState>(
           listener: (context, state) {
             // print("listener ==============");
