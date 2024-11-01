@@ -53,7 +53,7 @@ Future<DateTime?> showHolidayCalendar({
                         style: Theme.of(context)
                             .textTheme
                             .blackS15W700
-                            .copyWith(color: Colors.purple.shade700),
+                            .copyWith(color: Colors.purple.shade800),
                       ),
                     ),
                     TextButton(
@@ -67,7 +67,7 @@ Future<DateTime?> showHolidayCalendar({
                         style: Theme.of(context)
                             .textTheme
                             .blackS15W700
-                            .copyWith(color: Colors.purple.shade700),
+                            .copyWith(color: Colors.purple.shade800),
                       ),
                     ),
                   ],

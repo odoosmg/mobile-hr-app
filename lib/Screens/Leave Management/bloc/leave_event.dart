@@ -47,3 +47,5 @@ final class LeaveAction extends LeaveEvent {
 }
 
 final class LeaveListScreenDispose extends LeaveEvent {}
+
+final class LeaveInitialDayCount extends LeaveEvent {}

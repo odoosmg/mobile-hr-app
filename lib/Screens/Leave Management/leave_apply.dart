@@ -66,6 +66,8 @@ class _LeaveApplyState extends State<LeaveApply> {
     dateFromTEC.text = DateTime.now().dateFormat(toFormat: formatLabelDate)!;
     dateToTEC.text = dateFromTEC.text;
 
+    /// call before fire LeaveTypeListForm
+    leaveBloc.add(LeaveInitialDayCount());
     leaveBloc.add(LeaveTypeListForm());
 
     /// default 1, the same day

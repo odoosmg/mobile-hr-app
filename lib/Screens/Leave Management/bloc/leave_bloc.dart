@@ -23,7 +23,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
     on<LeaveAction>(_leaveAction);
     on<LeaveListScreenDispose>(_leaveListScreenDispose);
-    // on<LeaveShowFullHalf>(_showFullHalf);
+    on<LeaveInitialDayCount>(_initialDayCount);
   }
 
   ///
@@ -107,6 +107,15 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         // if (dateIncrease.weekday == 7) {
         //   totalHolidays += 1;
         // }
+      }
+
+      /// Halfdat and Holiday
+      if (dayCount == 0.5) {
+        if (holidays[from.month - 1]
+            .getListStrDates()
+            .contains(from.dateFormat(toFormat: "yyyy-MM-dd"))) {
+          dayCount = 0;
+        }
       }
       dayCount = dayCount - totalHolidays;
     }
@@ -257,6 +266,24 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       state.leaveActionResult = value;
       emit(state.copyWith(state));
     });
+  }
+
+  ///
+  void _initialDayCount(
+      LeaveInitialDayCount event, Emitter<LeaveState> emit) async {
+    final holidays =
+        AppServices.instance<DatabaseService>().getPublicHoliday?.list ?? [];
+
+    /// if today is holiday 0
+    if (holidays.isNotEmpty) {
+      if (holidays[DateTime.now().month - 1]
+          .getListStrDates()
+          .contains(DateTime.now().dateFormat(toFormat: "yyyy-MM-dd"))) {
+        state.dayCount = 0;
+        return;
+      }
+    }
+    state.dayCount = 1;
   }
 
   ///
