@@ -1,10 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+
 import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_loading.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
 import 'package:hrm_employee/Screens/Authentication/profile_screen.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
@@ -15,8 +16,7 @@ import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
-import 'package:hrm_employee/utlis/app_trans.dart';
-import 'package:nb_utils/nb_utils.dart';
+
 import 'package:hrm_employee/constant.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -302,9 +302,17 @@ class HomeDrawer extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               /// clear
               AppServices.instance<DatabaseService>().clearSession();
+
+              /// close modal
+              Navigator.pop(context);
+              CustomLoading.show(context);
+              await Future.delayed(const Duration(seconds: 1));
+              // ignore: use_build_context_synchronously
+              CustomLoading.hide(context);
+              // ignore: use_build_context_synchronously
               const SignIn().launch(context, isNewTask: true);
             },
             child: Text(
