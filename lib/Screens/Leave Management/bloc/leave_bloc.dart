@@ -132,24 +132,28 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
     ///
     await leaveRepository.requestLeave(event.params).then((value) async {
+      /// is success
       if (value.isSuccess) {
         /// use delay when emit multi state the same time
-        await Future.delayed(const Duration(seconds: 0)).then((_) async {
-          final p = event.params;
-          p.state = 'To Approve'; // status pending
-          p.numberOfDays = value.data?.numberOfDays ?? 0;
+        await Future.delayed(const Duration(seconds: 0));
+        final p = event.params;
+        p.state = 'To Approve'; // status pending
+        p.numberOfDays = value.data?.numberOfDays ?? 0;
 
-          /// get type name
-          p.leaveTypeName = (state.listTypeResult?.data?.leaveTypeList ?? [])
-                  .where((e) => e.id == p.leaveTypeId)
-                  .firstOrNull
-                  ?.name ??
-              "";
+        /// get type name
+        p.leaveTypeName = (state.listTypeResult?.data?.leaveTypeList ?? [])
+                .where((e) => e.id == p.leaveTypeId)
+                .firstOrNull
+                ?.name ??
+            "";
 
-          /// add item to list
-          /// ??= mean if null equal
-          state.myLeaveListResult?.data ??= LeaveModel()..list = [];
-
+        /// add item to list
+        /// ??= mean if null equal
+        state.myLeaveListResult?.data ??= LeaveModel()..list = [];
+        state.myLeaveListResult!.data!.list!.insert(0, p);
+        state.stateType = LeaveStateType.myLeaveList;
+        emit(state.copyWith(state));
+/*
           /// approver = false
           if (!AppServices.instance<DatabaseService>()
               .getPermissoin!
@@ -181,7 +185,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
               emit(state.copyWith(state));
             }
           }
-        });
+*/
       }
 
       ///

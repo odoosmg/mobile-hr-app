@@ -192,6 +192,9 @@ class _LeaveApplyState extends State<LeaveApply> {
   Widget _leaveType() {
     if (leaveBloc.state.listTypeResult!.data!.leaveTypeList!.isEmpty) {
       leaveTypeId = 0;
+    } else {
+      /// init id, get first index.
+      leaveTypeId = leaveBloc.state.listTypeResult!.data!.leaveTypeList![0].id!;
     }
     return SelectForm(
       data: leaveBloc.state.listTypeResult?.data?.leaveTypeList ?? [],
