@@ -23,29 +23,29 @@ class _OnBoardState extends State<OnBoard> {
   PageController pageController = PageController(initialPage: 0);
   int currentIndexPage = 0;
   String buttonText = 'Next';
-  double percent = 0.34;
+  double percent = 0.5;
 
   /// conditoin next slider and goto next scereen
   bool isCompleteSlider = false;
 
   List<Map<String, dynamic>> sliderList = [
-    {
-      "icon": 'images/onboard1.png',
-      "title": 'Keep healthy work-life balance',
-      "description":
-          'Lorem ipsum dolor sit amet, consectetuer adipisci elit, sed diam nonummy nibh euismod tincidunt u laoreet dolore magna aliquam erat volutpat. Ut wi',
-    },
+    // {
+    //   "icon": 'images/onboard1.png',
+    //   "title": 'Keep healthy work-life balance',
+    //   "description":
+    //       'Lorem ipsum dolor sit amet, consectetuer adipisci elit, sed diam nonummy nibh euismod tincidunt u laoreet dolore magna aliquam erat volutpat. Ut wi',
+    // },
     {
       "icon": 'images/onboard2.png',
       "title": 'Track your work & get result',
       "description":
-          'Lorem ipsum dolor sit amet, consectetuer adipisci elit, sed diam nonummy nibh euismod tincidunt u laoreet dolore magna aliquam erat volutpat. Ut wi',
+          'Effortlessly monitor your progress and achieve results with a streamlined work tracking system.',
     },
     {
       "icon": 'images/onboard3.png',
       "title": 'Stay organized with team',
       "description":
-          'Lorem ipsum dolor sit amet, consectetuer adipisci elit, sed diam nonummy nibh euismod tincidunt u laoreet dolore magna aliquam erat volutpat. Ut wi',
+          'Keep your HR team organized and coordinated to manage tasks and track progress effectively.',
     },
   ];
 
@@ -113,6 +113,7 @@ class _OnBoardState extends State<OnBoard> {
                     controller: pageController,
                     onPageChanged: (int index) {
                       setState(() {
+                        /*
                         switch (index) {
                           case 0:
                             {
@@ -130,6 +131,22 @@ class _OnBoardState extends State<OnBoard> {
                             {
                               percent = 1.00;
                               currentIndexPage = 2;
+                            }
+                            break;
+                        }
+                        */
+
+                        switch (index) {
+                          case 0:
+                            {
+                              percent = 0.50;
+                              currentIndexPage = 0;
+                            }
+                            break;
+                          case 1:
+                            {
+                              percent = 1;
+                              currentIndexPage = 1;
                             }
                             break;
                         }
@@ -220,7 +237,7 @@ class _OnBoardState extends State<OnBoard> {
                           animation: true,
                           center: GestureDetector(
                             onTap: () {
-                              if (currentIndexPage < 2) {
+                              if (currentIndexPage < 1) {
                                 setState(() {
                                   pageController.nextPage(
                                       duration:
