@@ -129,12 +129,15 @@ class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
 
             /// Empty
             if (d.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: Measurement.screenPadding),
-                child: Text(
-                  "You don't have any request leave yet.",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.greyS13W400,
+              Center(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(top: Measurement.screenPadding),
+                  child: Text(
+                    "You don't have any request leave yet.",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.greyS13W400,
+                  ),
                 ),
               ),
 
