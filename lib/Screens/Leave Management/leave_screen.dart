@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_to_approve_list_screen.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
@@ -32,6 +33,10 @@ class _LeaveScreenState extends State<LeaveScreen>
   late LeaveBloc leaveBloc;
 
   late bool isApprover = false;
+
+  /// preventing always loading
+  ApiStatus myListStatus = ApiStatus.loading;
+  ApiStatus toApproveStatus = ApiStatus.loading;
 
   @override
   void initState() {
@@ -68,7 +73,25 @@ class _LeaveScreenState extends State<LeaveScreen>
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => const LeaveApply().launch(context),
+        onPressed: () {
+          myListStatus = leaveBloc.state.myLeaveListResult!.status!;
+          toApproveStatus = leaveBloc.state.toApproveListResult!.status!;
+
+          ///
+          const LeaveApply().launch(context).then((value) {
+            /// prevent always loading when back from screen.
+            if (myListStatus != leaveBloc.state.myLeaveListResult!.status!) {
+              leaveBloc.add(LeaveMyList(isLoading: false, isRebuild: true));
+            }
+
+            ///
+            if (toApproveStatus !=
+                leaveBloc.state.toApproveListResult!.status!) {
+              leaveBloc
+                  .add(LeaveToApproveList(isLoading: false, isRebuild: true));
+            }
+          });
+        },
         backgroundColor: kMainColor,
         child: const Icon(
           Icons.add,
@@ -105,7 +128,7 @@ class _LeaveScreenState extends State<LeaveScreen>
 
   @override
   void dispose() {
-    // leaveBloc.add(LeaveListScreenDispose());
+    leaveBloc.add(LeaveListScreenDispose());
     super.dispose();
   }
 }

@@ -153,6 +153,10 @@ class _LeaveApplyState extends State<LeaveApply> {
       builder: (context, state) {
         return KBuilder(
             status: state.listTypeResult!.status!,
+            onRetry: () {
+              leaveBloc.add(LeaveInitialDayCount());
+              leaveBloc.add(LeaveTypeListForm());
+            },
             builder: (st) {
               return st == ApiStatus.loading ? Container() : _display();
             });

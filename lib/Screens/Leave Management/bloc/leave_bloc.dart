@@ -195,6 +195,14 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   ///
   void _myLeaveList(LeaveMyList event, Emitter<LeaveState> emit) async {
     state.stateType = LeaveStateType.myLeaveList;
+
+    /// only rebuild
+    if (event.isRebuild) {
+      await Future.delayed(Duration.zero);
+      emit(state.copyWith(state));
+      return;
+    }
+
     if (event.isLoading) {
       state.myLeaveListResult!.status = ApiStatus.loading;
     }
@@ -211,6 +219,13 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   void _toApproveList(
       LeaveToApproveList event, Emitter<LeaveState> emit) async {
     state.stateType = LeaveStateType.toApproveList;
+
+    /// only rebuild
+    if (event.isRebuild) {
+      await Future.delayed(Duration.zero);
+      emit(state.copyWith(state));
+      return;
+    }
     if (event.isLoading) {
       state.toApproveListResult!.status = ApiStatus.loading;
     }

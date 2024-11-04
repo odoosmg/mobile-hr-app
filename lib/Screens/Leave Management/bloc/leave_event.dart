@@ -31,12 +31,14 @@ final class LeaveShowFullHalf extends LeaveEvent {
 
 final class LeaveMyList extends LeaveEvent {
   final bool isLoading;
-  LeaveMyList({required this.isLoading});
+  final bool isRebuild;
+  LeaveMyList({required this.isLoading, this.isRebuild = false});
 }
 
 final class LeaveToApproveList extends LeaveEvent {
   final bool isLoading;
-  LeaveToApproveList({required this.isLoading});
+  final bool isRebuild;
+  LeaveToApproveList({required this.isLoading, this.isRebuild = false});
 }
 
 final class LeaveAction extends LeaveEvent {
