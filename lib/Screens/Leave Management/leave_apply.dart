@@ -51,7 +51,7 @@ class _LeaveApplyState extends State<LeaveApply> with WidgetsBindingObserver {
   TextEditingController dateFromTEC = TextEditingController();
   TextEditingController dateToTEC = TextEditingController();
   TextEditingController descTEC = TextEditingController();
-  int leaveTypeId = 4; // init id
+  int leaveTypeId = 0; // init id
   // String datePeroid = "am"; // default am
   String formatLabelDate = "yyyy-MM-dd";
   late SelectFormModel datePeriod;
@@ -95,6 +95,7 @@ class _LeaveApplyState extends State<LeaveApply> with WidgetsBindingObserver {
     return BlocBuilder<LeaveBloc, LeaveState>(
       buildWhen: (previous, current) {
         if (current.stateType == LeaveStateType.leaveTypeList) {
+          leaveTypeId = leaveBloc.state.listTypeResult?.data?.initId ?? 0;
           return true;
         }
         return false;
@@ -143,12 +144,6 @@ class _LeaveApplyState extends State<LeaveApply> with WidgetsBindingObserver {
   }
 
   Widget _leaveType() {
-    if (leaveBloc.state.listTypeResult!.data!.leaveTypeList!.isEmpty) {
-      leaveTypeId = 0;
-    } else {
-      /// init id, get first index.
-      leaveTypeId = leaveBloc.state.listTypeResult!.data!.leaveTypeList![0].id!;
-    }
     return SelectForm(
       data: leaveBloc.state.listTypeResult?.data?.leaveTypeList ?? [],
       initId: leaveTypeId,

@@ -15,6 +15,12 @@ class LeaveRepository extends BaseApi {
     map['leave_type_list'] = map["data"] ?? [];
     map.remove('data');
 
+    /// set initId, get only first index
+    map['leave_type_list'].map((e) {
+      map["init_id"] = e["id"];
+      return;
+    }).first;
+
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
       data: LeaveModel.fromJson(map),
