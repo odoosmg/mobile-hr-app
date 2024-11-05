@@ -17,7 +17,6 @@ import 'package:hrm_employee/Screens/components/others/custom_card.dart';
 import 'package:hrm_employee/Screens/components/select/SelectForm/ui/select_form.dart';
 import 'package:hrm_employee/extensions/date_extension.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
-import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
@@ -32,7 +31,7 @@ class LeaveApply extends StatefulWidget {
   _LeaveApplyState createState() => _LeaveApplyState();
 }
 
-class _LeaveApplyState extends State<LeaveApply> {
+class _LeaveApplyState extends State<LeaveApply> with WidgetsBindingObserver {
   List<SelectFormModel> amPmList = [
     SelectFormModel()
       ..id = 0
@@ -56,6 +55,10 @@ class _LeaveApplyState extends State<LeaveApply> {
   // String datePeroid = "am"; // default am
   String formatLabelDate = "yyyy-MM-dd";
   late SelectFormModel datePeriod;
+
+  /// scroll down abit , when focus on text field
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     datePeriod = amPmList[0];
@@ -77,68 +80,14 @@ class _LeaveApplyState extends State<LeaveApply> {
 
   @override
   Widget build(BuildContext context) {
+    /// if keybaord appear scrool
+    if (MediaQuery.of(context).viewInsets.bottom > 0) {
+      _scrollDown();
+    }
     return CustomScaffold(
       appBar:
           CustomAppBar.titleCompany(title: "Leave Apply", onChanged: (v, _) {}),
       body: _blocBuilder(),
-    );
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: kMainColor,
-      appBar: AppBar(
-        backgroundColor: kMainColor,
-        // toolbarHeight: 80,
-        elevation: 0.0,
-        titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: Text(
-          'Leave Apply',
-          maxLines: 2,
-          style: kTextStyle.copyWith(
-              color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        actions: const [
-          Image(
-            image: AssetImage('images/employeesearch.png'),
-          ),
-        ],
-      ),
-      // body: _body(),
-      body: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-        child: Container(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-          width: double.infinity,
-          color: Colors.white,
-          child: _blocBuilder(),
-        ),
-      ),
-    );
-  }
-
-  Widget _body() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20.0,
-          ),
-          Container(
-            width: context.width(),
-            padding: const EdgeInsets.all(20.0),
-            height: Measurement.heightPercent(context, 1),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0)),
-              color: Colors.white,
-            ),
-            child: _blocBuilder(),
-          ),
-        ],
-      ),
     );
   }
 
@@ -165,8 +114,9 @@ class _LeaveApplyState extends State<LeaveApply> {
   }
 
   Widget _display() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return ListView(
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      controller: _scrollController,
       children: [
         const SizedBox(
           height: 20.0,
@@ -185,6 +135,9 @@ class _LeaveApplyState extends State<LeaveApply> {
 
         /// btn
         _btnSubmit(),
+        Container(
+          height: MediaQuery.of(context).viewInsets.bottom > 0 ? 280 : 0,
+        )
       ],
     );
   }
@@ -491,6 +444,9 @@ class _LeaveApplyState extends State<LeaveApply> {
   }
 
   void _submit() {
+    ///
+    hideKeyboard(context);
+
     LeaveModel params = LeaveModel();
     params.leaveTypeId = leaveTypeId;
     params.dateTo = dateToTEC.text;
@@ -508,6 +464,24 @@ class _LeaveApplyState extends State<LeaveApply> {
     leaveBloc.add(LeaveSubmit(params: params));
   }
 
+  void _scrollDown() {
+    // Define how far you want to scroll up (e.g., 100 pixels)
+    const double scrollOffset = 150.0;
+
+    // Check the current position to avoid negative scrolling
+    final newOffset = (_scrollController.offset + scrollOffset).clamp(
+      0.0, // Minimum offset is 0 (top of the list)
+      _scrollController.position.maxScrollExtent, // Max scroll extent
+    );
+
+    // Animate to the new offset
+    _scrollController.animateTo(
+      newOffset,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
   @override
   void dispose() {
     leaveBloc.state.isHalfDay = false;
@@ -516,6 +490,7 @@ class _LeaveApplyState extends State<LeaveApply> {
     dateFromTEC.dispose();
     dateToTEC.dispose();
     descTEC.dispose();
+    _scrollController.dispose();
 
     ///
     // leaveBloc.state.listTypeResult!.status = ApiStatus.loading;

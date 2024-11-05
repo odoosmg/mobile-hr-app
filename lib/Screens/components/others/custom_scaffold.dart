@@ -7,18 +7,20 @@ class CustomScaffold extends StatelessWidget {
   final AppBar? appBar;
   final Widget? floatingActionButton;
   final EdgeInsetsGeometry? bodyPadding;
+  final bool resizeToAvoidBottomInset;
   const CustomScaffold({
     super.key,
     required this.body,
     this.appBar,
     this.floatingActionButton,
     this.bodyPadding,
+    this.resizeToAvoidBottomInset = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       backgroundColor: kMainColor,
       floatingActionButton: floatingActionButton,
       appBar: appBar,
