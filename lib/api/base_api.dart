@@ -2,6 +2,7 @@ import 'package:dio/dio.dart'
     show Dio, DioException, Options, BaseOptions, DioExceptionType;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hrm_employee/GlobalComponents/dialog/custom_dialog.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
@@ -102,7 +103,7 @@ class BaseApi extends ResponseT {
       data["status_code"] = statusCode;
 
       ///
-      checkExpired(statusCode ?? 400);
+      checkExpired(statusCode ?? 400, data["error"]?["error_message"] ?? "");
 
       switch (statusCode) {
         case 404:
@@ -180,16 +181,24 @@ class BaseApi extends ResponseT {
     }
   }
 
-  void checkExpired(int statusCode) {
+  void checkExpired(int statusCode, String errMsg) {
     /// Expired
     /// 401 and have token
-    if (statusCode == 401 &&
+    /// * temp solution : previous check with statusCode = 401
+    if (errMsg == "Invalid access token" &&
         AppServices.instance<DatabaseService>().getToken.isNotEmpty) {
       AppServices.instance<DatabaseService>().clearSession();
 
       const SignIn().launch(
         AppServices.instance<NavigatorService>().getCurrentContext,
         isNewTask: true,
+      );
+
+      /// dialog
+      CustomDialog.error(
+        AppServices.instance<NavigatorService>().getCurrentContext,
+        errCode: statusCode,
+        errMsg: errMsg,
       );
       // Get.offAllNamed(LoginPage.route);
       // CustomDialog.error(statusCode, AppTrans.t.tokenExpiredMsg);
