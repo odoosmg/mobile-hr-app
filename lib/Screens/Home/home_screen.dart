@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:hrm_employee/Services/location_service.dart';
+import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -202,40 +203,43 @@ class _HomeScreenState extends State<HomeScreen> {
       controller: easyRefreshController,
       onRefresh: _onRefresh,
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            /// Test Geo Distance
-/*
-            ElevatedButton(
-              onPressed: () async {
-                await _geoDistance();
-              },
-              child: Text("Test"),
-            ),
-*/
-
-            /// Check in-out
-            ..._inOut(),
-
-            /// Attendance List
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 24),
-              child: AttendanceListCard(
-                data: homeBloc.state.getDataResult?.data ?? InOutModel(),
+        child: SizedBox(
+          height: Measurement.heightPercent(context, 0.9),
+          child: Column(
+            children: [
+              /// Test Geo Distance
+              /*
+              ElevatedButton(
+                onPressed: () async {
+                  await _geoDistance();
+                },
+                child: Text("Test"),
               ),
-            ),
+              */
 
-            /// Chart
-            const AttendanceStaticChart(),
+              /// Check in-out
+              ..._inOut(),
 
-            10.height,
+              /// Attendance List
+              Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 24),
+                child: AttendanceListCard(
+                  data: homeBloc.state.getDataResult?.data ?? InOutModel(),
+                ),
+              ),
 
-            // ..._gridMenu(),
+              /// Chart
+              // const AttendanceStaticChart(),
 
-            // 10.height,
+              10.height,
 
-            // ..._options()
-          ],
+              // ..._gridMenu(),
+
+              // 10.height,
+
+              // ..._options()
+            ],
+          ),
         ),
       ),
     );
