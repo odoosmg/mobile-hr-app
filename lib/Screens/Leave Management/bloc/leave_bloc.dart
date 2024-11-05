@@ -253,6 +253,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         .then((value) async {
       ///
       if (value.isSuccess) {
+        /*
         /// Append to list if current current UserId = employeeId
         if (AppServices.instance<DatabaseService>().getSession!.myProfile!.id ==
             event.data.employeeId) {
@@ -268,6 +269,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
           emit(state.copyWith(state));
         }
+        */
 
         /// update item at To Approve List. Remove item
         if (state.toApproveListResult!.data!.toApprovedList!.isNotEmpty) {
