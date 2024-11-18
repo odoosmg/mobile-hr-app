@@ -24,6 +24,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     on<LeaveAction>(_leaveAction);
     on<LeaveListScreenDispose>(_leaveListScreenDispose);
     on<LeaveInitialDayCount>(_initialDayCount);
+    on<LeaveAttendanceList>(_attendanceList);
   }
 
   ///
@@ -305,6 +306,12 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       }
     }
     state.dayCount = 1;
+  }
+
+  ///
+  void _attendanceList(
+      LeaveAttendanceList event, Emitter<LeaveState> emit) async {
+    await leaveRepository.attendanceList(0).then((value) {});
   }
 
   ///

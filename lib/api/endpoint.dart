@@ -16,4 +16,5 @@ class Endpoint {
   static const companyList = "/soma-portal/my/companies";
   static const permission = "/soma-portal/modules_permission";
   static const leaveAction = "/soma-portal/my/leave/action";
+  static const attendanceList = "/soma-portal/attendance/list";
 }

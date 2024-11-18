@@ -75,5 +75,6 @@ enum LeaveStateType {
   submit,
   myLeaveList,
   toApproveList,
-  leaveAction
+  leaveAction,
+  attendanceList,
 }
