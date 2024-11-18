@@ -3,6 +3,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Screens/Leave%20Management/leave_history_screen.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
@@ -203,7 +204,24 @@ class _MenuScreenState extends State<MenuScreen> {
             const SizedBox(
               width: 20.0,
             ),
-            _emptyCard(context),
+            // _emptyCard(context),
+
+            _material(
+              context: context,
+              image: const SizedBox(
+                height: 68,
+                child: Image(
+                  image: AssetImage('images/employeeattendace.png'),
+                  height: 100,
+                ),
+              ),
+              borderColor: const Color.fromARGB(223, 235, 115, 195),
+              text1: "Attendance",
+              text2: "History",
+              onTap: () {
+                const LeaveHistoryScreen().launch(context);
+              },
+            ),
             /*
           Expanded(
             child: Material(
