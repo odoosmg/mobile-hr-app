@@ -158,8 +158,11 @@ class _MenuScreenState extends State<MenuScreen> {
       const SizedBox(
         height: 20.0,
       ),
-      if (AppServices.instance<DatabaseService>().isGetPermissionSucces)
-        Row(
+      // if (AppServices.instance<DatabaseService>().isGetPermissionSucces)
+      IgnorePointer(
+        ignoring: !AppServices.instance<DatabaseService>()
+            .isGetPermissionSucces, // failed
+        child: Row(
           children: [
             Expanded(
               child: Material(
@@ -223,49 +226,50 @@ class _MenuScreenState extends State<MenuScreen> {
               },
             ),
             /*
-          Expanded(
-            child: Material(
-              elevation: 2.0,
-              child: GestureDetector(
-                onTap: () {
-                  const DailyWorkReport().launch(context);
-                },
-                child: Container(
-                  width: context.width(),
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                        color: Color(0xFF02B984),
-                        width: 3.0,
+            Expanded(
+              child: Material(
+                elevation: 2.0,
+                child: GestureDetector(
+                  onTap: () {
+                    const DailyWorkReport().launch(context);
+                  },
+                  child: Container(
+                    width: context.width(),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: Color(0xFF02B984),
+                          width: 3.0,
+                        ),
                       ),
+                      color: Colors.white,
                     ),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Image(image: AssetImage('images/workreport.png')),
-                      Text(
-                        'Daily Work',
-                        maxLines: 2,
-                        style: kTextStyle.copyWith(
-                            color: kTitleColor, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Report',
-                        style: kTextStyle.copyWith(
-                            color: kTitleColor, fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Image(image: AssetImage('images/workreport.png')),
+                        Text(
+                          'Daily Work',
+                          maxLines: 2,
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Report',
+                          style: kTextStyle.copyWith(
+                              color: kTitleColor, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          */
+            */
           ],
         ),
+      ),
 
       /*
       20.height,
