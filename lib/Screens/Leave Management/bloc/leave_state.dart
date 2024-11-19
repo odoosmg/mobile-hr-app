@@ -70,8 +70,9 @@ final class LeaveInitial extends LeaveState {
       ApiResult()..status = ApiStatus.loading;
 
   @override
-  ApiResult<InOutModel>? get attendanceListResult =>
-      ApiResult()..status = ApiStatus.loading;
+  ApiResult<InOutModel>? get attendanceListResult => ApiResult()
+    ..status = ApiStatus.loading
+    ..data = InOutModel();
 }
 
 enum LeaveStateType {

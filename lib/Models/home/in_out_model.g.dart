@@ -26,7 +26,8 @@ InOutModel _$InOutModelFromJson(Map<String, dynamic> json) => InOutModel()
       .toList()
   ..list = (json['list'] as List<dynamic>?)
       ?.map((e) => InOutModel.fromJson(e as Map<String, dynamic>))
-      .toList();
+      .toList()
+  ..page = (json['page'] as num?)?.toInt();
 
 Map<String, dynamic> _$InOutModelToJson(InOutModel instance) =>
     <String, dynamic>{
@@ -40,4 +41,5 @@ Map<String, dynamic> _$InOutModelToJson(InOutModel instance) =>
       'leave_summary': instance.leaveSummary,
       'today_leave': instance.todayLeave,
       'list': instance.list,
+      'page': instance.page,
     };

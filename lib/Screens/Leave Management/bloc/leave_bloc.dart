@@ -314,13 +314,22 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   void _attendanceList(
       LeaveAttendanceList event, Emitter<LeaveState> emit) async {
     state.stateType = LeaveStateType.attendanceList;
+    int page = 0;
+
     if (event.isLoading) {
       state.attendanceListResult!.status = ApiStatus.loading;
       emit(state.copyWith(state));
     }
 
-    await leaveRepository.attendanceList(0).then((value) {
+    if (!event.isRefresh) {
+      page = (state.attendanceListResult?.data?.page ?? 0) + 10;
+    }
+
+    await Future.delayed(Duration(seconds: 3));
+
+    await leaveRepository.attendanceList(page).then((value) {
       state.attendanceListResult = value;
+      emit(state.copyWith(state));
     });
   }
 

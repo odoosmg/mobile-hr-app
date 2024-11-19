@@ -1,6 +1,12 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
+import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
+import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart';
+import 'package:hrm_employee/extensions/date_extension.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
@@ -18,43 +24,107 @@ class LeaveHistoryScreen extends StatefulWidget {
 class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
   late LeaveBloc leaveBloc;
 
+  final EasyRefreshController easyRefreshController = EasyRefreshController(
+    controlFinishRefresh: true,
+    controlFinishLoad: true,
+  );
+
+  bool isOnRefresh = false;
+  bool isOnLoad = false;
+
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
-    leaveBloc.add(LeaveAttendanceList());
+    leaveBloc.add(LeaveAttendanceList(isLoading: true, isRefresh: true));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: CustomAppBar.titleActions(title: "Attendance History"),
-      body: _blocBuilder(),
-    );
-  }
-
-  Widget _body() {
-    return Column(
-      children: [
-        10.kHeight,
-        _card(),
-      ],
-    );
+        appBar: CustomAppBar.titleActions(title: "Attendance History"),
+        body: Column(
+          children: [
+            _blocBuilder(),
+          ],
+        ));
   }
 
   BlocConsumer _blocBuilder() {
     return BlocConsumer(
       bloc: leaveBloc,
       builder: (ctx, state) {
-        return _body();
+        return _kbuilder();
       },
       buildWhen: (previous, current) {
-        print("current.stateType ==== ${current}");
-        return current.stateType == LeaveStateType.attendanceList;
+        if (current.stateType == LeaveStateType.attendanceList) {
+          /// if onRefresh not rebuild
+          if (isOnRefresh) {
+            isOnRefresh = false;
+            return false;
+          }
+
+          return true;
+        }
+        return false;
       },
       listener: (ctx, state) {
-        print("listen === ${state.stateType}");
+        ///
+        if (state.stateType == LeaveStateType.attendanceList) {
+          /// is onReresh
+          if (isOnRefresh) {
+            if (state.attendanceListResult!.isSuccess) {
+              easyRefreshController.finishRefresh(IndicatorResult.success);
+            } else {
+              easyRefreshController.finishRefresh(IndicatorResult.fail);
+            }
+          }
+
+          if (isOnLoad) {
+            if (state.attendanceListResult!.isSuccess) {
+              easyRefreshController.finishLoad(IndicatorResult.success);
+            } else {
+              easyRefreshController.finishLoad(IndicatorResult.fail);
+            }
+          }
+        }
       },
+    );
+  }
+
+  Widget _kbuilder() {
+    return KBuilder(
+        status: leaveBloc.state.attendanceListResult!.status!,
+        onRetry: () {
+          leaveBloc.add(LeaveMyList(isLoading: true));
+        },
+        builder: (st) {
+          return st == ApiStatus.loading ? Container() : _easyRefresh();
+        });
+  }
+
+  Widget _easyRefresh() {
+    List<InOutModel> data =
+        leaveBloc.state.attendanceListResult?.data?.list ?? [];
+    return Expanded(
+      child: CustomEasyRefresh(
+        controller: easyRefreshController,
+        onRefresh: () {
+          isOnRefresh = true;
+          leaveBloc.add(LeaveAttendanceList(isLoading: false, isRefresh: true));
+        },
+        onLoad: () {
+          isOnLoad = true;
+          leaveBloc
+              .add(LeaveAttendanceList(isLoading: false, isRefresh: false));
+        },
+        child: ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (ctx, index) {
+            return _card(data[index]);
+          },
+        ),
+      ),
     );
   }
 
@@ -81,58 +151,83 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
     );
   }
 
-  Widget _card() {
-    return Material(
-      elevation: 2.0,
-      child: GestureDetector(
-        onTap: () {
-          // const DailyWorkReport().launch(context);
-        },
-        child: Container(
-          width: context.width(),
-          padding: const EdgeInsets.all(10.0),
-          decoration: const BoxDecoration(
-            border: Border(
-              left: BorderSide(
-                color: Colors.blue,
-                width: 3.0,
+  Widget _card(InOutModel data) {
+    return Container(
+      padding: const EdgeInsets.only(top: Measurement.screenPadding),
+      child: Material(
+        elevation: 2.0,
+        child: GestureDetector(
+          onTap: () {
+            // const DailyWorkReport().launch(context);
+          },
+          child: Container(
+            width: context.width(),
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(
+                  color: _borderColor(data),
+                  width: 3.0,
+                ),
               ),
+              color: Colors.white,
             ),
-            color: Colors.white,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "22 Oct 2024",
-                    style: Theme.of(context).textTheme.blackS14W700,
-                  ),
-                  Text(
-                    "8 hours",
-                    style: Theme.of(context).textTheme.greyS14W400,
-                  )
-                ],
-              ),
-              4.kHeight,
-              _inOut(
-                text1: "IN",
-                text2: "10:12:20",
-                text2Color: Colors.green,
-              ),
-              2.kHeight,
-              _inOut(
-                text1: "OUT",
-                text2: "10:12:20",
-                text2Color: Colors.orange,
-              ),
-            ],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      _convertDate(
+                          date: data.checkInDatetime, format: "dd MMM yyyy"),
+                      style: Theme.of(context).textTheme.blackS14W700,
+                    ),
+                    Text(
+                      "8 hours",
+                      style: Theme.of(context).textTheme.greyS14W400,
+                    )
+                  ],
+                ),
+                4.kHeight,
+                _inOut(
+                  text1: "IN",
+                  text2: _convertDate(date: data.checkInDatetime),
+                  text2Color: Colors.grey,
+                ),
+                2.kHeight,
+                _inOut(
+                  text1: "OUT",
+                  text2: _convertDate(date: data.checkOutDatetime),
+                  text2Color: Colors.grey,
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  String _convertDate({String? date, String format = "hh:mm"}) {
+    if (date == null || date.isEmpty) {
+      return "";
+    }
+
+    return DateTime.parse(date).dateFormat(toFormat: format)!;
+  }
+
+  Color _borderColor(InOutModel data) {
+    if (data.checkOutDatetime!.isNotEmpty) {
+      return Colors.orange;
+    }
+    return Colors.green;
+  }
+
+  @override
+  void dispose() {
+    leaveBloc.add(LeaveAttendanceListDispose());
+    super.dispose();
   }
 }
