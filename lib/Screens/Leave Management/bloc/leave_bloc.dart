@@ -321,14 +321,28 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       emit(state.copyWith(state));
     }
 
+    /// onLoad , + 10
     if (!event.isRefresh) {
       page = (state.attendanceListResult?.data?.page ?? 0) + 10;
     }
 
-    await Future.delayed(Duration(seconds: 3));
+    // await Future.delayed(Duration(seconds: 3));
 
     await leaveRepository.attendanceList(page).then((value) {
-      state.attendanceListResult = value;
+      state.attendanceListResult!.data!.dataStatus = value.status;
+      if (event.isRefresh) {
+        state.attendanceListResult = value;
+      } else {
+        if (value.isSuccess) {
+          /// on load add more record.
+          if (value.data!.list!.isNotEmpty) {
+            state.attendanceListResult!.data!.list!.addAll(value.data!.list!);
+          } else {
+            state.attendanceListResult!.data!.dataStatus = ApiStatus.empty;
+          }
+        }
+      }
+
       emit(state.copyWith(state));
     });
   }

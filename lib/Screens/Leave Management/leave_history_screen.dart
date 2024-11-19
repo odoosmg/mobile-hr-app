@@ -35,19 +35,20 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
-    leaveBloc.add(LeaveAttendanceList(isLoading: true, isRefresh: true));
+    _getData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-        appBar: CustomAppBar.titleActions(title: "Attendance History"),
-        body: Column(
-          children: [
-            _blocBuilder(),
-          ],
-        ));
+      appBar: CustomAppBar.titleActions(title: "Attendance History"),
+      body: Column(
+        children: [
+          _blocBuilder(),
+        ],
+      ),
+    );
   }
 
   BlocConsumer _blocBuilder() {
@@ -57,16 +58,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
         return _kbuilder();
       },
       buildWhen: (previous, current) {
-        if (current.stateType == LeaveStateType.attendanceList) {
-          /// if onRefresh not rebuild
-          if (isOnRefresh) {
-            isOnRefresh = false;
-            return false;
-          }
-
-          return true;
-        }
-        return false;
+        return current.stateType == LeaveStateType.attendanceList;
       },
       listener: (ctx, state) {
         ///
@@ -78,14 +70,30 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
             } else {
               easyRefreshController.finishRefresh(IndicatorResult.fail);
             }
+            isOnRefresh = false;
           }
 
+          /// onLoad
           if (isOnLoad) {
-            if (state.attendanceListResult!.isSuccess) {
+            ApiStatus dataStatus =
+                state.attendanceListResult?.data?.dataStatus ??
+                    ApiStatus.loading;
+
+            /// success
+            if (dataStatus == ApiStatus.success) {
               easyRefreshController.finishLoad(IndicatorResult.success);
-            } else {
+            }
+
+            /// empty
+            if (dataStatus == ApiStatus.empty) {
+              easyRefreshController.finishLoad(IndicatorResult.noMore);
+            }
+
+            /// error
+            if (dataStatus == ApiStatus.failed) {
               easyRefreshController.finishLoad(IndicatorResult.fail);
             }
+            isOnLoad = false;
           }
         }
       },
@@ -96,7 +104,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
     return KBuilder(
         status: leaveBloc.state.attendanceListResult!.status!,
         onRetry: () {
-          leaveBloc.add(LeaveMyList(isLoading: true));
+          _getData();
         },
         builder: (st) {
           return st == ApiStatus.loading ? Container() : _easyRefresh();
@@ -223,6 +231,10 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
       return Colors.orange;
     }
     return Colors.green;
+  }
+
+  void _getData() {
+    leaveBloc.add(LeaveAttendanceList(isLoading: true, isRefresh: true));
   }
 
   @override

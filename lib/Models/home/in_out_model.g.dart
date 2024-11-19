@@ -27,7 +27,8 @@ InOutModel _$InOutModelFromJson(Map<String, dynamic> json) => InOutModel()
   ..list = (json['list'] as List<dynamic>?)
       ?.map((e) => InOutModel.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..page = (json['page'] as num?)?.toInt();
+  ..page = (json['page'] as num?)?.toInt()
+  ..dataStatus = $enumDecodeNullable(_$ApiStatusEnumMap, json['data_status']);
 
 Map<String, dynamic> _$InOutModelToJson(InOutModel instance) =>
     <String, dynamic>{
@@ -42,4 +43,15 @@ Map<String, dynamic> _$InOutModelToJson(InOutModel instance) =>
       'today_leave': instance.todayLeave,
       'list': instance.list,
       'page': instance.page,
+      'data_status': _$ApiStatusEnumMap[instance.dataStatus],
     };
+
+const _$ApiStatusEnumMap = {
+  ApiStatus.loading: 'loading',
+  ApiStatus.success: 'success',
+  ApiStatus.failed: 'failed',
+  ApiStatus.connectionError: 'connectionError',
+  ApiStatus.loginExpired: 'loginExpired',
+  ApiStatus.unAuthorize: 'unAuthorize',
+  ApiStatus.empty: 'empty',
+};
