@@ -192,10 +192,14 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
                           date: data.checkInDatetime, format: "dd MMM yyyy"),
                       style: Theme.of(context).textTheme.blackS14W700,
                     ),
-                    Text(
-                      "8 hours",
-                      style: Theme.of(context).textTheme.greyS14W400,
-                    )
+
+                    /// Work hours
+                    if (data.checkInDatetime!.isNotEmpty &&
+                        data.checkOutDatetime!.isNotEmpty)
+                      Text(
+                        "${(data.workHours)!.toInt()} hour(s)",
+                        style: Theme.of(context).textTheme.greyS14W400,
+                      )
                   ],
                 ),
                 4.kHeight,

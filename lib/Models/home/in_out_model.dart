@@ -20,6 +20,7 @@ class InOutModel {
   List<UserModel>? todayLeave;
   List<InOutModel>? list;
   int? page;
+  double? workHours;
 
   /// to check when onRefresh or onLoad.
   ApiStatus? dataStatus;
