@@ -16,6 +16,7 @@ class InOutModel {
 
   List<LeaveModel>? leaveSummary;
   List<UserModel>? todayLeave;
+  List<InOutModel>? list;
 
   InOutModel();
 

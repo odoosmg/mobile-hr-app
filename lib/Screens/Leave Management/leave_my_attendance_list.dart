@@ -40,7 +40,7 @@ class _LeaveAttendanceMyListState extends State<LeaveAttendanceMyList>
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
-    leaveBloc.add(LeaveAttendanceList());
+    leaveBloc.add(LeaveMyList(isLoading: true));
     super.initState();
   }
 

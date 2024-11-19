@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
+import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Repository/leave_repository.dart';
 import 'package:hrm_employee/Services/app_services.dart';
@@ -25,6 +26,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     on<LeaveListScreenDispose>(_leaveListScreenDispose);
     on<LeaveInitialDayCount>(_initialDayCount);
     on<LeaveAttendanceList>(_attendanceList);
+    on<LeaveAttendanceListDispose>(_attendanceListDispose);
   }
 
   ///
@@ -311,7 +313,15 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   ///
   void _attendanceList(
       LeaveAttendanceList event, Emitter<LeaveState> emit) async {
-    await leaveRepository.attendanceList(0).then((value) {});
+    state.stateType = LeaveStateType.attendanceList;
+    if (event.isLoading) {
+      state.attendanceListResult!.status = ApiStatus.loading;
+      emit(state.copyWith(state));
+    }
+
+    await leaveRepository.attendanceList(0).then((value) {
+      state.attendanceListResult = value;
+    });
   }
 
   ///
@@ -321,6 +331,12 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     state.myLeaveListResult!.status = ApiStatus.loading;
     state.toApproveListResult?.data = LeaveModel();
     state.toApproveListResult!.status = ApiStatus.loading;
+  }
+
+  void _attendanceListDispose(
+      LeaveAttendanceListDispose event, Emitter<LeaveState> emit) {
+    state.attendanceListResult!.data!.list = [];
+    state.attendanceListResult!.status = ApiStatus.loading;
   }
 
   // @override

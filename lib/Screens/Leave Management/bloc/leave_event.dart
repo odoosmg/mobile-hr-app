@@ -52,4 +52,10 @@ final class LeaveListScreenDispose extends LeaveEvent {}
 
 final class LeaveInitialDayCount extends LeaveEvent {}
 
-final class LeaveAttendanceList extends LeaveEvent {}
+final class LeaveAttendanceList extends LeaveEvent {
+  final bool isLoading;
+  final bool isRefresh;
+  LeaveAttendanceList({this.isRefresh = false, this.isLoading = false});
+}
+
+final class LeaveAttendanceListDispose extends LeaveEvent {}

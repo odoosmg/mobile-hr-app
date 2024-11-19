@@ -7,6 +7,7 @@ class LeaveState {
   ApiResult<LeaveModel>? myLeaveListResult;
   ApiResult<LeaveModel>? leaveActionResult;
   ApiResult<LeaveModel>? toApproveListResult;
+  ApiResult<InOutModel>? attendanceListResult;
 
   double? dayCount; // how many day request leave
   bool? isHalfDay;
@@ -20,6 +21,7 @@ class LeaveState {
     this.myLeaveListResult,
     this.leaveActionResult,
     this.toApproveListResult,
+    this.attendanceListResult,
   });
 
   LeaveState copyWith(LeaveState d) {
@@ -32,6 +34,7 @@ class LeaveState {
       myLeaveListResult: d.myLeaveListResult,
       toApproveListResult: d.toApproveListResult,
       leaveActionResult: leaveActionResult,
+      attendanceListResult: attendanceListResult,
     );
   }
 }
@@ -64,6 +67,10 @@ final class LeaveInitial extends LeaveState {
 
   @override
   ApiResult<LeaveModel>? get leaveActionResult =>
+      ApiResult()..status = ApiStatus.loading;
+
+  @override
+  ApiResult<InOutModel>? get attendanceListResult =>
       ApiResult()..status = ApiStatus.loading;
 }
 

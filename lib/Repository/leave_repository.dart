@@ -1,5 +1,6 @@
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/api/api_status_model.dart';
+import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Models/leave/leave_model.dart';
 import 'package:hrm_employee/Models/leave/leave_params.dart';
 import 'package:hrm_employee/Services/app_services.dart';
@@ -117,13 +118,13 @@ class LeaveRepository extends BaseApi {
     );
   }
 
-  Future<ApiResult<LeaveModel>> attendanceList(int page) async {
+  Future<ApiResult<InOutModel>> attendanceList(int page) async {
     Map<String, dynamic> map = await request(
         uri: Endpoint.attendanceList, params: LeaveParams.page(page));
     // map = {"status_code": 200};
     return apiResponse(
       status: ApiStatusModel.fromJson(map),
-      data: LeaveModel.fromJson(map['data'] ?? {}),
+      data: InOutModel.fromJson(map['data'] ?? {}),
     );
   }
 }

@@ -29,12 +29,32 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: CustomAppBar.titleActions(title: "Attendance History"),
-      body: Column(
-        children: [
-          10.kHeight,
-          _card(),
-        ],
-      ),
+      body: _blocBuilder(),
+    );
+  }
+
+  Widget _body() {
+    return Column(
+      children: [
+        10.kHeight,
+        _card(),
+      ],
+    );
+  }
+
+  BlocConsumer _blocBuilder() {
+    return BlocConsumer(
+      bloc: leaveBloc,
+      builder: (ctx, state) {
+        return _body();
+      },
+      buildWhen: (previous, current) {
+        print("current.stateType ==== ${current}");
+        return current.stateType == LeaveStateType.attendanceList;
+      },
+      listener: (ctx, state) {
+        print("listen === ${state.stateType}");
+      },
     );
   }
 
