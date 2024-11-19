@@ -29,4 +29,22 @@ extension DateExtension on DateTime {
       return null;
     }
   }
+
+  String? utcToLocal({
+    String currentFormat = "yyyy-MM-dd HH:mm:ss",
+    String toForamt = "yyyy-MM-dd HH:mm:ss",
+  }) {
+    try {
+      // ignore: unnecessary_this
+      String date = this.toString();
+
+      /// utc to local
+      DateTime d = DateFormat(currentFormat).parse(date, true).toLocal();
+      return d
+          .dateFormat(currentFormat: "yyyy-MM-dd HH:mm:ss", toFormat: toForamt)
+          .toString();
+    } catch (e) {
+      return null;
+    }
+  }
 }

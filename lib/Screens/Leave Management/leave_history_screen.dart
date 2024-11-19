@@ -222,12 +222,12 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
     );
   }
 
-  String _convertDate({String? date, String format = "hh:mm"}) {
+  String _convertDate({String? date, String format = "HH:mm"}) {
     if (date == null || date.isEmpty) {
       return "";
     }
 
-    return DateTime.parse(date).dateFormat(toFormat: format)!;
+    return DateTime.parse(date).utcToLocal(toForamt: format) ?? "";
   }
 
   Color _borderColor(InOutModel data) {
