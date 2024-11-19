@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/Screens/Authentication/sign_in.dart';
 import 'package:hrm_employee/Screens/Home/home_screen.dart';
@@ -103,12 +103,13 @@ class _SplashScreenState extends State<SplashScreen> {
             //   image: AssetImage('images/round_logo.png'),
             // ),
             const Spacer(),
-            Center(
+            const Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
+                padding: EdgeInsets.only(bottom: 10.0),
                 child: Text(
                   'Version 1.0.0',
-                  style: GoogleFonts.manrope(
+                  style: TextStyle(
+                      fontFamily: 'Manrope',
                       color: Colors.white,
                       fontWeight: FontWeight.normal,
                       fontSize: 15.0),

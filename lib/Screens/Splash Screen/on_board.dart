@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:hrm_employee/Models/auth/app_local.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
@@ -85,10 +85,15 @@ class _OnBoardState extends State<OnBoard> {
                 /// sign-in page
                 const SignIn().launch(context, isNewTask: true);
               },
-              child: Text(
+              child: const Text(
                 'Skip',
-                style: GoogleFonts.dmSans(
-                  fontSize: 16.0,
+                // style: GoogleFonts.dmSans(
+                //   fontSize: 16.0,
+                //   color: kTitleColor,
+                // ),
+
+                style: TextStyle(
+                  fontFamily: 'Manrope',
                   color: kTitleColor,
                 ),
               ),

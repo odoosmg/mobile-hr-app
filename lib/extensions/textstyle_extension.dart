@@ -3,21 +3,22 @@ import 'dart:ui';
 import 'package:flutter/material.dart' show Colors, TextStyle, TextTheme;
 import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 import 'package:hrm_employee/utlis/app_color.dart';
 
 extension TextstyleExtension on TextTheme {
+  TextStyle get textFont => const TextStyle(fontFamily: 'Manrope');
+
   /// Check theme color.
   /// all copyWith will change follow
-  TextStyle get blackColor => GoogleFonts.manrope(color: Colors.black);
+  TextStyle get blackColor => textFont.copyWith(color: Colors.black);
 
-  TextStyle get whiteColor => GoogleFonts.manrope(color: Colors.white);
+  TextStyle get whiteColor => textFont.copyWith(color: Colors.white);
 
-  TextStyle get redColor => GoogleFonts.manrope(color: Colors.red);
+  TextStyle get redColor => textFont.copyWith(color: Colors.red);
 
-  TextStyle get greyColor => GoogleFonts.manrope(color: Colors.grey);
+  TextStyle get greyColor => textFont.copyWith(color: Colors.grey);
 
-  TextStyle get mainColor => GoogleFonts.manrope(color: AppColor.kMainColor);
+  TextStyle get mainColor => textFont.copyWith(color: AppColor.kMainColor);
 
   ///*************************
   ///           BLACK

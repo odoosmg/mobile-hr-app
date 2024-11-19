@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 const kMainColor = Color(0xFF567DF4);
 const kGreyTextColor = Color(0xFF9090AD);
@@ -13,9 +13,11 @@ const kBgColor = Color(0xFFFAFAFA);
 const kHalfDay = Color(0xFFE8B500);
 const kGreenColor = Color(0xFF08BC85);
 
-final kTextStyle = GoogleFonts.manrope(
-  color: kTitleColor,
-);
+// final kTextStyle = GoogleFonts.manrope(
+//   color: kTitleColor,
+// );
+
+const kTextStyle = TextStyle(fontFamily: 'Manrope', color: kTitleColor);
 
 String purchaseCode = '528cdb9a-5d37-4292-a2b5-b792d5eca03a';
 
