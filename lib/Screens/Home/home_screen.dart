@@ -202,13 +202,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return CustomEasyRefresh(
       controller: easyRefreshController,
       onRefresh: _onRefresh,
-      child: SingleChildScrollView(
-        child: SizedBox(
-          height: Measurement.heightPercent(context, 0.9),
-          child: Column(
-            children: [
-              /// Test Geo Distance
-              /*
+      child: SizedBox(
+        height: Measurement.heightPercent(context, 0.9),
+        child: ListView(
+          children: [
+            /// Test Geo Distance
+            /*
               ElevatedButton(
                 onPressed: () async {
                   await _geoDistance();
@@ -217,29 +216,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               */
 
-              /// Check in-out
-              ..._inOut(),
+            /// Check in-out
+            ..._inOut(),
 
-              /// Attendance List
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 24),
-                child: AttendanceListCard(
-                  data: homeBloc.state.getDataResult?.data ?? InOutModel(),
-                ),
+            /// Attendance List
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 24),
+              child: AttendanceListCard(
+                data: homeBloc.state.getDataResult?.data ?? InOutModel(),
               ),
+            ),
 
-              /// Chart
-              // const AttendanceStaticChart(),
+            /// Chart
+            // const AttendanceStaticChart(),
 
-              10.height,
+            10.height,
 
-              // ..._gridMenu(),
+            // ..._gridMenu(),
 
-              // 10.height,
+            // 10.height,
 
-              // ..._options()
-            ],
-          ),
+            // ..._options()
+          ],
         ),
       ),
     );
