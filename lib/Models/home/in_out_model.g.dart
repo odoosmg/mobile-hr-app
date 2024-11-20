@@ -28,7 +28,7 @@ InOutModel _$InOutModelFromJson(Map<String, dynamic> json) => InOutModel()
       ?.map((e) => InOutModel.fromJson(e as Map<String, dynamic>))
       .toList()
   ..page = (json['page'] as num?)?.toInt()
-  ..workHours = (json['work_hours'] as num?)?.toDouble()
+  ..workHours = json['work_hours'] as String?
   ..dataStatus = $enumDecodeNullable(_$ApiStatusEnumMap, json['data_status']);
 
 Map<String, dynamic> _$InOutModelToJson(InOutModel instance) =>

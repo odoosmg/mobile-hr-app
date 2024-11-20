@@ -194,23 +194,23 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
                     ),
 
                     /// Work hours
-                    if (data.checkInDatetime!.isNotEmpty &&
-                        data.checkOutDatetime!.isNotEmpty)
-                      Text(
-                        "${(data.workHours)!.toInt()} hour(s)",
-                        style: Theme.of(context).textTheme.greyS14W400,
-                      )
+                    // if (data.checkInDatetime!.isNotEmpty &&
+                    //     data.checkOutDatetime!.isNotEmpty)
+                    Text(
+                      data.workHours ?? "",
+                      style: Theme.of(context).textTheme.greyS14W400,
+                    )
                   ],
                 ),
                 4.kHeight,
                 _inOut(
-                  text1: "IN",
+                  text1: "Check In",
                   text2: _convertDate(date: data.checkInDatetime),
                   text2Color: Colors.grey,
                 ),
                 2.kHeight,
                 _inOut(
-                  text1: "OUT",
+                  text1: "Check Out",
                   text2: _convertDate(date: data.checkOutDatetime),
                   text2Color: Colors.grey,
                 ),
