@@ -332,6 +332,9 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       state.attendanceListResult!.data!.dataStatus = value.status;
       if (event.isRefresh) {
         state.attendanceListResult = value;
+        if (value.data!.list!.isEmpty) {
+          state.attendanceListResult!.status = ApiStatus.empty;
+        }
       } else {
         if (value.isSuccess) {
           /// on load add more record.
