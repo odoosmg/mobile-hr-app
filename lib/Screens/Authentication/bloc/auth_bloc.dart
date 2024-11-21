@@ -72,6 +72,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         s.myProfile!.name = value.data?.name ?? "";
         s.myProfile!.image = value.data?.image ?? "";
         s.myProfile!.department = value.data?.department ?? "";
+        s.myProfile!.company!.name = value.data?.companyName ?? "";
         AppServices.instance<DatabaseService>().putSession(s);
       }
 
