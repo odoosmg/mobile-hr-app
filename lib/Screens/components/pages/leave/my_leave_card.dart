@@ -77,7 +77,7 @@ class MyLeaveCard extends StatelessWidget {
                     ),
                     Measurement.gap.kWidth,
                     Text(
-                      "${data.leaveRemaining}",
+                      "${data.leaveRemaining ?? 0.0}",
                       style: kTextStyle.copyWith(
                         color: kGreyTextColor,
                       ),
