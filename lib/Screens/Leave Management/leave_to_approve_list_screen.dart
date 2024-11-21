@@ -13,6 +13,7 @@ import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart'
 import 'package:hrm_employee/Screens/components/pages/leave/my_leave_card.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
+import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 
 class LeaveToApproveListScreen extends StatefulWidget {
   const LeaveToApproveListScreen({super.key});
@@ -130,7 +131,9 @@ class _LeaveToApproveListScreenState extends State<LeaveToApproveListScreen>
                   top: Measurement.screenPadding,
                 ),
                 child: MyLeaveCard(data: d[i], index: i, isToApproved: true),
-              )
+              ),
+
+            80.kHeight,
           ],
         ),
       ),
