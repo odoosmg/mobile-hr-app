@@ -23,6 +23,7 @@ LeaveModel _$LeaveModelFromJson(Map<String, dynamic> json) => LeaveModel()
   ..leaveTypeId = (json['leave_type_id'] as num?)?.toInt()
   ..leaveTypeName = json['leave_type_name'] as String?
   ..numberOfDays = (json['number_of_days'] as num?)?.toDouble()
+  ..leaveRemaining = (json['leave_remaining'] as num?)?.toDouble()
   ..state = json['state'] as String?
   ..leaveTypeList = (json['leave_type_list'] as List<dynamic>?)
       ?.map((e) => SelectFormModel.fromJson(e as Map<String, dynamic>))
@@ -57,6 +58,7 @@ Map<String, dynamic> _$LeaveModelToJson(LeaveModel instance) =>
       'leave_type_id': instance.leaveTypeId,
       'leave_type_name': instance.leaveTypeName,
       'number_of_days': instance.numberOfDays,
+      'leave_remaining': instance.leaveRemaining,
       'state': instance.state,
       'leave_type_list': instance.leaveTypeList,
       'leave_allocated_summary': instance.leaveAllocatedSummary,

@@ -18,7 +18,7 @@ class LeaveModel {
   String? datePeriod;
   int? leaveTypeId;
   String? leaveTypeName;
-  double? numberOfDays;
+  double? numberOfDays, leaveRemaining;
   String? state;
 
   List<SelectFormModel>? leaveTypeList;

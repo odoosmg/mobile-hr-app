@@ -65,6 +65,26 @@ class MyLeaveCard extends StatelessWidget {
                       color: kTitleColor, fontWeight: FontWeight.bold),
                 ),
 
+              /// Remaining
+              if (isToApproved)
+                Row(
+                  children: [
+                    Text(
+                      "Remaining",
+                      style: kTextStyle.copyWith(
+                        color: kGreyTextColor,
+                      ),
+                    ),
+                    Measurement.gap.kWidth,
+                    Text(
+                      "${data.leaveRemaining}",
+                      style: kTextStyle.copyWith(
+                        color: kGreyTextColor,
+                      ),
+                    )
+                  ],
+                ),
+
               /// From date To date
               Text(
                 'From ${_dateFormat(data.dateFrom)} to ${_dateFormat(data.dateTo)}',
@@ -110,13 +130,16 @@ class MyLeaveCard extends StatelessWidget {
 
               /// Btn Approve, Refuse
               if (isToApproved)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _btn(context, true), // Approve
-                    8.kWidth,
-                    _btn(context, false), // Refuse
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _btn(context, true), // Approve
+                      8.kWidth,
+                      _btn(context, false), // Refuse
+                    ],
+                  ),
                 )
             ],
           ),
