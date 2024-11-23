@@ -151,7 +151,7 @@ class BaseApi extends ResponseT {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json',
                   'Authorization':
-                      'Bearer ${"AppServices.instance<DatabaseService>().getToken"}'
+                      'Bearer ${AppServices.instance<DatabaseService>().getToken}'
                 }))
             .then((response) {
           resData = response.data;
