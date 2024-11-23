@@ -2,10 +2,12 @@ import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
+import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/bloc/leave_bloc.dart';
 import 'package:hrm_employee/Screens/components/kbuilder/k_builder.dart';
 import 'package:hrm_employee/Screens/components/others/custom_easy_refresh.dart';
+import 'package:hrm_employee/Screens/components/others/xborder.dart';
 import 'package:hrm_employee/extensions/date_extension.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
@@ -32,6 +34,11 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
   bool isOnRefresh = false;
   bool isOnLoad = false;
 
+  List<SelectFormModel> listMonth = [
+    SelectFormModel()..name = "Jan",
+    SelectFormModel()..name = "Feb",
+  ];
+
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
@@ -43,10 +50,45 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: CustomAppBar.titleActions(title: "Attendance History"),
-      body: Column(
-        children: [
-          _blocBuilder(),
-        ],
+      body: GestureDetector(
+        onTap: () async {
+          // final selected = await showMonthYearPicker(
+          //   context: context,
+          //   initialDate: DateTime.now(),
+          //   firstDate: DateTime(2020),
+          //   lastDate: DateTime(2030),
+          // );
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            10.kHeight,
+            Container(
+              height: 40,
+              alignment: Alignment.center,
+              color: Colors.transparent,
+              width: 130,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "November",
+                        style: Theme.of(context).textTheme.blackS15W500,
+                      ),
+                      const Icon(Icons.arrow_drop_down, size: 24)
+                    ],
+                  ),
+                  6.kHeight,
+                  const Xborder()
+                ],
+              ),
+            ),
+            _blocBuilder(),
+          ],
+        ),
       ),
     );
   }
