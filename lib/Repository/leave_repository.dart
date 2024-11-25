@@ -118,9 +118,14 @@ class LeaveRepository extends BaseApi {
     );
   }
 
-  Future<ApiResult<InOutModel>> attendanceList(int page) async {
+  Future<ApiResult<InOutModel>> attendanceList({
+    required int page,
+    required String from,
+    required String to,
+  }) async {
     Map<String, dynamic> map = await request(
-        uri: Endpoint.attendanceList, params: LeaveParams.page(page));
+        uri: Endpoint.attendanceList,
+        params: LeaveParams.attendanceList(page, from, to));
     // map = {"status_code": 200};
     return apiResponse(
       status: ApiStatusModel.fromJson(map),

@@ -55,7 +55,12 @@ final class LeaveInitialDayCount extends LeaveEvent {}
 final class LeaveAttendanceList extends LeaveEvent {
   final bool isLoading;
   final bool isRefresh;
-  LeaveAttendanceList({this.isRefresh = false, this.isLoading = false});
+  final DateTime dateFilter;
+  LeaveAttendanceList({
+    this.isRefresh = false,
+    this.isLoading = false,
+    required this.dateFilter,
+  });
 }
 
 final class LeaveAttendanceListDispose extends LeaveEvent {}

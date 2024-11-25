@@ -48,6 +48,8 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
     SelectFormModel()..name = "Feb",
   ];
 
+  DateTime dateFilter = DateTime.now();
+
   @override
   void initState() {
     leaveBloc = context.read<LeaveBloc>();
@@ -143,12 +145,13 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
         controller: easyRefreshController,
         onRefresh: () {
           isOnRefresh = true;
-          leaveBloc.add(LeaveAttendanceList(isLoading: false, isRefresh: true));
+          leaveBloc.add(LeaveAttendanceList(
+              isLoading: false, isRefresh: true, dateFilter: dateFilter));
         },
         onLoad: () {
           isOnLoad = true;
-          leaveBloc
-              .add(LeaveAttendanceList(isLoading: false, isRefresh: false));
+          leaveBloc.add(LeaveAttendanceList(
+              isLoading: false, isRefresh: false, dateFilter: dateFilter));
         },
         child: ListView.builder(
           itemCount: data.length,
@@ -246,6 +249,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
     );
   }
 
+  ///
   Widget _monthYear() {
     return BlocBuilder<FormDataBloc, FormDataState>(
       bloc: formDataBloc,
@@ -316,7 +320,8 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
   }
 
   void _getData() {
-    leaveBloc.add(LeaveAttendanceList(isLoading: true, isRefresh: true));
+    leaveBloc.add(LeaveAttendanceList(
+        isLoading: true, isRefresh: true, dateFilter: dateFilter));
   }
 
   Future _monthPicker() async {
@@ -324,14 +329,27 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
       context: context,
       headerColor: AppColor.kMainColor,
       dismissible: true,
-      selectedMonthBackgroundColor: Colors.purple.shade400,
+      selectedMonthBackgroundColor: Colors.purple.shade300,
       unselectedMonthTextColor: AppColor.kBlackColor,
+      confirmWidget: Text(
+        "OK",
+        style: Theme.of(context)
+            .textTheme
+            .greyS15W700
+            .copyWith(color: AppColor.kMainColor),
+      ),
+      cancelWidget: Text(
+        "Cancel",
+        style: Theme.of(context).textTheme.greyS15W700,
+      ),
     );
     if (datetime != null) {
       /// not calling when click the same date
       if (datetime.dateFormat(toFormat: "MM-yyyy") !=
           formDataBloc.state.selectDateTime!.dateFormat(toFormat: "MM-yyyy")) {
+        dateFilter = datetime;
         formDataBloc.add(FormDataSelectDateTime(datetime));
+        _getData();
       }
     }
   }

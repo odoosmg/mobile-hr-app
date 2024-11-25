@@ -328,15 +328,31 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
     // await Future.delayed(Duration(seconds: 3));
 
-    await leaveRepository.attendanceList(page).then((value) {
+    /// first day, last day
+    /// format yyyy-MM-dd
+    final dateFilter = event.dateFilter;
+    final firstDay = "${dateFilter.dateFormat(toFormat: "yyyy-MM")}-01";
+    final lastDay = DateTime(dateFilter.year, dateFilter.month + 1, 0)
+        .dateFormat(toFormat: "yyyy-MM-dd")
+        .toString();
+
+    ///
+    await leaveRepository
+        .attendanceList(page: page, from: firstDay, to: lastDay)
+        .then((value) {
       state.attendanceListResult!.data!.dataStatus = value.status;
+
       if (event.isRefresh) {
         state.attendanceListResult = value;
-        if (value.data!.list!.isEmpty) {
+
+        if (value.isSuccess && value.data!.list!.isEmpty) {
           state.attendanceListResult!.status = ApiStatus.empty;
         }
       } else {
         if (value.isSuccess) {
+          /// update page
+          state.attendanceListResult!.data!.page = value.data!.page;
+
           /// on load add more record.
           if (value.data!.list!.isNotEmpty) {
             state.attendanceListResult!.data!.list!.addAll(value.data!.list!);

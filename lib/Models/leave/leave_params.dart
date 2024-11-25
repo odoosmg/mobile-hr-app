@@ -17,4 +17,9 @@ class LeaveParams {
       {"leave_id": id, "action_name": state};
 
   static Map<String, dynamic> page(int page) => {"page": page};
+  static Map<String, dynamic> attendanceList(int p, String from, String to) {
+    final d = page(p);
+    d.addAll({"filter_from_date": from, "filter_to_date": to});
+    return d;
+  }
 }
