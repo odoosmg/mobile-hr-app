@@ -22,6 +22,11 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
     await employeeRepository.list().then((value) {
       state.listResult = value;
+      if (value.isSuccess) {
+        if (value.data!.list!.isEmpty) {
+          state.listResult!.status = ApiStatus.empty;
+        }
+      }
       emit(state.copyWith(state));
     });
   }

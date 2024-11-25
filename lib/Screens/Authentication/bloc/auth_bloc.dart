@@ -4,6 +4,7 @@ import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Models/auth/user_model.dart';
+import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
@@ -71,7 +72,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         Session s = AppServices.instance<DatabaseService>().getSession!;
         s.myProfile!.name = value.data?.name ?? "";
         s.myProfile!.image = value.data?.image ?? "";
-        s.myProfile!.department = value.data?.department ?? "";
+        s.myProfile?.company ??= SelectFormModel();
         s.myProfile!.company!.name = value.data?.companyName ?? "";
         AppServices.instance<DatabaseService>().putSession(s);
       }

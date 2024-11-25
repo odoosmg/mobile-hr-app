@@ -369,7 +369,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   ///
   void _leaveListScreenDispose(
       LeaveListScreenDispose event, Emitter<LeaveState> emit) async {
-    state.myLeaveListResult!.data!.list = [];
+    state.myLeaveListResult?.data = LeaveModel();
     state.myLeaveListResult!.status = ApiStatus.loading;
     state.toApproveListResult?.data = LeaveModel();
     state.toApproveListResult!.status = ApiStatus.loading;
