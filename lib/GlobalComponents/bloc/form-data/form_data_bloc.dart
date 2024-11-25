@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/TableCalendarDialog/bloc/table_calendar_dialog_bloc.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Repository/form_data_repository.dart';
@@ -19,6 +20,7 @@ class FormDataBloc extends Bloc<FormDataEvent, FormDataState> {
   FormDataBloc(this.formDataRepository) : super(FormDataInitial()) {
     on<FormDataCompanyList>(_companyList);
     on<FormDataCompanySelected>(_companySelect);
+    on<FormDataSelectDateTime>(_selectDateTime);
   }
 /*
   void _companyList(
@@ -163,5 +165,12 @@ class FormDataBloc extends Bloc<FormDataEvent, FormDataState> {
       }
     }
     return d;
+  }
+
+  void _selectDateTime(
+      FormDataSelectDateTime event, Emitter<FormDataState> emit) async {
+    state.stateType = FormDataStateType.selectDateTime;
+    state.selectDateTime = event.datetime;
+    emit(state.copyWith(state));
   }
 }

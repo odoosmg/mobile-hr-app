@@ -11,3 +11,8 @@ class FormDataCompanySelected extends FormDataEvent {
   final List<SelectFormModel> list;
   FormDataCompanySelected(this.list);
 }
+
+class FormDataSelectDateTime extends FormDataEvent {
+  final DateTime datetime;
+  FormDataSelectDateTime(this.datetime);
+}

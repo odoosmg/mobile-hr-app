@@ -1,6 +1,13 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
+import 'package:hrm_employee/Repository/form_data_repository.dart';
+import 'package:hrm_employee/utlis/app_color.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
+// ignore: depend_on_referenced_packages
+import 'package:nb_utils/nb_utils.dart';
+
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:hrm_employee/Models/home/in_out_model.dart';
@@ -12,7 +19,6 @@ import 'package:hrm_employee/extensions/date_extension.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/Screens/components/others/custom_scaffold.dart';
 
@@ -25,6 +31,9 @@ class LeaveHistoryScreen extends StatefulWidget {
 
 class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
   late LeaveBloc leaveBloc;
+
+  /// this is local bloc
+  final formDataBloc = FormDataBloc(FormDataRepository());
 
   final EasyRefreshController easyRefreshController = EasyRefreshController(
     controlFinishRefresh: true,
@@ -50,45 +59,18 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: CustomAppBar.titleActions(title: "Attendance History"),
-      body: GestureDetector(
-        onTap: () async {
-          // final selected = await showMonthYearPicker(
-          //   context: context,
-          //   initialDate: DateTime.now(),
-          //   firstDate: DateTime(2020),
-          //   lastDate: DateTime(2030),
-          // );
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            10.kHeight,
-            Container(
-              height: 40,
-              alignment: Alignment.center,
-              color: Colors.transparent,
-              width: 130,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "November",
-                        style: Theme.of(context).textTheme.blackS15W500,
-                      ),
-                      const Icon(Icons.arrow_drop_down, size: 24)
-                    ],
-                  ),
-                  6.kHeight,
-                  const Xborder()
-                ],
-              ),
-            ),
-            _blocBuilder(),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          10.kHeight,
+
+          ///
+          _monthYear(),
+
+          ///
+          _blocBuilder(),
+        ],
       ),
     );
   }
@@ -264,6 +246,60 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
     );
   }
 
+  Widget _monthYear() {
+    return BlocBuilder<FormDataBloc, FormDataState>(
+      bloc: formDataBloc,
+      buildWhen: (previous, current) {
+        if (current.stateType == FormDataStateType.selectDateTime) {
+          return true;
+        }
+
+        return false;
+      },
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: _monthPicker,
+          child: Container(
+            height: 40,
+            alignment: Alignment.center,
+            color: Colors.transparent,
+            width: 160,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        /// month
+                        Text(
+                          state.selectDateTime!
+                              .dateFormat(toFormat: "MMMM")
+                              .toString(),
+                          style: Theme.of(context).textTheme.blackS15W500,
+                        ),
+                        Measurement.gap.kWidth,
+
+                        /// year
+                        Text(
+                          state.selectDateTime!.year.toString(),
+                          style: Theme.of(context).textTheme.blackS15W500,
+                        ),
+                      ],
+                    ),
+                    const Icon(Icons.arrow_drop_down, size: 24)
+                  ],
+                ),
+                6.kHeight,
+                const Xborder()
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   String _convertDate({String? date, String format = "HH:mm"}) {
     if (date == null || date.isEmpty) {
       return "";
@@ -281,6 +317,23 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
 
   void _getData() {
     leaveBloc.add(LeaveAttendanceList(isLoading: true, isRefresh: true));
+  }
+
+  Future _monthPicker() async {
+    final datetime = await showMonthPicker(
+      context: context,
+      headerColor: AppColor.kMainColor,
+      dismissible: true,
+      selectedMonthBackgroundColor: Colors.purple.shade400,
+      unselectedMonthTextColor: AppColor.kBlackColor,
+    );
+    if (datetime != null) {
+      /// not calling when click the same date
+      if (datetime.dateFormat(toFormat: "MM-yyyy") !=
+          formDataBloc.state.selectDateTime!.dateFormat(toFormat: "MM-yyyy")) {
+        formDataBloc.add(FormDataSelectDateTime(datetime));
+      }
+    }
   }
 
   @override
