@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/Screens/Leave%20Management/leave_history_screen.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Home/sa_home_screen.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
@@ -225,6 +226,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 const LeaveHistoryScreen().launch(context);
               },
             ),
+
             /*
             Expanded(
               child: Material(
@@ -271,7 +273,6 @@ class _MenuScreenState extends State<MenuScreen> {
         ),
       ),
 
-      /*
       20.height,
       Row(
         children: [
@@ -282,10 +283,10 @@ class _MenuScreenState extends State<MenuScreen> {
                 height: 70,
               ),
               borderColor: const Color.fromARGB(225, 226, 191, 116),
-              text1: "Public",
-              text2: "Holiday",
+              text1: "Sale",
+              text2: "Activity",
               onTap: () {
-                const PublicHolidayScreen().launch(context);
+                const SAHomeScreen().launch(context);
               }),
           20.width,
 
@@ -302,7 +303,6 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
         ],
       ),
-      */
     ];
   }
 
