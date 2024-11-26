@@ -31,7 +31,7 @@ class _SASaleListPageState extends State<SASaleListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar.titleActions(
-        backgroundColor: Colors.grey,
+        // backgroundColor: Colors.grey,
         title: AppTrans.t.saleActivity,
         actions: [
           MainAppbarBtnIcon(

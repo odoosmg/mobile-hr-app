@@ -16,7 +16,7 @@ class SAHomeScreen extends StatefulWidget {
 class _SAHomeScreenState extends State<SAHomeScreen> {
   String username = '';
 
-  int selectedIndex = 2;
+  int selectedIndex = 0;
 
   @override
   void initState() {
@@ -65,7 +65,9 @@ class _SAHomeScreenState extends State<SAHomeScreen> {
         // backgroundColor: Colors.grey.shade200,
         selectedItemColor: AppColor.kMainColor,
         unselectedItemColor: AppColor.kGreyTextColor,
-        onTap: (index) => selectedIndex,
+        onTap: (index) => setState(() {
+          selectedIndex = index;
+        }),
       ),
     );
   }
