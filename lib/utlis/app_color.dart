@@ -13,4 +13,6 @@ class AppColor {
   static const kDangerColor = Color.fromARGB(255, 206, 19, 19);
   static const kBlackColor = Color.fromARGB(255, 0, 0, 0);
   static const kWhiteColor = Color.fromARGB(255, 255, 255, 255);
+
+  static const saMain = Colors.orange;
 }

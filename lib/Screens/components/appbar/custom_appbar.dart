@@ -4,9 +4,13 @@ import 'package:hrm_employee/Screens/components/pages/home/select-company/ui/sel
 import 'package:hrm_employee/constant.dart';
 
 class CustomAppBar {
-  static AppBar titleActions({required String title, List<Widget>? actions}) {
+  static AppBar titleActions({
+    required String title,
+    List<Widget>? actions,
+    Color? backgroundColor,
+  }) {
     return AppBar(
-      backgroundColor: kMainColor,
+      backgroundColor: backgroundColor ?? kMainColor,
       // toolbarHeight: 80,
       elevation: 0.0,
       titleSpacing: 0.0,
