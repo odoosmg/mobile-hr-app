@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Customer/sa_customer_list.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/Order/sa_order_list_screen.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/Sale/sa_sale_list_screen.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
@@ -15,7 +16,7 @@ class SAHomeScreen extends StatefulWidget {
 class _SAHomeScreenState extends State<SAHomeScreen> {
   String username = '';
 
-  int selectedIndex = 1;
+  int selectedIndex = 2;
 
   @override
   void initState() {
@@ -30,8 +31,8 @@ class _SAHomeScreenState extends State<SAHomeScreen> {
         // sizing: StackFit.passthrough,
         children: const [
           SASaleListPage(),
-          OrderListPage(),
-          // CustomerListPage(),
+          SAOrderListScreen(),
+          SACustomerListScreen(),
           // AccountPage(),
         ],
       ),

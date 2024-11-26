@@ -4,14 +4,14 @@ import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Button/main_a
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 
-class OrderListPage extends StatefulWidget {
-  const OrderListPage({super.key});
+class SAOrderListScreen extends StatefulWidget {
+  const SAOrderListScreen({super.key});
 
   @override
-  State<OrderListPage> createState() => _OrderListPageState();
+  State<SAOrderListScreen> createState() => _SAOrderListScreenState();
 }
 
-class _OrderListPageState extends State<OrderListPage> {
+class _SAOrderListScreenState extends State<SAOrderListScreen> {
   final EasyRefreshController easyRefreshController = EasyRefreshController(
       controlFinishLoad: true, controlFinishRefresh: true);
 
