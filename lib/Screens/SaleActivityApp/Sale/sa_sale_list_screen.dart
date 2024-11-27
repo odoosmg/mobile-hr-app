@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Sale/sa_sale_activity_detail_screen.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/Sale/sa_sale_checkin_screen.dart';
 // ignore: unused_import
 import 'package:nb_utils/nb_utils.dart';
@@ -73,7 +74,8 @@ class _SASaleListPageState extends State<SASaleListPage> {
           InkWell(
               onTap: () {
                 // SASaleTodoCheckinScreen().launch(context);
-                SASaleCheckinScreen().launch(context);
+                // SASaleCheckinScreen().launch(context);
+                SASaleActivityDetailScreen().launch(context);
               },
               child: SaleCell(data: SalesModel()..status = "todo")),
 
