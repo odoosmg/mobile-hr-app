@@ -142,3 +142,28 @@ enum LeaveStatus {
     }
   }
 }
+
+enum SaleActivtyStatus {
+  todo("todo"),
+  checkin("check-in"),
+  checkout("check-out"),
+  checkoutOrder("check-out-order");
+
+  const SaleActivtyStatus(this.name);
+  final String name;
+
+  Color get bgColor {
+    switch (this) {
+      case todo:
+        return Colors.grey;
+      case checkout:
+        return const Color.fromARGB(255, 193, 148, 82);
+      case checkoutOrder:
+        return Colors.green.shade700;
+      default:
+
+        /// checkin
+        return const Color.fromARGB(255, 72, 141, 197);
+    }
+  }
+}

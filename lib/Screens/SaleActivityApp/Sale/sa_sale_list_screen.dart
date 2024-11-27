@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
+// ignore: unused_import
+import 'package:nb_utils/nb_utils.dart';
+import 'package:hrm_employee/Models/SaleActivity/Sale/sales_model.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Button/main_appbar_btn_icon.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Sale/sale_cell.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Sale/sale_table_calendar.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Sale/sa_sale_todo_checkin_screen.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/app_trans.dart';
+import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 import 'package:intl/intl.dart';
 
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
@@ -44,7 +51,7 @@ class _SASaleListPageState extends State<SASaleListPage> {
       body: Column(
         children: [
           /// Calendar
-          /*
+
           SaleTableCalendar(
             onSelectedDate: (d) {
               /// to not call when click on the same date
@@ -54,12 +61,19 @@ class _SASaleListPageState extends State<SASaleListPage> {
               date = d;
 
               /// status to
-              saleController.listResult.status!(ApiStatus.loading);
+              // saleController.listResult.status!(ApiStatus.loading);
               // saleController.update();
-              _onRefresh();
+              // _onRefresh();
             },
           ),
-          */
+
+          20.kHeight,
+
+          InkWell(
+              onTap: () {
+                SASaleTodoCheckinScreen().launch(context);
+              },
+              child: SaleCell(data: SalesModel()..status = "todo")),
 
           /// Cell
           // GetBuilder<SaleController>(builder: (builder) {
