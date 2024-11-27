@@ -14,15 +14,16 @@ import 'package:hrm_employee/utlis/app_trans.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 
-class SASaleCheckinScreen extends StatefulWidget {
+class SASaleManualCheckinScreen extends StatefulWidget {
   static const route = '/sale-checkin';
-  const SASaleCheckinScreen({super.key});
+  const SASaleManualCheckinScreen({super.key});
 
   @override
-  State<SASaleCheckinScreen> createState() => _SASaleCheckinScreenState();
+  State<SASaleManualCheckinScreen> createState() =>
+      _SASaleManualCheckinScreenState();
 }
 
-class _SASaleCheckinScreenState extends State<SASaleCheckinScreen> {
+class _SASaleManualCheckinScreenState extends State<SASaleManualCheckinScreen> {
   /// Argument
   DateTime argSelectedDate = DateTime.now();
 

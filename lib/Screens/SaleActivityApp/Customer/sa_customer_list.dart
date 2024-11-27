@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
+// ignore: unused_import, depend_on_referenced_packages
+import 'package:nb_utils/nb_utils.dart';
+import 'package:hrm_employee/Models/SaleActivity/Customer/customer_model.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Button/main_appbar_btn_icon.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Customer/customer_cell.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Customer/sa_customer_add_screen.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/utlis/app_trans.dart';
 
@@ -33,11 +38,15 @@ class _SACustomerListScreenState extends State<SACustomerListScreen> {
             iconData: Icons.add_reaction_rounded,
             onPressed: () {
               // Get.toNamed(CustomerAddPage.route)
+
+              SACustomerAddScreen().launch(context);
             },
           ),
         ],
       ),
-      body: Container(),
+      body: Column(
+        children: [CustomerCell(data: CustomerModel())],
+      ),
       /*
       body: Padding(
         padding: const EdgeInsets.only(
