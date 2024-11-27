@@ -57,7 +57,7 @@ class _SASaleTodoCheckinScreenState extends State<SASaleTodoCheckinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar.titleActions(title: AppTrans.t.checkIn),
+      appBar: CustomAppBar.saTitleAction(title: AppTrans.t.checkIn),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(

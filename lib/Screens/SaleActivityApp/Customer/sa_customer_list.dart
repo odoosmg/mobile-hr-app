@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
+import 'package:hrm_employee/utlis/measurement.dart';
+import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 // ignore: unused_import, depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Models/SaleActivity/Customer/customer_model.dart';
@@ -31,7 +33,7 @@ class _SACustomerListScreenState extends State<SACustomerListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar.titleActions(
+      appBar: CustomAppBar.saTitleAction(
         title: AppTrans.t.customer,
         actions: [
           MainAppbarBtnIcon(
@@ -42,6 +44,7 @@ class _SACustomerListScreenState extends State<SACustomerListScreen> {
               SACustomerAddScreen().launch(context);
             },
           ),
+          Measurement.screenPadding.kPdRight,
         ],
       ),
       body: Column(

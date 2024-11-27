@@ -37,7 +37,7 @@ class _SASaleActivityDetailScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar.titleActions(title: 'Activity detail'),
+      appBar: CustomAppBar.saTitleAction(title: 'Activity detail'),
       body: _getBuilder(),
     );
   }

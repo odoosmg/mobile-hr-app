@@ -80,7 +80,7 @@ class _SAOrderAddUpdatePageState extends State<SAOrderAddUpdatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar.titleActions(
+      appBar: CustomAppBar.saTitleAction(
           title:
               isUpdateForm ? AppTrans.t.updateOrder : AppTrans.t.addNewOrder),
       body: SingleChildScrollView(

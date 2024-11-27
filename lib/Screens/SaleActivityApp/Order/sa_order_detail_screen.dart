@@ -37,7 +37,7 @@ class _SAOrderDetailScreenState extends State<SAOrderDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar.titleActions(title: AppTrans.t.orderDetail),
+      appBar: CustomAppBar.saTitleAction(title: AppTrans.t.orderDetail),
       // backgroundColor: Colors.grey.shade100,
       body: SingleChildScrollView(
           child: Padding(

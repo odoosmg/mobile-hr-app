@@ -63,7 +63,7 @@ class _SAHomeScreenState extends State<SAHomeScreen> {
         iconSize: 25,
         currentIndex: selectedIndex,
         // backgroundColor: Colors.grey.shade200,
-        selectedItemColor: AppColor.kMainColor,
+        selectedItemColor: AppColor.saMain,
         unselectedItemColor: AppColor.kGreyTextColor,
         onTap: (index) => setState(() {
           selectedIndex = index;

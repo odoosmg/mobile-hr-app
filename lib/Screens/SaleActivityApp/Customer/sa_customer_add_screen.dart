@@ -64,7 +64,7 @@ class _SACustomerAddScreenState extends State<SACustomerAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar.titleActions(title: AppTrans.t.addNewCustomer),
+      appBar: CustomAppBar.saTitleAction(title: AppTrans.t.addNewCustomer),
       body: Padding(
         padding: const EdgeInsets.only(
           left: Measurement.screenPadding,

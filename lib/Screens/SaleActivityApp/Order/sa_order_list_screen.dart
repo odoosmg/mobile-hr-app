@@ -1,6 +1,8 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/Order/sa_order_add_update_page.dart';
+import 'package:hrm_employee/utlis/measurement.dart';
+import 'package:hrm_employee/utlis/measurement_widget_extension.dart';
 // ignore: unused_import, depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Models/SaleActivity/Order/orders_model.dart';
@@ -30,7 +32,7 @@ class _SAOrderListScreenState extends State<SAOrderListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar.titleActions(
+      appBar: CustomAppBar.saTitleAction(
         title: "Order",
         actions: [
           MainAppbarBtnIcon(
@@ -39,7 +41,8 @@ class _SAOrderListScreenState extends State<SAOrderListScreen> {
               //  Get.toNamed(OrderAddUpdatePage.route)
               SAOrderAddUpdatePage().launch(context);
             },
-          )
+          ),
+          Measurement.screenPadding.kPdRight,
         ],
       ),
       body: Column(
