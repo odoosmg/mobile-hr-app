@@ -278,11 +278,14 @@ class _MenuScreenState extends State<MenuScreen> {
         children: [
           _material(
               context: context,
-              image: const Image(
-                image: AssetImage('images/calendar.png'),
-                height: 70,
+              image: Container(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: const Image(
+                  image: AssetImage('assets/images/sale_activity_logo.png'),
+                  height: 45,
+                ),
               ),
-              borderColor: const Color.fromARGB(225, 226, 191, 116),
+              borderColor: AppColor.saMain,
               text1: "Sale",
               text2: "Activity",
               onTap: () {
@@ -291,16 +294,7 @@ class _MenuScreenState extends State<MenuScreen> {
           20.width,
 
           /// Empty for space
-          Container(
-            child: _material(
-              context: context,
-              image: Container(),
-              borderColor: white,
-              text1: "",
-              text2: "",
-              elevation: 0,
-            ),
-          ),
+          _emptyCard(context)
         ],
       ),
     ];
