@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
+import 'package:hrm_employee/utlis/app_trans.dart';
 
 class CustomDialog {
   ///
@@ -111,5 +112,42 @@ class CustomDialog {
         pageBuilder: (context, animation1, animation2) {
           return Container();
         });
+  }
+
+  ///
+  static Future confirmRemove(
+    BuildContext context, {
+    Widget? content,
+    Function()? onRemove,
+  }) {
+    return animation(
+      context: context,
+      child: AlertDialog(
+        title: Text(
+          AppTrans.t.confirmRemoveItemMsg,
+          style: Theme.of(context).textTheme.blackS15W700,
+        ),
+        content: content,
+        actions: <Widget>[
+          /// cancel
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              AppTrans.t.cancel.toUpperCase(),
+              style: Theme.of(context).textTheme.greyS14W400,
+            ),
+          ),
+
+          /// remove
+          TextButton(
+            onPressed: onRemove,
+            child: Text(
+              AppTrans.t.remove.toUpperCase(),
+              style: Theme.of(context).textTheme.redS14W400,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

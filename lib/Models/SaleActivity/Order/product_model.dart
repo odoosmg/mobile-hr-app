@@ -4,6 +4,7 @@ part 'product_model.g.dart';
 
 @JsonSerializable()
 class ProductModel {
+  int? id, productId;
   String? name, productName;
 
   double? salePrice;

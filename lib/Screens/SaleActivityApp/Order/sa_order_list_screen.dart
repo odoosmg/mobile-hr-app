@@ -1,5 +1,6 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Order/sa_order_add_update_page.dart';
 // ignore: unused_import, depend_on_referenced_packages
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Models/SaleActivity/Order/orders_model.dart';
@@ -36,6 +37,7 @@ class _SAOrderListScreenState extends State<SAOrderListScreen> {
             iconData: Icons.add_shopping_cart,
             onPressed: () {
               //  Get.toNamed(OrderAddUpdatePage.route)
+              SAOrderAddUpdatePage().launch(context);
             },
           )
         ],

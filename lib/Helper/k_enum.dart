@@ -189,3 +189,6 @@ enum OrderStatus {
     }
   }
 }
+
+/// on Select Field.
+enum KSelectType { distributor, customerType, customer, product }
