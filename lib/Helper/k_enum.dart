@@ -167,3 +167,25 @@ enum SaleActivtyStatus {
     }
   }
 }
+
+enum OrderStatus {
+  quotation('Quotation'),
+  saleOrder('Sales Order'),
+  cancelled('Cancelled');
+
+  const OrderStatus(this.name);
+  final String name;
+
+  Color get bgColor {
+    switch (this) {
+      case quotation:
+        return Colors.grey;
+      case saleOrder:
+        return Colors.orange.shade800;
+      default:
+
+        /// cancell
+        return Colors.red.shade600;
+    }
+  }
+}

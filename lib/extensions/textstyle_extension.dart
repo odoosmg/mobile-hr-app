@@ -168,9 +168,9 @@ extension TextstyleExtension on TextTheme {
       mainS13W400.copyWith(fontWeight: FontWeight.w700);
 
   ///
-  // TextStyle get hintText => TextStyle(
-  //     color: AppColor.grey.withOpacity(0.7),
-  //     fontSize: 14,
-  //     fontWeight: FontWeight.w400,
-  //     fontFamily: FontFamily.roboto);
+  TextStyle get hintText => TextStyle(
+      color: Colors.grey.withOpacity(0.7),
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Manrope');
 }

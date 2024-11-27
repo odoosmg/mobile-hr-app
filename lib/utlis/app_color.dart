@@ -15,4 +15,5 @@ class AppColor {
   static const kWhiteColor = Color.fromARGB(255, 255, 255, 255);
 
   static const saMain = Colors.orange;
+  static const saGrey = Colors.grey;
 }
