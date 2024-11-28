@@ -270,10 +270,9 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
                     Row(
                       children: [
                         /// month
+                        /// * temp fixed using dateFilter
                         Text(
-                          state.selectDateTime!
-                              .dateFormat(toFormat: "MMMM")
-                              .toString(),
+                          dateFilter.dateFormat(toFormat: "MMMM").toString(),
                           style: Theme.of(context).textTheme.blackS15W500,
                         ),
                         Measurement.gap.kWidth,

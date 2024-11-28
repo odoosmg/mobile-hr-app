@@ -171,6 +171,11 @@ class FormDataBloc extends Bloc<FormDataEvent, FormDataState> {
       FormDataSelectDateTime event, Emitter<FormDataState> emit) async {
     state.stateType = FormDataStateType.selectDateTime;
     state.selectDateTime = event.datetime;
+
+    /// * noted :
+    /// still error when first select dateTime
+    /// [state.selectDateTime] will get initial date. value not overwrite
+    /// after second select working normally.
     emit(state.copyWith(state));
   }
 }
