@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hrm_employee/Screens/SaleActivityApp/Customer/sa_customer_list.dart';
-import 'package:hrm_employee/Screens/SaleActivityApp/Order/sa_order_list_screen.dart';
-import 'package:hrm_employee/Screens/SaleActivityApp/Sale/sa_sale_list_screen.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Customer/UI/sa_customer_list.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Order/UI/sa_order_list_screen.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Sale/UI/sa_sale_list_screen.dart';
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 

@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:hrm_employee/Models/SaleActivity/Customer/customer_model.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Button/main_appbar_btn_icon.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Customer/customer_cell.dart';
-import 'package:hrm_employee/Screens/SaleActivityApp/Customer/sa_customer_add_screen.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Customer/UI/sa_customer_add_screen.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/utlis/app_trans.dart';
 

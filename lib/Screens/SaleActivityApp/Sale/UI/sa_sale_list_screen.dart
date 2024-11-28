@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
-import 'package:hrm_employee/Screens/SaleActivityApp/Sale/sa_sale_activity_detail_screen.dart';
-import 'package:hrm_employee/Screens/SaleActivityApp/Sale/sa_sale_manual_checkin_screen.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Sale/UI/sa_sale_activity_detail_screen.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Sale/UI/sa_sale_manual_checkin_screen.dart';
 import 'package:hrm_employee/constant.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 // ignore: unused_import
@@ -10,7 +10,7 @@ import 'package:hrm_employee/Models/SaleActivity/Sale/sales_model.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Button/main_appbar_btn_icon.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Sale/sale_cell.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/AppComponents/Sale/sale_table_calendar.dart';
-import 'package:hrm_employee/Screens/SaleActivityApp/Sale/sa_sale_todo_checkin_screen.dart';
+import 'package:hrm_employee/Screens/SaleActivityApp/Sale/UI/sa_sale_todo_checkin_screen.dart';
 import 'package:hrm_employee/Screens/components/appbar/custom_appbar.dart';
 import 'package:hrm_employee/utlis/app_color.dart';
 import 'package:hrm_employee/utlis/app_trans.dart';
