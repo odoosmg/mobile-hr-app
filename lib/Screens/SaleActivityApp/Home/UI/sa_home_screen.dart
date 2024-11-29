@@ -30,7 +30,7 @@ class _SAHomeScreenState extends State<SAHomeScreen> {
         index: selectedIndex,
         // sizing: StackFit.passthrough,
         children: const [
-          SASaleListPage(),
+          SASaleListScreen(),
           SAOrderListScreen(),
           SACustomerListScreen(),
           // AccountPage(),

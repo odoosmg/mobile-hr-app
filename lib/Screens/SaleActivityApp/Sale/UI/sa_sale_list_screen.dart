@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/Sale/UI/sa_sale_activity_detail_screen.dart';
 import 'package:hrm_employee/Screens/SaleActivityApp/Sale/UI/sa_sale_manual_checkin_screen.dart';
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/location_service.dart';
 import 'package:hrm_employee/constant.dart';
 import 'package:hrm_employee/utlis/measurement.dart';
 // ignore: unused_import
@@ -19,14 +21,14 @@ import 'package:intl/intl.dart';
 
 import 'package:hrm_employee/extensions/textstyle_extension.dart';
 
-class SASaleListPage extends StatefulWidget {
-  const SASaleListPage({super.key});
+class SASaleListScreen extends StatefulWidget {
+  const SASaleListScreen({super.key});
 
   @override
-  State<SASaleListPage> createState() => _SASaleListPageState();
+  State<SASaleListScreen> createState() => _SASaleListScreenState();
 }
 
-class _SASaleListPageState extends State<SASaleListPage> {
+class _SASaleListScreenState extends State<SASaleListScreen> {
   EasyRefreshController easyRefreshController =
       EasyRefreshController(controlFinishRefresh: true);
 
@@ -34,6 +36,7 @@ class _SASaleListPageState extends State<SASaleListPage> {
 
   @override
   void initState() {
+    AppServices.instance<LocationService>().requestPermission();
     // _onRefresh();
     super.initState();
   }
