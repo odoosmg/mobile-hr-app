@@ -297,7 +297,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
     );
   }
 
-  String _convertDate({String? date, String format = "HH:mm"}) {
+  String _convertDate({String? date, String format = "yyyy-MMM-dd HH:mm"}) {
     if (date == null || date.isEmpty) {
       return "";
     }
