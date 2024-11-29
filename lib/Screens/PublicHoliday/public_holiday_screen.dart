@@ -115,10 +115,18 @@ class _PublicHolidayScreenState extends State<PublicHolidayScreen> {
   }
 
   Widget _holiday(List<PublicHolidayModel> holidays) {
-    return Column(
-      children: [
-        for (int i = 0; i < holidays.length; i++) _holidayCell(holidays[i])
-      ],
+    return Expanded(
+      child: ListView(
+        children: [
+          for (int i = 0; i < holidays.length; i++)
+            Padding(
+              padding: EdgeInsets.only(
+                  // padding at last item
+                  bottom: i == holidays.length - 1 ? 20 : 0),
+              child: _holidayCell(holidays[i]),
+            )
+        ],
+      ),
     );
   }
 
