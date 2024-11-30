@@ -205,6 +205,11 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  data.workHours ?? "",
+                  style: Theme.of(context).textTheme.blackS14W700,
+                ),
+                /*
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -223,6 +228,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
                     )
                   ],
                 ),
+                */
                 4.kHeight,
                 _inOut(
                   text1: "Check In",
