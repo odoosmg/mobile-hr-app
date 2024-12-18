@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "877376487017",
+    "project_id": "smg-app-dev",
+    "storage_bucket": "smg-app-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877376487017:android:382a64db1a054feb5becf8",
+        "android_client_info": {
+          "package_name": "com.maantheme.hrm_employee.development"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0XwxB2OH3iXvo5steilvIq5GQmY5CNfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

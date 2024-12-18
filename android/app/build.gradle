@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -70,11 +73,11 @@ android {
             // 3rd argusment is app name
             resValue "string", "app_name", "employee attendace dev"
             // Google services
-            // copy {
-            //     from 'src/debug/'
-            //     include 'google-services.json'
-            //     into '.'
-            // }
+            copy {
+                from 'src/debug/'
+                include 'google-services.json'
+                into '.'
+            }
         }
 
         ip {
@@ -84,22 +87,22 @@ android {
             // 3rd argusment is app name
             resValue "string", "app_name", "employee attendace ip"
             // Google services
-            // copy {
-            //     from 'src/debug/'
-            //     include 'google-services.json'
-            //     into '.'
-            // }
+            copy {
+                from 'src/debug/'
+                include 'google-services.json'
+                into '.'
+            }
         }
         stag {
             dimension "flavors"
             applicationIdSuffix ".stagging"
             versionNameSuffix " Stag"
             resValue "string", "app_name", "employee attendace stag"
-            // copy {
-            //     from 'src/profile/'
-            //     include 'google-services.json'
-            //     into '.'
-            // }
+            copy {
+                from 'src/profile/'
+                include 'google-services.json'
+                into '.'
+            }
         }
         prod {
             dimension "flavors"

@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hrm_employee/ConnectionCubit/connectivity_cubit.dart';
+import 'package:hrm_employee/Firebase/firebase_init.dart';
 import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
 import 'package:hrm_employee/Repository/auth_repository.dart';
 import 'package:hrm_employee/Repository/employee_repository.dart';
@@ -20,6 +23,7 @@ import 'package:hrm_employee/Screens/PublicHoliday/Bloc/public_holiday_bloc.dart
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/global_scaffold_messenger_service.dart';
 import 'package:hrm_employee/Services/navigation_service.dart';
+import 'package:hrm_employee/Services/notification_service.dart';
 import 'package:hrm_employee/generated/l10n/trans_localizations.dart';
 import 'package:hrm_employee/l10n/l10n.dart';
 
@@ -27,8 +31,24 @@ import 'Screens/Splash Screen/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  /// Init Frebase
+  if (Firebase.apps.isEmpty) {
+    await FirebaseInit.firebaseOptions();
+  }
+
+  /// Notification
+  await NotificationService.instance.initialize();
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print("ggggg ============");
+  });
+
+  ///
   await Hive.initFlutter();
   await AppServices.setup();
+
+  ///
   runApp(const MyApp());
 }
 

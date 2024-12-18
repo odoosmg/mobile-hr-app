@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"smg-app-dev","appId":"1:877376487017:android:382a64db1a054feb5becf8","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"smg-app-dev","configurations":{"android":"1:877376487017:android:382a64db1a054feb5becf8","ios":"1:877376487017:ios:b221ad46d249825e5becf8"}}}}}}
