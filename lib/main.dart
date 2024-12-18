@@ -32,17 +32,13 @@ import 'Screens/Splash Screen/splash_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// Init Frebase
+  /// Init Firebase
   if (Firebase.apps.isEmpty) {
     await FirebaseInit.firebaseOptions();
   }
 
   /// Notification
   await NotificationService.instance.initialize();
-
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print("ggggg ============");
-  });
 
   ///
   await Hive.initFlutter();

@@ -1,7 +1,10 @@
 import 'dart:async';
-
+import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/navigation_service.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hrm_employee/Screens/Home/home_screen.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -28,6 +31,7 @@ class NotificationService {
 
     // Get FCM token
     final token = await _messaging.getToken();
+
     print('FCM Token: $token');
   }
 
@@ -95,7 +99,7 @@ class NotificationService {
         notification.hashCode,
         notification.title,
         notification.body,
-        NotificationDetails(
+        const NotificationDetails(
           android: AndroidNotificationDetails(
             'high_importance_channel',
             'High Importance Notifications',
@@ -105,7 +109,7 @@ class NotificationService {
             priority: Priority.high,
             icon: '@mipmap/ic_launcher',
           ),
-          iOS: const DarwinNotificationDetails(
+          iOS: DarwinNotificationDetails(
             presentAlert: true,
             presentBadge: true,
             presentSound: true,
@@ -117,15 +121,16 @@ class NotificationService {
   }
 
   Future<void> _setupMessageHandlers() async {
-    //foreground message
-    FirebaseMessaging.onMessage.listen((message) {
+    /// foreground message
+    FirebaseMessaging.onMessage.listen((message) async {
       showNotification(message);
     });
 
-    // background message
+    /// background message.
+    /// close app, click open notification
     FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
 
-    // opened app
+    /// opened app
     final initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
       _handleBackgroundMessage(initialMessage);
@@ -133,7 +138,8 @@ class NotificationService {
   }
 
   void _handleBackgroundMessage(RemoteMessage message) {
-    print("_handleBackgroundMessage ===========");
+    // final context = AppServices.instance<NavigatorService>().getCurrentContext;
+    // HomeScreen().launch(context, isNewTask: true);
     if (message.data['type'] == 'chat') {
       // open chat screen
     }
