@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Services/app_services.dart';
+import 'package:hrm_employee/Services/database_service.dart';
 import 'package:hrm_employee/Services/navigation_service.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -32,7 +34,10 @@ class NotificationService {
     // Get FCM token
     final token = await _messaging.getToken();
 
-    print('FCM Token: $token');
+    /// save FCM Token to local.
+    final appLocal = AppServices.instance<DatabaseService>().getAppLocal;
+    appLocal!.fcmToken = token;
+    AppServices.instance<DatabaseService>().putAppLocal(appLocal);
   }
 
   Future<void> _requestPermission() async {
@@ -94,7 +99,16 @@ class NotificationService {
   Future<void> showNotification(RemoteMessage message) async {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
-    if (notification != null && android != null) {
+    if (
+        //
+        notification != null &&
+            android != null &&
+
+            /// notify only login.
+            AppServices.instance<DatabaseService>().getToken.isNotEmpty
+
+        //
+        ) {
       await _localNotifications.show(
         notification.hashCode,
         notification.title,
@@ -138,6 +152,8 @@ class NotificationService {
   }
 
   void _handleBackgroundMessage(RemoteMessage message) {
+    /// Goto token when user still login
+    /// so check token.
     // final context = AppServices.instance<NavigatorService>().getCurrentContext;
     // HomeScreen().launch(context, isNewTask: true);
     if (message.data['type'] == 'chat') {

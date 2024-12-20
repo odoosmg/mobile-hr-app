@@ -37,12 +37,12 @@ Future<void> main() async {
     await FirebaseInit.firebaseOptions();
   }
 
-  /// Notification
-  await NotificationService.instance.initialize();
-
   ///
   await Hive.initFlutter();
   await AppServices.setup();
+
+  /// Notification
+  await NotificationService.instance.initialize();
 
   ///
   runApp(const MyApp());

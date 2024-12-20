@@ -26,6 +26,9 @@ class AppLocal {
   @JsonValue(false)
   bool? isOnboardClose;
 
+  @HiveField(5)
+  String? fcmToken;
+
   AppLocal();
 
   factory AppLocal.fromJson(Map<String, dynamic> json) =>
