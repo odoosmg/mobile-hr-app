@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
     /// from local
     session = AppServices.instance<DatabaseService>().getSession;
     homeBloc = context.read<HomeBloc>();
-
+    homeBloc.add(HomeAppSaveFCM());
     _initOrRefresh();
     super.initState();
   }

@@ -24,6 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeGetData>(_getData);
     on<HomeAppPermission>(_appPermission);
     on<HomeGetCurrentAndNextYear>(_getCurrentAndNextYear);
+    on<HomeAppSaveFCM>(_saveFCM);
   }
 
   ///
@@ -133,5 +134,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     });
     AppServices.instance<DatabaseService>().putPublicHoliday(publicHoliday);
+  }
+
+  ///
+  void _saveFCM(HomeAppSaveFCM event, Emitter<HomeState> emit) async {
+    final fcmToken =
+        AppServices.instance<DatabaseService>().getAppLocal?.fcmToken ?? "";
+
+    ///
+    await homeRepository.saveFCM("android", fcmToken).then((value) {});
   }
 }

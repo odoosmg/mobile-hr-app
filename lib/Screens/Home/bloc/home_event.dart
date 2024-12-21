@@ -19,3 +19,5 @@ class HomeGetData extends HomeEvent {
 class HomeAppPermission extends HomeEvent {}
 
 class HomeGetCurrentAndNextYear extends HomeEvent {}
+
+class HomeAppSaveFCM extends HomeEvent {}

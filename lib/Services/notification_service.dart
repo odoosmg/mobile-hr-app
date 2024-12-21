@@ -38,6 +38,8 @@ class NotificationService {
     final appLocal = AppServices.instance<DatabaseService>().getAppLocal;
     appLocal!.fcmToken = token;
     AppServices.instance<DatabaseService>().putAppLocal(appLocal);
+
+    print("FCM : $token");
   }
 
   Future<void> _requestPermission() async {
