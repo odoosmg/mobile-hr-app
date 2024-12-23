@@ -148,14 +148,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _saveFCM(HomeAppSaveFCM event, Emitter<HomeState> emit) async {
     final fcmToken =
         AppServices.instance<DatabaseService>().getAppLocal?.fcmToken ?? "";
-    AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
-    String os = "android";
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      os = "ios";
-    }
+    //
 
-    /// os + os_version
-    os = "${os}_${androidInfo.version.release}";
+    String os = "";
+    // IOS
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      IosDeviceInfo iosInfo = await DeviceInfoPlugin().iosInfo;
+
+      /// os + os_version
+      os = "ios_${iosInfo.systemVersion}";
+    } else {
+      // Android
+      AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+      os = "android_${androidInfo.version.release}";
+    }
 
     ///
     await homeRepository.saveFCM(os, fcmToken).then((value) {});
