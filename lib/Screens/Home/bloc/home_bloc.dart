@@ -1,4 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform;
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:hrm_employee/Helper/k_enum.dart';
 import 'package:hrm_employee/Models/PublicHoliday/public_holiday_model.dart';
 import 'package:hrm_employee/Models/api/api_result.dart';
@@ -140,8 +143,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _saveFCM(HomeAppSaveFCM event, Emitter<HomeState> emit) async {
     final fcmToken =
         AppServices.instance<DatabaseService>().getAppLocal?.fcmToken ?? "";
+    AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+    String os = "android";
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      os = "ios";
+    }
+
+    /// os + os_version
+    os = "${os}_${androidInfo.version.release}";
 
     ///
-    await homeRepository.saveFCM("android", fcmToken).then((value) {});
+    await homeRepository.saveFCM(os, fcmToken).then((value) {});
   }
 }

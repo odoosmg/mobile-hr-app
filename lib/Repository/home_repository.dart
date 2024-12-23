@@ -54,7 +54,7 @@ class HomeRepository extends BaseApi {
   Future<ApiResult> saveFCM(String deviceOS, String fcm) async {
     Map<String, dynamic> map = await request(
       uri: Endpoint.fcm,
-      params: {"name": "android", "fcm_token": fcm},
+      params: {"name": deviceOS, "fcm_token": fcm},
     );
 
     return apiResponse(
