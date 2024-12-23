@@ -620,7 +620,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Where initial, and onRfresh
   void _initOrRefresh() {
+    /// prevent when goto screen from notification.
+    /// ex: LeaveScreen need permission.
+    homeBloc.add(HomeAppPermission(isEmit: false));
     homeBloc.add(HomeGetCurrentAndNextYear());
+
     homeBloc.add(HomeGetData(isLoading: false));
   }
 

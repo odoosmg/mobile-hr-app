@@ -10,7 +10,6 @@ import 'package:hrm_employee/Models/home/in_out_model.dart';
 import 'package:hrm_employee/Repository/form_data_repository.dart';
 import 'package:hrm_employee/Repository/home_repository.dart';
 import 'package:hrm_employee/Repository/public_holiday_repository.dart';
-import 'package:hrm_employee/Screens/PublicHoliday/Bloc/public_holiday_bloc.dart';
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 
@@ -104,7 +103,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _appPermission(HomeAppPermission event, Emitter<HomeState> emit) async {
     state.stateType = HomeStateType.appPermission;
     state.permissionResult!.status = ApiStatus.loading;
-    emit(state.copyWith(state));
+
+    /// not updating state
+    if (event.isEmit) {
+      emit(state.copyWith(state));
+    }
     await homeRepository.appPermission().then((value) {
       /// Update Local
       AppPermissionModel permission =
@@ -117,7 +120,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       AppServices.instance<DatabaseService>().putPermission(permission);
 
       state.permissionResult = value;
-      emit(state.copyWith(state));
+      if (event.isEmit) {
+        emit(state.copyWith(state));
+      }
     });
   }
 

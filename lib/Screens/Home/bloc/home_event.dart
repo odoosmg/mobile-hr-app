@@ -16,7 +16,10 @@ class HomeGetData extends HomeEvent {
   HomeGetData({this.isLoading = true});
 }
 
-class HomeAppPermission extends HomeEvent {}
+class HomeAppPermission extends HomeEvent {
+  final bool isEmit; // when dont want to rebuild
+  HomeAppPermission({this.isEmit = true});
+}
 
 class HomeGetCurrentAndNextYear extends HomeEvent {}
 
