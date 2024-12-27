@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:877376487017:android:382a64db1a054feb5becf8",
         "android_client_info": {
-          "package_name": "com.maantheme.hrm_employee.stagging"
+          "package_name": "com.maantheme.hrm_employee.production"
         }
       },
       "oauth_client": [],

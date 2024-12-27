@@ -109,11 +109,11 @@ android {
             applicationIdSuffix ".production"
             versionNameSuffix " Prod"
             resValue "string", "app_name", "sale acitvity"
-            // copy {
-            //     from 'src/main/'
-            //     include 'google-services.json'
-            //     into '.'
-            // }
+            copy {
+                from 'src/main/'
+                include 'google-services.json'
+                into '.'
+            }
         }
         
 
