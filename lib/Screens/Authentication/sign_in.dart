@@ -1,6 +1,5 @@
 // import 'package:country_code_picker/country_code_picker.dart';
 // ignore_for_file: depend_on_referenced_packages
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hrm_employee/GlobalComponents/bloc/form-data/form_data_bloc.dart';
@@ -13,14 +12,13 @@ import 'package:hrm_employee/Models/api/api_result.dart';
 import 'package:hrm_employee/Models/auth/session.dart';
 import 'package:hrm_employee/Models/form/select_form_model.dart';
 import 'package:hrm_employee/Screens/Authentication/bloc/auth_bloc.dart';
-import 'package:hrm_employee/Screens/Authentication/sign_up.dart';
+
 import 'package:hrm_employee/Services/app_services.dart';
 import 'package:hrm_employee/Services/database_service.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../constant.dart';
 import '../Home/home_screen.dart';
-import 'forgot_password.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -34,6 +32,9 @@ class _SignInState extends State<SignIn> {
   final TextEditingController usernameTEC = TextEditingController();
   final TextEditingController passwordTEC = TextEditingController();
   bool isChecked = false;
+
+  /// local bloc
+  late AuthBloc authBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +84,12 @@ class _SignInState extends State<SignIn> {
                         _validate();
                       },
                       enabled: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Usersname',
                         hintText: 'Enter username',
                         labelStyle: kTextStyle,
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         // prefixIcon: CountryCodePicker(
                         //   padding: EdgeInsets.zero,
                         //   onChanged: print,
@@ -109,11 +110,11 @@ class _SignInState extends State<SignIn> {
                       _validate();
                     },
                     textFieldType: TextFieldType.PASSWORD,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Password',
                       labelStyle: kTextStyle,
                       hintText: 'Enter password',
-                      border: const OutlineInputBorder(),
+                      border: OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(
@@ -156,6 +157,7 @@ class _SignInState extends State<SignIn> {
 */
                   /// ** Bloc
                   BlocBuilder<AuthBloc, AuthState>(
+                    bloc: authBloc,
                     buildWhen: (previous, current) {
                       ApiResult<Session> response = current.signin!;
 
@@ -202,12 +204,12 @@ class _SignInState extends State<SignIn> {
                             FocusManager.instance.primaryFocus!.unfocus();
 
                             ///
-                            context.read<AuthBloc>().add(
-                                  AuthSignIn(
-                                    username: usernameTEC.text,
-                                    password: passwordTEC.text,
-                                  ),
-                                );
+                            authBloc.add(
+                              AuthSignIn(
+                                username: usernameTEC.text,
+                                password: passwordTEC.text,
+                              ),
+                            );
                           });
                     },
                   ),
@@ -219,7 +221,7 @@ class _SignInState extends State<SignIn> {
                   //       ? null
                   //       : () async {
                   //           ///
-                  //           context.read<AuthBloc>().add(AuthSignIn(
+                  //           authBloc.add(AuthSignIn(
                   //                 username: usernameTEC.text,
                   //                 password: passwordTEC.text,
                   //               ));
@@ -273,11 +275,15 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  ///***************************************************
+  ///
+  ///***************************************************/
+
   void _validate() {
-    context.read<AuthBloc>().add(AuthValidate(
-          username: usernameTEC.text,
-          password: passwordTEC.text,
-        ));
+    authBloc.add(AuthValidate(
+      username: usernameTEC.text,
+      password: passwordTEC.text,
+    ));
   }
 
   ///
@@ -292,5 +298,26 @@ class _SignInState extends State<SignIn> {
     /// fixed always loading after login.
     /// first init, status is loading.
     context.read<FormDataBloc>().add(FormDataCompanyList(false));
+  }
+
+  @override
+  void initState() {
+    authBloc = context.read<AuthBloc>();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    usernameTEC.dispose();
+    passwordTEC.dispose();
+
+    /// updae state.isValidForm = false
+    authBloc.add(
+      AuthValidate(
+        username: "",
+        password: "",
+      ),
+    );
+    super.dispose();
   }
 }

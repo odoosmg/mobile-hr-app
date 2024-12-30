@@ -23,7 +23,8 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserModel profile =
-        AppServices.instance<DatabaseService>().getSession!.myProfile!;
+        AppServices.instance<DatabaseService>().getSession?.myProfile ??
+            UserModel();
 
     ///
     return Drawer(
